@@ -33,6 +33,12 @@ class Firebase {
 
   user = (uid) => this.firestore.collection('users').doc(uid).get();
   users = () => this.firestore.collection('users').get();
+
+  // money
+
+  headers = () => this.firestore.collection('headers').doc(this.auth.currentUser.uid).get();
+  revenues = () => this.firestore.collection('income').doc(this.auth.currentUser.uid).get();
+  savings = () => this.firestore.collection('savings').doc(this.auth.currentUser.uid).get();
 }
 
 export default Firebase;

@@ -15,32 +15,46 @@ const Navigation = ({ authUser }) => (
 );
 
 const NavigationAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.HOME}>Home</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.ADMIN}>Admin</Link>
-    </li>
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+  <div className="container">
+    <div className="row">
+      <div className="col-sm">
+        <ul className="nav">
+          <li className="nav-item">
+            <Link to={ROUTES.LANDING} className="nav-link">Landing</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={ROUTES.HOME} className="nav-link">Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={ROUTES.ACCOUNT} className="nav-link">Account</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={ROUTES.ADMIN} className="nav-link">Admin</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={ROUTES.REVENUES} className="nav-link">Revenues</Link>
+          </li>
+        </ul>
+      </div>
+      <div className="col-sm">
+        <ul className="nav justify-content-end">
+          <li className="nav-item">
+            <SignOutButton />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
 );
 
 const NavigationNonAuth = () => (
   <ul>
     <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
+      <Link to={ROUTES.LANDING} className="nav-link">Landing</Link>
     </li>
     <li>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+      <Link to={ROUTES.SIGN_IN} className="nav-link">Sign In</Link>
     </li>
   </ul>
 );
