@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
+import FireAmount from '../FireAmount';
 import Display from '../Utilities/Display';
 
-//const RevenuesTableBody = ({ year, year_headers, headersLine }) => {
 class RevenuesTableBody extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +12,6 @@ class RevenuesTableBody extends Component {
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
-
-  // componentDidMount() {
-  // }
 
   totalMonthPreOrPost = (year, month, isPre) => {
     return _.reduce(this.props.income[year][month].income, (sum, amount, type) => {
@@ -102,6 +99,7 @@ class RevenuesTableBody extends Component {
   render() {
     return (
       <tbody>
+        {/*
         <tr>
           <td>body</td>
           <td colSpan="10">
@@ -109,6 +107,7 @@ class RevenuesTableBody extends Component {
             test={ this.state.collapsed ? 'yes' : 'no' }
           </td>
         </tr>
+        */}
         <tr>
           <td className="td-chevron">
             {/* <fire-collapse-toggle flag="year_headers.collapsed[year]"></fire-collapse-toggle> */}
@@ -142,8 +141,11 @@ class RevenuesTableBody extends Component {
           <td>{ Display.amount(month[1].savings) }</td>
           {this.props.headersLine.map((header) => (
           <td key={this.props.year + '-' + month[0] + '-' + header.id}>
+
+            <FireAmount amount={(month[1].income || {})[header.id]} />
             {/* <fire-amount type="'R'" id="header.id" institution="income[year][month].income" ></fire-amount> */}
-            { (month[1].income || {})[header.id] }
+            {/* { (month[1].income || {})[header.id] } */}
+            
           </td>
           ))}
           <td style={{ display: this.totalMonth(this.props.year, month[0]) === 0 ? 'table-cell' : 'none' }} colSpan="3"></td>
