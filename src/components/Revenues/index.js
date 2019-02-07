@@ -82,21 +82,6 @@ class RevenuePage extends Component {
         });
       });
     });
-
-    document.addEventListener('keydown', this._handleKeyboardKey, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this._handleKeyboardKey, false);
-  }
-
-  _handleKeyboardKey (event) {
-    console.log(event);
-    if(event.keyCode == 27) {
-      console.log('escape');
-    } else if(event.keyCode == 13) {
-      console.log('enter');
-    }
   }
 
   render() {
