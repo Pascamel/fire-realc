@@ -3,6 +3,8 @@ import { compose } from 'recompose';
 import _ from 'lodash';
 
 import RevenuesTable from './revenuesTable';
+import LoadingPanel from '../UI/LoadingPanel';
+
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 
@@ -53,7 +55,6 @@ class RevenuePage extends Component {
           let years = _.range(headers.firstYear, new Date().getFullYear() + 1);
     
           _(years).each((y, idx) => {
-            // let months = [];
             if (idx === 0 && years.length === 1) {
               income[y] = formatYear(_.range(headers.firstMonth, new Date().getMonth() + 2), {});
             } else if (idx === 0) {
@@ -84,15 +85,20 @@ class RevenuePage extends Component {
     });
   }
 
+  updateIncome = (indexes, amount) =>{
+    let new_income = JSON.parse(JSON.stringify(this.state.income));
+    _.set(new_income, indexes, amount);
+    this.setState({income: new_income});
+  }
+
   render() {
     const { loading, income, headersLine, year_headers } = this.state;
 
     return (
       <div>
         <h1>Revenues</h1>
-        {loading && <div>Loading ...</div>}
-        {!loading && <p>{Object.keys(income).length} year(s)</p>}
-        <RevenuesTable income={income} headersLine={headersLine} year_headers={year_headers} />
+        {loading && <LoadingPanel />}
+        <RevenuesTable income={income} headersLine={headersLine} year_headers={year_headers} callback={this.updateIncome} />
       </div>
     );
   }

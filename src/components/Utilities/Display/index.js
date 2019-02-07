@@ -14,9 +14,14 @@ const goal = (value, threshold, success, danger) => {
   return (value >= threshold) ? success : danger;
 };
 
+const roundFloat = (num) => {
+  return Math.round((num + 0.00001) * 100) / 100;
+};
+
 export default {
   amount, 
   percentage,
-  goal
+  goal,
+  roundFloat
 };
 

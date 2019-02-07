@@ -34,9 +34,12 @@ const NavigationAuth = () => (
           <li className="nav-item">
             <Link to={ROUTES.REVENUES} className="nav-link">Revenues</Link>
           </li>
+          <li className="nav-item">
+            <Link to={ROUTES.SAVINGS} className="nav-link">Savings</Link>
+          </li>
         </ul>
       </div>
-      <div className="col-sm">
+      <div className="col-sm-3">
         <ul className="nav justify-content-end">
           <li className="nav-item">
             <SignOutButton />

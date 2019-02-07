@@ -13,48 +13,53 @@ label {
   width: 40px;
 }
 .panel-login input {
-margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .nowrap-ellipsis {
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .label-fake-input {
-display: inline-block;
-line-height: 34px;
-width: 100%;
+  display: inline-block;
+  line-height: 34px;
+  width: 100%;
 }
 
 .alert span {
-margin: 6px 15px;
+  margin: 6px 15px;
 }
 
 .loading-spinner {
-text-align: center;
-background: #f5f5f5;
-padding: 10px;
+  text-align: center;
+  background: #f5f5f5;
+  padding: 10px;
 }
 
-.form-headers .btn-link {
-padding: 6px;
-}
-.form-headers div.checkbox {
-padding: 6px 10px 6px 0;
+.form-headers {
+  .btn-link {
+    padding: 6px;
+  }
+
+  div.checkbox {
+    padding: 6px 10px 6px 0;
+  }
 }
 
 .amount-container {
-display: inline-block;
+  display: inline-block;
+
+  span.amount {
+    min-width: 50px; 
+    width: 100%;
+    height: 16px; 
+    display: inline-block;
+  }
 }
-.amount-container span {
-min-width: 50px; 
-width: 100%;
-height: 16px; 
-display: inline-block;
-}
-.amount-container.bold span {
+
+.amount-container.bold span.amount {
 font-weight: bold;
 }
 .amount-container:not(.read-only) span {
@@ -72,7 +77,22 @@ background-color: #fff;
 
 .table-finances {
   thead {
-    
+    tr {
+      .separator {
+        position: relative;
+
+        &:after {
+          content: '';
+          background: rgba(0,0,0,0.1);
+          width: 1px;
+          height: 18px;
+          top: 10px;
+          right: -1px;
+          display: block;
+          position: absolute;
+        }
+      }
+    }
   }
   tbody {
     tr {
@@ -97,20 +117,7 @@ background-color: #fff;
 
 .table-finances tbody tr,
 .table-finances thead tr th {
-text-align: center;
-}
-.table-finances thead tr .separator {
-position: relative;
-}
-.table-finances thead tr .separator:after {
-  content: '';
-  background: rgba(0,0,0,0.1);
-  width: 1px;
-  height: 18px;
-  top: 10px;
-  right: -1px;
-  display: block;
-  position: absolute;
+  text-align: center;
 }
 .table-finances tbody tr td, .table-finances tfoot tr td {
   text-align: right;
@@ -119,4 +126,8 @@ position: relative;
 .table-finances tbody tr:not(.tr-total) td:not(:last-child):nth-child(n+3) {
   border-left: 1px solid;
   border-left-color:rgba(0,0,0,0.05);
+}
+
+.hidden {
+  display: none;
 }
