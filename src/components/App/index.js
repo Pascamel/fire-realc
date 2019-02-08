@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
+import SignUpPage from '../UserSession/SignUp';
+import SignInPage from '../UserSession/SignIn';
+import PasswordForgetPage from '../UserSession/PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
@@ -14,7 +14,7 @@ import RevenuesPage from '../Revenues';
 import SavingsPage from '../Savings';
 
 import * as ROUTES from '../../constants/routes';
-import { withAuthentication } from '../Session';
+import { withAuthentication } from '../UserSession/Session';
 
 
 const App = () => (

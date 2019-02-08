@@ -6,7 +6,7 @@ import RevenuesTable from './revenuesTable';
 import LoadingPanel from '../UI/LoadingPanel';
 
 import { withFirebase } from '../Firebase';
-import { withAuthorization } from '../Session';
+import { withAuthorization } from '../UserSession/Session';
 
 class RevenuePage extends Component {
   constructor(props) {

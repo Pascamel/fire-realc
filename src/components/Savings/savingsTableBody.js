@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 // import FireAmount from '../FireAmount';
-import Display from '../Utilities/Display';
+import Display from '../UI/Display';
 
 class SavingsTableBody extends Component {
   constructor(props) {

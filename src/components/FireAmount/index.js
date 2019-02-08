@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Display from '../Utilities/Display';
+import Display from '../UI/Display';
 import keydown, { Keys, keydownScoped } from 'react-keydown';
 
 const { ENTER, ESC } = Keys;
@@ -37,6 +37,11 @@ class FireAmount extends Component {
     this.setState({edit: false});
   }
 
+  handleKeyUp = (event) => {
+    if (event.key === 'Enter' && this.state.edit) this.saveEdit();
+    if (event.key === 'Escape' && this.state.edit) this.cancelEdit();
+  }
+
   @keydown(ENTER, ESC)
   handleKeyDown (event) {
     if (event.which === ENTER && this.state.edit) this.saveEdit();
@@ -52,7 +57,7 @@ class FireAmount extends Component {
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
                         defaultValue={this.state.editAmount} 
                         onChange={(value) => this.onChange(value)} 
-                        onKeyDown={this.handleKeyDown} />}
+                        onKeyUp={this.handleKeyUp}  />}
         {edit && <span onClick={this.saveEdit}><i className={'fa fa-check'}></i></span>}
         {edit && <span onClick={this.cancelEdit}><i className={'fa fa-times'}></i></span>}
       </div>

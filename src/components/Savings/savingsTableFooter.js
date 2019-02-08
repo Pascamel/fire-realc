@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import Display from '../Utilities/Display';
+import Display from '../UI/Display';
 
 class SavingsTableFooter extends Component {
 

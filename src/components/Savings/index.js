@@ -6,7 +6,7 @@ import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';
 
 import { withFirebase } from '../Firebase';
-import { withAuthorization } from '../Session';
+import { withAuthorization } from '../UserSession/Session';
 
 class SavingsPage extends Component {
 
@@ -124,7 +124,7 @@ class SavingsPage extends Component {
 
     return (
       <div>
-        <h1>S</h1>
+        <h1>Savings</h1>
         {loading && <LoadingPanel />}
         {!loading && <SavingsTable {...this.state} callback={this.updateSavings} />}
       </div>
