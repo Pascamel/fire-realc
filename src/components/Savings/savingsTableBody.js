@@ -106,16 +106,6 @@ class SavingsTableBody extends Component {
     return sp + ti;
   };
 
-  grandTotalHolding = () => {
-    var year = _(this.props.savings).keys().last();
-    if (!year) return;
-
-    var month = _(this.props.savings[year]).keys().last();
-    if (!month) return;
-
-    return this.totalHolding(month, year);
-  };
-
   handleClickToggle() {
     this.setState(state => ({
       collapsed: !state.collapsed

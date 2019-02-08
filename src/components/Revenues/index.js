@@ -85,20 +85,20 @@ class RevenuePage extends Component {
     });
   }
 
-  updateIncome = (indexes, amount) =>{
-    let new_income = JSON.parse(JSON.stringify(this.state.income));
+  updateIncome = (index, indexes, amount) =>{
+    let new_income = JSON.parse(JSON.stringify(this.state[index]));
     _.set(new_income, indexes, amount);
     this.setState({income: new_income});
   }
 
   render() {
-    const { loading, income, headersLine, year_headers } = this.state;
+    const { loading } = this.state;
 
     return (
       <div>
         <h1>Revenues</h1>
         {loading && <LoadingPanel />}
-        <RevenuesTable income={income} headersLine={headersLine} year_headers={year_headers} callback={this.updateIncome} />
+        {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
       </div>
     );
   }

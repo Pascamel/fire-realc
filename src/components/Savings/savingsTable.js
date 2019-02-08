@@ -9,12 +9,12 @@ class SavingsTable extends Component {
     const { savings, headersLine1, headersLine2 } = this.props;
 
     return (
-      <table className="table table-striped table-finances">
-        <SavingsTableHeader key="1" headersLine1={headersLine1} headersLine2={headersLine2} />
+      <table className={'table table-striped table-finances'}>
+        <SavingsTableHeader key={1} headersLine1={headersLine1} headersLine2={headersLine2} />
         {Object.entries(savings).map((year) => (
         <SavingsTableBody key={year[0]} year={year[0]} {...this.props} />
         ))}
-        <SavingsTableFooter key="2" />
+        <SavingsTableFooter key={2} {...this.props} />
       </table>
     );
   }

@@ -18,8 +18,8 @@ import { withAuthentication } from '../Session';
 
 
 const App = () => (
-  <div className="container">
-    <div className="col-xs">
+  <div className={'container'}>
+    <div className={'col-xs'}>
       <Router>
         <div>
           <Navigation />

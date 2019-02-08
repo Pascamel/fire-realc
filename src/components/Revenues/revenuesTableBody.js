@@ -8,7 +8,7 @@ class RevenuesTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: !props.year_headers.collapsed[props.year]};
+    this.state = {collapsed: props.year_headers.collapsed[props.year]};
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
@@ -100,65 +100,62 @@ class RevenuesTableBody extends Component {
     return (
       <tbody>
         <tr>
-          <td className="td-chevron">
-            <i className={"fa " + (this.state.collapsed ? 'fa-chevron-down' : 'fa-chevron-right')} onClick={this.handleClickToggle}></i>
+          <td className={'td-chevron'}>
+            <i className={"fa " + (this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down')} onClick={this.handleClickToggle}></i>
           </td>
-          <td style={{ display: this.state.collapsed ? 'none' : 'table-cell' }} colSpan={this.props.headersLine.length + 4}>
-            <span className="pull-left" style={{paddingLeft: '10px'}}>
+          <td className={this.state.collapsed ? 'hidden' : ''} colSpan={this.props.headersLine.length + 4}>
+            <span className={'pull-left'} style={{paddingLeft: '10px'}}>
               { this.props.year }
             </span>
           </td>
-          <td style={{ display: this.state.collapsed ? 'table-cell' : 'none' }}>
+          <td className={this.state.collapsed ? '' : 'hidden'}>
             { Display.amount(this.yearlySavings(this.props.year)) }
           </td>
-
           {this.props.headersLine.map((header) => (
-          <td key={header.id} style={{ display: this.state.collapsed ? 'table-cell' : 'none' }}>
+          <td key={header.id} className={this.state.collapsed ? '' : 'hidden'}>
             { Display.amount(this.yearlyIncome(this.props.year, header), true) }
           </td>
           ))}
-          <td style={{ display: this.state.collapsed ? 'table-cell' : 'none' }}>{ this.totalYearPost(this.props.year) }</td>
-          <td style={{ display: this.state.collapsed ? 'table-cell' : 'none' }}>{ this.totalYearPre(this.props.year) }</td>
-          <td style={{ display: this.state.collapsed ? 'table-cell' : 'none' }}>
+          <td className={this.state.collapsed ? '' : 'hidden'}>{ this.totalYearPost(this.props.year) }</td>
+          <td className={this.state.collapsed ? '' : 'hidden'}>{ this.totalYearPre(this.props.year) }</td>
+          <td className={this.state.collapsed ? '' : 'hidden'}>
             { Display.percentage(this.savingRateYear(this.props.year) * 100) }
           </td> 
         </tr> 
 
         {Object.entries(this.props.income[this.props.year]).map((month) => (
-        <tr style={{ display: this.state.collapsed ? 'table-row' : 'none' }} key={month[0]}>
+        <tr className={this.state.collapsed ? 'hidden' : '' } key={month[0]}>
           <td>{ month[0] }</td>
           <td>{ Display.amount(month[1].savings) }</td>
           {this.props.headersLine.map((header) => (
           <td key={this.props.year + '-' + month[0] + '-' + header.id}>
             <FireAmount amount={(month[1].income || {})[header.id]} 
-                        callback-props={[this.props.year, month[0], 'income', header.id]} 
+                        callback-props={['income', this.props.year, month[0], 'income', header.id]} 
                         callback={this.props.callback} />
           </td>
           ))}
-          <td style={{ display: this.totalMonth(this.props.year, month[0]) === 0 ? 'table-cell' : 'none' }} colSpan="3"></td>
-          <td style={{ display: this.totalMonth(this.props.year, month[0]) === 0 ? 'none' : 'table-cell' }}>
+          <td className={this.totalMonth(this.props.year, month[0]) === 0 ? '' : 'hidden'} colSpan={3}></td>
+          <td className={this.totalMonth(this.props.year, month[0]) === 0 ? 'hidden' : ''}>
             { Display.amount(this.totalMonthPost(this.props.year, month[0]), true) }
-            </td>
-          <td style={{ display: this.totalMonth(this.props.year, month[0]) === 0 ? 'none' : 'table-cell' }}>
+          </td>
+          <td className={this.totalMonth(this.props.year, month[0]) === 0 ? 'hidden' : ''}>
             { Display.amount(this.totalMonthPre(this.props.year, month[0]), true) }
           </td>
-          {/*  */}
-          <td style={{ display: this.totalMonth(this.props.year, month[0]) === 0 ? 'none' : 'table-cell' }}
-              className={Display.goal(this.savingRateMonth(this.props.year, month[0]), 0.5)} > {/*ng-class="savingRateMonth(year, month) | goal:0.5"*/}
+          <td className={`${this.totalMonth(this.props.year, month[0]) === 0 ? 'hidden' : ''} ${Display.goal(this.savingRateMonth(this.props.year, month[0]), 0.5)}`}>            
             { Display.percentage(this.savingRateMonth(this.props.year, month[0]) * 100) }
           </td> 
         </tr>
         ))}
 
-        <tr style={{ display: this.state.collapsed ? 'table-row' : 'none' }}>
-          <td><i className="fa fa-calendar-plus-o"></i></td>
+        <tr className={this.state.collapsed ? 'hidden' : '' }>
+          <td><i className={'fa fa-calendar-plus-o'}></i></td>
           <td>{ Display.amount(this.yearlySavings(this.props.year), true) }</td>
           {this.props.headersLine.map((header) => (
-          <td key={header.id}>{ this.yearlyIncome(this.props.year, header) /*| amount:true*/ }</td>
+          <td key={header.id}>{ Display.amount(this.yearlyIncome(this.props.year, header), true) }</td>
           ))}
           <td>{ Display.amount(this.totalYearPost(this.props.year), true) }</td>
           <td>{ Display.amount(this.totalYearPre(this.props.year), true) }</td>
-          <td ng-class="savingRateYear(year) | goal:0.5">
+          <td className={Display.goal(this.savingRateYear(this.props.year), 0.5)}>
             { Display.percentage(this.savingRateYear(this.props.year) * 100) }
           </td>
         </tr>

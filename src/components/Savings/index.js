@@ -17,6 +17,7 @@ class SavingsPage extends Component {
       loading: false,
       headersLine1: [],
       headersLine2: [],
+      inputLine: [],
       savings: []
     }
   }
@@ -112,7 +113,7 @@ class SavingsPage extends Component {
     });
   }
 
-  updateSaving = (indexes, amount) =>{
+  updateSavings = (indexes, amount) =>{
     let new_savings = JSON.parse(JSON.stringify(this.state.savings));
     _.set(new_savings, indexes, amount);
     this.setState({savings: new_savings});
@@ -125,7 +126,7 @@ class SavingsPage extends Component {
       <div>
         <h1>S</h1>
         {loading && <LoadingPanel />}
-        <SavingsTable {...this.state} />
+        {!loading && <SavingsTable {...this.state} callback={this.updateSavings} />}
       </div>
     )
   }

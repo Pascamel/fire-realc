@@ -9,12 +9,12 @@ class SavingsTableHeader extends Component {
         <tr>
           <th></th>
           {headersLine1.map((h1, idx) => (
-          <th className="separator" colSpan={h1.weight} key={idx}>
-            <span style={{display: h1.icon ? 'none' : 'inline-block' }}>{h1.label}</span>
-            <img src={h1.icon} alt="Description" width={16} />
+          <th className={'separator'} colSpan={h1.weight} key={idx}>
+            <span className={h1.icon ? 'hidden' : ''}>{h1.label}</span>
+            <img src={h1.icon} alt={'Institution'} width={16} />
           </th>
           ))}
-          <th className="separator" colSpan={2}>Total</th>
+          <th className={'separator'} colSpan={2}>Total</th>
           <th colSpan={2}>Goal</th>
         </tr>
         <tr>
@@ -23,7 +23,7 @@ class SavingsTableHeader extends Component {
           <th key={idx} className={h2.last ? 'separator' : ''}>{h2.label}</th>
           ))}
           <th>Monthly</th>
-          <th className="separator">Total</th>
+          <th className={'separator'}>Total</th>
           <th>Month</th>
           <th>Total</th>
         </tr>

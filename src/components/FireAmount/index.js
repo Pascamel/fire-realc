@@ -9,6 +9,9 @@ class FireAmount extends Component {
   constructor(props) {
     super(props);
 
+    this.indexes = props['callback-props'];
+    this.index = this.indexes.shift();
+
     this.state = {
       edit: false, 
       amount: props.amount, 
@@ -27,7 +30,7 @@ class FireAmount extends Component {
 
   saveEdit = () => {
     this.setState({edit: false, amount: this.state.inputValue});
-    this.props.callback(this.props['callback-props'], parseFloat(this.state.inputValue) || 0);
+    this.props.callback(this.index, this.indexes, parseFloat(this.state.inputValue) || 0);
   }
 
   cancelEdit = () => {
@@ -44,14 +47,14 @@ class FireAmount extends Component {
     const { edit } = this.state;
 
     return (
-      <div className="amount-container" >
-        {!edit && <span className="amount" onClick={this.setEditMode}>{ Display.amount(this.state.amount) }</span>}
+      <div className={'amount-container'} onKeyDown={this.handleKeyDown}>
+        {!edit && <span className={'amount'} onClick={this.setEditMode}>{ Display.amount(this.state.amount) }</span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
                         defaultValue={this.state.editAmount} 
                         onChange={(value) => this.onChange(value)} 
                         onKeyDown={this.handleKeyDown} />}
-        {edit && <span onClick={this.saveEdit}><i className="fa fa-check"></i></span>}
-        {edit && <span onClick={this.cancelEdit}><i className="fa fa-times"></i></span>}
+        {edit && <span onClick={this.saveEdit}><i className={'fa fa-check'}></i></span>}
+        {edit && <span onClick={this.cancelEdit}><i className={'fa fa-times'}></i></span>}
       </div>
     );
   }
