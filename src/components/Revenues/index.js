@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import RevenuesTable from './revenuesTable';
 import LoadingPanel from '../UI/LoadingPanel';
+import Bank from '../Finance/Bank';
 
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
@@ -40,7 +41,7 @@ class RevenuePage extends Component {
           let income_headers = snapshotIncome.data().yearly_data;
           let new_state = {};
           
-          // formatHeaders
+          // format headers
           new_state.firstMonth = headers.firstMonth
           new_state.firstYear = headers.firstYear;
           new_state.startingCapital = headers.startingCapital;
@@ -50,7 +51,7 @@ class RevenuePage extends Component {
             return h;
           });
           
-          // formatSavingsAndIncome
+          // format savings and income
           let income = {};
           let years = _.range(headers.firstYear, new Date().getFullYear() + 1);
     
@@ -78,6 +79,7 @@ class RevenuePage extends Component {
           // year headers
           new_state.year_headers = income_headers || {collapsed: {}};
 
+          new_state.bank = this.newBank(new_state);
           new_state.loading = false;
           this.setState(new_state);
         });
@@ -85,10 +87,27 @@ class RevenuePage extends Component {
     });
   }
 
-  updateIncome = (index, indexes, amount) =>{
-    let new_income = JSON.parse(JSON.stringify(this.state[index]));
+  newBank = (state) => {
+    const bank = new Bank.Bank(
+      state.income, 
+      state.savings, 
+      state.headersLine, 
+      state.startingCapital, 
+      state.year_headers, 
+      state.inputLine
+    )
+
+    return bank;
+  }
+
+  updateIncome = (index, indexes, amount) => {
+    const new_income = JSON.parse(JSON.stringify(this.state[index]));
     _.set(new_income, indexes, amount);
-    this.setState({income: new_income});
+
+    const new_state = this.state;
+    new_state.income = new_income;
+
+    this.setState({income: new_income, bank: this.newBank(new_state)});
   }
 
   render() {

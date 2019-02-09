@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';
+import Bank from '../Finance/Bank';
 
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
@@ -65,7 +66,7 @@ class SavingsPage extends Component {
 
         new_state.headersLine2 = _(headers.headers)
           .map((header) => {
-            var headers = [header.sublabel || 'Principal'];
+            let headers = [header.sublabel || 'Principal'];
             if (header.interest) _.each(['Interest', 'Total'], (t) => headers.push(t)); 
             headers = _.map(headers, (h, idx) => {
               return {
@@ -80,7 +81,7 @@ class SavingsPage extends Component {
 
         new_state.inputLine = _(headers.headers)
           .map((header) => {
-            var headers = [{id: header.id, type: 'P'}];
+            let headers = [{id: header.id, type: 'P'}];
             if (header.interest) _.each(['I', 'T'], (t) => headers.push({id: header.id, type: t})); 
             _.each(headers, (item) => { item.types = _.map(headers, 'type')});
             return headers;
@@ -107,16 +108,34 @@ class SavingsPage extends Component {
         
         new_state.year_headers = savings_headers || {collapsed: {}, goals: {}};
 
+        new_state.bank = this.newBank(new_state);
         new_state.loading = false;
         this.setState(new_state);
       });
     });
   }
 
+  newBank = (state) => {
+    const bank = new Bank.Bank(
+      state.income, 
+      state.savings, 
+      state.headersLine, 
+      state.startingCapital, 
+      state.year_headers, 
+      state.inputLine
+    )
+
+    return bank;
+  }
+
   updateSavings = (indexes, amount) =>{
     let new_savings = JSON.parse(JSON.stringify(this.state.savings));
     _.set(new_savings, indexes, amount);
-    this.setState({savings: new_savings});
+
+    const new_state = this.state;
+    new_state.savings = new_savings;
+
+    this.setState({savings: new_savings, bank: this.newBank(new_state)});
   }
 
   render() {

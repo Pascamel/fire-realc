@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 
 import FireAmount from '../Finance/FireAmount';
-import Bank from '../Finance/Bank';
 import Display from '../UI/Display';
 
 class RevenuesTableBody extends Component {
@@ -21,7 +19,7 @@ class RevenuesTableBody extends Component {
   }
 
   render() {
-    const {income, headersLine, year, callback} = this.props;
+    const {income, headersLine, year, bank, callback} = this.props;
 
     return (
       <tbody>
@@ -35,17 +33,17 @@ class RevenuesTableBody extends Component {
             </span>
           </td>
           <td className={this.state.collapsed ? '' : 'hidden'}>
-            { Bank.yearlySavings(income, year) }
+            { bank.yearlySavings(year) }
           </td>
           {headersLine.map((header) => (
           <td key={header.id} className={this.state.collapsed ? '' : 'hidden'}>
-            { Bank.yearlyIncome(income, year, header) }
+            { bank.yearlyIncome(year, header) }
           </td>
           ))}
-          <td className={this.state.collapsed ? '' : 'hidden'}>{ Bank.totalYearPost(income, headersLine, year) }</td>
-          <td className={this.state.collapsed ? '' : 'hidden'}>{ Bank.totalYearPre(income, headersLine, year) }</td>
+          <td className={this.state.collapsed ? '' : 'hidden'}>{ bank.totalYearPost(year) }</td>
+          <td className={this.state.collapsed ? '' : 'hidden'}>{ bank.totalYearPre(year) }</td>
           <td className={this.state.collapsed ? '' : 'hidden'}>
-            { Display.percentage(Bank.savingRateYear(income, headersLine, year) * 100) }
+            { Display.percentage(bank.savingRateYear(year) * 100) }
           </td> 
         </tr> 
 
@@ -60,29 +58,29 @@ class RevenuesTableBody extends Component {
                         callback={callback} />
           </td>
           ))}
-          <td className={Bank.totalMonth(income, headersLine, year, month[0]) === 0 ? '' : 'hidden'} colSpan={3}></td>
-          <td className={Bank.totalMonth(income, headersLine, year, month[0]) === 0 ? 'hidden' : ''}>
-            { Bank.totalMonthPost(income, headersLine, year, month[0]) }
+          <td className={bank.totalMonthIncome(year, month[0]) === 0 ? '' : 'hidden'} colSpan={3}></td>
+          <td className={bank.totalMonthIncome(year, month[0]) === 0 ? 'hidden' : ''}>
+            { bank.totalMonthPost(year, month[0]) }
           </td>
-          <td className={Bank.totalMonth(income, headersLine, year, month[0]) === 0 ? 'hidden' : ''}>
-            { Bank.totalMonthPre(income, headersLine, year, month[0]) }
+          <td className={bank.totalMonthIncome(year, month[0]) === 0 ? 'hidden' : ''}>
+            { bank.totalMonthPre(year, month[0]) }
           </td>
-          <td className={`${Bank.totalMonth(income, headersLine, year, month[0]) === 0 ? 'hidden' : ''} ${Display.goal(Bank.savingRateMonth(income, headersLine, year, month[0]), 0.5)}`}>            
-            { Bank.savingRateMonth(income, headersLine, year, month[0], true) }
+          <td className={`${bank.totalMonthIncome(year, month[0]) === 0 ? 'hidden' : ''} ${Display.goal(bank.savingRateMonth(year, month[0]), 0.5)}`}>
+            { bank.savingRateMonth(year, month[0], true) }
           </td> 
         </tr>
         ))}
 
         <tr className={this.state.collapsed ? 'hidden' : '' }>
           <td><i className={'fa fa-calendar-plus-o'}></i></td>
-          <td>{ Bank.yearlySavings(income, year) }</td>
+          <td>{ bank.yearlySavings(year) }</td>
           {headersLine.map((h) => (
-          <td key={h.id}>{ Bank.yearlyIncome(income, year, h) }</td>
+          <td key={h.id}>{ bank.yearlyIncome(income, year, h) }</td>
           ))}
-          <td>{ Bank.totalYearPost(income, headersLine, year) }</td>
-          <td>{ Bank.totalYearPre(income, headersLine, year) }</td>
-          <td className={Display.goal(Bank.savingRateYear(income, headersLine, year), 0.5)}>
-            { Display.percentage(Bank.savingRateYear(income, headersLine, year) * 100) }
+          <td>{ bank.totalYearPost(year) }</td>
+          <td>{ bank.totalYearPre(year) }</td>
+          <td className={Display.goal(bank.savingRateYear(year), 0.5)}>
+            { Display.percentage(bank.savingRateYear(year) * 100) }
           </td>
         </tr>
       </tbody>
