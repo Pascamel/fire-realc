@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class FireAmount extends Component {
+class LoadingPanel extends Component {
   render() {
     return (
       <div className={'col-xs-12 loading-spinner'}>
@@ -11,4 +11,4 @@ class FireAmount extends Component {
   };
 }
 
-export default FireAmount;
+export default LoadingPanel;

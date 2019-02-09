@@ -128,14 +128,33 @@ class SavingsPage extends Component {
     return bank;
   }
 
-  updateSavings = (indexes, amount) =>{
-    let new_savings = JSON.parse(JSON.stringify(this.state.savings));
-    _.set(new_savings, indexes, amount);
+  updateSavings = (index, indexes, amount) =>{
+    let new_savings = JSON.parse(JSON.stringify(this.state[index]));
 
+    _.set(new_savings, indexes, amount);
+    const header = _.keyBy(this.state.headers, 'id')[_.nth(indexes, indexes.length - 2)];
+    if (!header) return;
+
+    if (header.interest) {
+      indexes.pop();
+      const value = _.reduce(['P', 'I'], (acc, v) => acc + _.get(new_savings, _.concat(indexes, v)), 0);
+      _.set(new_savings, _.concat(indexes, 'T'), value);
+    }
+    
     const new_state = this.state;
     new_state.savings = new_savings;
 
     this.setState({savings: new_savings, bank: this.newBank(new_state)});
+  }
+
+  updateGoal = (index, indexes, amount) => {
+    const new_year_headers = JSON.parse(JSON.stringify(this.state[index]));
+    _.set(new_year_headers, indexes, amount);
+
+    const new_state = this.state;
+    new_state.year_headers = new_year_headers;
+
+    this.setState({year_headers: new_year_headers, bank: this.newBank(new_state)});
   }
 
   render() {
@@ -145,7 +164,7 @@ class SavingsPage extends Component {
       <div>
         <h1>Savings</h1>
         {loading && <LoadingPanel />}
-        {!loading && <SavingsTable {...this.state} callback={this.updateSavings} />}
+        {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
       </div>
     )
   }

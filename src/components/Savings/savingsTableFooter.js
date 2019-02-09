@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Display from '../UI/Display';
-
 class SavingsTableFooter extends Component {
   render() {
     const {inputLine, bank} = this.props;

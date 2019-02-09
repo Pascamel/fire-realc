@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
+
 import Display from '../../UI/Display';
 import keydown, { Keys, keydownScoped } from 'react-keydown';
 
@@ -11,17 +13,18 @@ class FireAmount extends Component {
 
     this.indexes = props['callback-props'];
     this.index = this.indexes.shift();
+    this.readonly = _.last(this.indexes) === 'T';
 
     this.state = {
       edit: false, 
-      amount: props.amount, 
-      editAmount: props.amount,
+      amount: props.amount,
       inputValue: props.amount
     };
   }
 
   setEditMode = () => {
-    this.setState({edit: true, editAmount: this.state.amount });
+    if (this.readonly) return;
+    this.setState({edit: true, amount: this.props.amount });
   }
 
   onChange(e) {
@@ -53,9 +56,9 @@ class FireAmount extends Component {
 
     return (
       <div className={'amount-container'} onKeyDown={this.handleKeyDown}>
-        {!edit && <span className={'amount'} onClick={this.setEditMode}>{ Display.amount(this.state.amount) }</span>}
+        {!edit && <span className={'amount'} onClick={this.setEditMode}>{ Display.amount(this.props.amount) }</span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
-                        defaultValue={this.state.editAmount} 
+                        defaultValue={this.state.amount} 
                         onChange={(value) => this.onChange(value)} 
                         onKeyUp={this.handleKeyUp}  />}
         {edit && <span onClick={this.saveEdit}><i className={'fa fa-check'}></i></span>}

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 
-// import FireAmount from '../FireAmount';
 import Display from '../UI/Display';
+import FireAmount from '../Finance/FireAmount';
 
 class SavingsTableBody extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class SavingsTableBody extends Component {
   }
 
   render() {
-    const {savings, year, headersLine2, inputLine, bank} = this.props;
+    const {savings, year, headersLine2, inputLine, bank, callback, callbackGoal} = this.props;
     
     return (
       <tbody>
@@ -32,11 +33,11 @@ class SavingsTableBody extends Component {
               { year }
             </span>
             <span>
-              Begins at <b>{ bank.startOfYearAmount(year) }</b> -
-              Goal is
-              TODO1
-              {/* <fire-amount type="year" id="year" institution="year_headers.goals" types="[]" class="'bold'"></fire-amount> */}
-              ({ bank.monthlyGoal(year) }/mo)
+              Begins at <b>{ bank.startOfYearAmount(year) }</b> - Goal is&nbsp;
+              <FireAmount amount={_.get(this.props.year_headers, ['goals', year])}
+                          callback-props={['year_headers', 'goals', year]}
+                          callback={callbackGoal} />
+              &nbsp;({ bank.monthlyGoal(year) }/mo)
             </span>
           </td>
           {inputLine.map((amount, idx) => (
@@ -62,8 +63,9 @@ class SavingsTableBody extends Component {
           <td>{ month[0] }</td>
           {inputLine.map((amount, idx) => (
           <td key={idx}>
-            {/* <fire-amount type="amount.type" id="amount.id" institution="savings[year][month][amount.id]" types="amount.types"></fire-amount>*/}
-            TODO2
+            <FireAmount amount={_.get(month, [1, amount.id, amount.type])} 
+                        callback-props={['savings', year, month[0], amount.id, amount.type]} 
+                        callback={callback} />
           </td>
           ))}
           <td>{ Display.amount(bank.totalMonthSavings(month, year, 'T')) }</td>
