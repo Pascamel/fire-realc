@@ -153,7 +153,7 @@ class SavingsTableBody extends Component {
           </td>
           ))}
           <td>{ Display.amount(this.totalMonth(month, this.props.year, 'T')) }</td>
-          <td className={this.totalMonth(month[0], this.props.year, 'T') === 0 ? '' : 'hidden'} colSpan={3}></td>
+          <td className={this.totalMonth(month[0], this.props.year, 'T') === '0.00' ? '' : 'hidden'} colSpan={3}></td>
           <td className={this.totalMonth(month[0], this.props.year, 'T') === 0 ? 'hidden' : ''}>
             { Display.amount(this.totalHolding(month[0], this.props.year)) }
           </td>

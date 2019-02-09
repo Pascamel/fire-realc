@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Display from '../UI/Display';
+import Display from '../../UI/Display';
 import keydown, { Keys, keydownScoped } from 'react-keydown';
 
 const { ENTER, ESC } = Keys;

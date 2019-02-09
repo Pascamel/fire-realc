@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SignOutButton from '../UserSession/SignOut';
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../UserSession/Session';
 
@@ -20,14 +19,13 @@ const NavigationAuth = () => (
       <div className={'col-sm'}>
         <ul className={'nav'}>
           <li className={'nav-item'}>
-            <Link to={ROUTES.LANDING} className={'nav-link'}>Landing</Link>
+            <Link to={ROUTES.LANDING} className={'nav-link'}>
+              <i className="fa fa-fire"></i>
+            </Link>
           </li>
           <li className={'nav-item'}>
-            <Link to={ROUTES.HOME} className={'nav-link'}>Home</Link>
-          </li>
-          <li className={'nav-item'}>
-            <Link to={ROUTES.ACCOUNT} className={'nav-link'}>Account</Link>
-          </li>
+            <Link to={ROUTES.DASHBOARD} className={'nav-link'}>Dashboard</Link>
+          </li>  
           <li className={'nav-item'}>
             <Link to={ROUTES.ADMIN} className={'nav-link'}>Admin</Link>
           </li>
@@ -42,7 +40,7 @@ const NavigationAuth = () => (
       <div className={'col-sm-3'}>
         <ul className={'nav justify-content-end'}>
           <li className={'nav-item'}>
-            <SignOutButton />
+            <Link to={ROUTES.ACCOUNT} className={'nav-link'}>Account</Link>
           </li>
         </ul>
       </div>
