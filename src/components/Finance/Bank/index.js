@@ -199,7 +199,12 @@ class Bank {
   };
 
   grandTotalInstitution = (institution, type, formatted) => {
-    if (type === 'T') return _.reduce(['P', 'I'], (v, i) => v + this.grandTotalInstitution(institution, i), 0);
+    if (type === 'T') {
+      const value = _.reduce(['P', 'I'], (v, i) => v + this.grandTotalInstitution(institution, i), 0);
+
+      if (!formatted) return value;
+      return Display.amount(value, true);
+    }
 
     const sp = (type === 'P' && _.findIndex(this.inputLine, (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
     const ti = _(this.savings).keys().reduce((acc, year) => acc + this.totalInstitution(year, institution, type), 0);

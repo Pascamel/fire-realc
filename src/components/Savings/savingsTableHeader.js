@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Display from '../UI/Display';
 
 class SavingsTableHeader extends Component {
   render() {
@@ -10,7 +11,7 @@ class SavingsTableHeader extends Component {
           <th></th>
           {headersLine1.map((h1, idx) => (
           <th className={'separator'} colSpan={h1.weight} key={idx}>
-            <span className={h1.icon ? 'hidden' : ''}>{h1.label}</span>
+            <span className={Display.hideIf(h1.icon)}>{h1.label}</span>
             <img src={h1.icon} alt={'Institution'} width={16} />
           </th>
           ))}

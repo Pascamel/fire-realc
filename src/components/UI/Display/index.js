@@ -18,17 +18,23 @@ const roundFloat = (num) => {
   return Math.round((num + 0.00001) * 100) / 100;
 };
 
+const showIf = (bool, className) => {
+  className = className || 'hidden';
+
+  return bool ? '' : className;
+};
+
 const hideIf = (bool, className) => {
   className = className || 'hidden';
 
   return bool ? className : '';
-}
+};
 
 export default {
   amount, 
   percentage,
   goal,
   roundFloat,
+  showIf,
   hideIf
 };
-
