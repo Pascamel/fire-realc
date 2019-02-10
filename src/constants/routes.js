@@ -6,5 +6,6 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 
+export const HEADERS = '/headers';
 export const REVENUES = '/revenues';
 export const SAVINGS = '/savings';

@@ -5,8 +5,9 @@ import _ from 'lodash';
 import RevenuesTable from './revenuesTable';
 import LoadingPanel from '../UI/LoadingPanel';
 import SavePanel from '../UI/SavePanel';
+import ErrorPanel from '../UI/ErrorPanel';
 import Bank from '../Finance/Bank';
-
+import * as ERRORS from '../../constants/errors';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
 
@@ -33,9 +34,14 @@ class RevenuePage extends Component {
       }, {});
     };
 
-    this.props.firebase.loadHeaders().then(snapshotHeaders => {
-      this.props.firebase.loadSavings().then(snapshotSavings => {
-        this.props.firebase.loadRevenues().then(snapshotIncome => {
+    this.props.firebase.getHeaders().then((snapshotHeaders) => {
+      this.props.firebase.getSavings().then((snapshotSavings) => {
+        this.props.firebase.getRevenues().then((snapshotIncome) => {
+
+          if (!snapshotHeaders.data()) {
+            this.setState({loading: false, error: ERRORS.NO_HEADERS});
+            return;
+          }
 
           let headers = snapshotHeaders.data().data;
           let savings_data = snapshotSavings.data().data;
@@ -134,25 +140,31 @@ class RevenuePage extends Component {
       yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
     }
 
-    this.props.firebase.saveRevenues(payload).then(() => {
+    this.props.firebase.setRevenues(payload).then(() => {
       this.setState({updated: false});
     });
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, error } = this.state;
 
-    return (
-      <div>
-        <SavePanel label={'Revenues'} saveClick={this.saveData} updated={this.state.updated} />
-        {loading && <LoadingPanel />}
-        {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
-      </div>
-    );
+    if (error) {
+      return (
+        <ErrorPanel code={error} />
+      );
+    } else {
+      return (
+        <div>          
+          {loading && <LoadingPanel />}
+          {!loading && <SavePanel label={'Revenues'} saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
+        </div>
+      );
+    }
   }
 }
 
 export default compose(
-  withAuthorization(authUser => !!authUser),
+  withAuthorization((authUser) => !!authUser),
   withFirebase,
 )(RevenuePage);

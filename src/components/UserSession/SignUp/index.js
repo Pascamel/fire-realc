@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
 
 const SignUpPage = () => (
   <div>
@@ -31,16 +32,14 @@ class SignUpFormBase extends Component {
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
+      .then((authUser) => {
         // Create a user in your Firebase realtime database
-        return this.props.firebase
-          .user(authUser.user.uid)
-          .set({
-            // username,
-            email,
-          });
+        return this.props.firebase.setUser(authUser.user.uid, {
+          email,
+          type: ROLES.USER
+        });
       })
-      .then(authUser => {
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.DASHBOARD);
       })

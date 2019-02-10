@@ -8,7 +8,7 @@ import SignOutButton from '../UserSession/SignOut';
 const AccountPage = () => (
   
   <AuthUserContext.Consumer>
-    {authUser => (
+    {(authUser) => (
       <div>
         <h1>Account: {authUser.email}</h1>
         <PasswordForgetForm />

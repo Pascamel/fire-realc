@@ -9,7 +9,7 @@ import PasswordForgetPage from '../UserSession/PasswordForget';
 import DashboardPage from '../Dashboard';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-
+import HeadersPage from '../Headers';
 import RevenuesPage from '../Revenues';
 import SavingsPage from '../Savings';
 
@@ -23,9 +23,7 @@ const App = () => (
       <Router>
         <div>
           <Navigation />
-
           <hr />
-
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -33,7 +31,7 @@ const App = () => (
           <Route path={ROUTES.DASHBOARD} component={DashboardPage} />
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
-
+          <Route path={ROUTES.HEADERS} component={HeadersPage} />
           <Route path={ROUTES.REVENUES} component={RevenuesPage} />
           <Route path={ROUTES.SAVINGS} component={SavingsPage} />
         </div>

@@ -17,11 +17,10 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
-    this.db = app.database();
     this.firestore = app.firestore();
   }
 
-  // *** Auth API ***
+  // Auth
 
   doCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
   doSignInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
@@ -29,20 +28,22 @@ class Firebase {
   doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
-  // *** User API ***
+  // Users
 
-  user = (uid) => this.firestore.collection('users').doc(uid).get();
-  users = () => this.firestore.collection('users').get();
+  getUser = (uid) => this.firestore.collection('users').doc(uid).get();
+  getUsers = () => this.firestore.collection('users').get();
+  getCurrentUserUID = () => this.auth.currentUser.uid;
+  setUser = (uid, data) => this.firestore.collection('users').doc(uid).set(data);
 
-  // money
+  // Finance
 
-  loadHeaders = () => this.firestore.collection('headers').doc(this.auth.currentUser.uid).get();
-  loadRevenues = () => this.firestore.collection('income').doc(this.auth.currentUser.uid).get();
-  loadSavings = () => this.firestore.collection('savings').doc(this.auth.currentUser.uid).get();
+  getHeaders = () => this.firestore.collection('headers').doc(this.auth.currentUser.uid).get();
+  getRevenues = () => this.firestore.collection('income').doc(this.auth.currentUser.uid).get();
+  getSavings = () => this.firestore.collection('savings').doc(this.auth.currentUser.uid).get();
 
-  saveHeaders = (data) => this.firestore.collection('headers').doc(this.auth.currentUser.uid).set(data);
-  saveRevenues = (data) => this.firestore.collection('income').doc(this.auth.currentUser.uid).set(data);
-  saveSavings = (data) => this.firestore.collection('savings').doc(this.auth.currentUser.uid).set(data);
+  setHeaders = (data) => this.firestore.collection('headers').doc(this.auth.currentUser.uid).set(data);
+  setRevenues = (data) => this.firestore.collection('income').doc(this.auth.currentUser.uid).set(data);
+  setSavings = (data) => this.firestore.collection('savings').doc(this.auth.currentUser.uid).set(data);
 }
 
 export default Firebase;

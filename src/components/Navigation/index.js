@@ -8,7 +8,7 @@ import { AuthUserContext } from '../UserSession/Session';
 const Navigation = ({ authUser }) => (
   <div>
     <AuthUserContext.Consumer>
-      {authUser => authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+      {(authUser) => authUser ? <NavigationAuth /> : <NavigationNonAuth />}
     </AuthUserContext.Consumer>
   </div>
 );
@@ -28,6 +28,9 @@ const NavigationAuth = () => (
           </li>  
           <li className={'nav-item'}>
             <Link to={ROUTES.ADMIN} className={'nav-link'}>Admin</Link>
+          </li>
+          <li className={'nav-item'}>
+            <Link to={ROUTES.HEADERS} className={'nav-link'}>Headers</Link>
           </li>
           <li className={'nav-item'}>
             <Link to={ROUTES.REVENUES} className={'nav-link'}>Revenues</Link>

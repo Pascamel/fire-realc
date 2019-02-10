@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
+import ErrorPanel from '../UI/ErrorPanel';
+import LoadingPanel from '../UI/LoadingPanel';
+import * as ERRORS from '../../constants/errors';
+import * as ROLES from '../../constants/roles';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
-// import * as ROLES from '../../constants/roles';
 
 class AdminPage extends Component {
   constructor(props) {
@@ -18,40 +21,54 @@ class AdminPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.users().then(snapshot => {
+    this.props.firebase.getUser(this.props.firebase.getCurrentUserUID()).then((userSnapshot) => {
+      const data = userSnapshot.data().type;
 
-      let mapUsers = async (users) => {
-        const result = [];
-
-        for (const user of users) {
-          const userData = await user.data();
-          result.push({
-            ...userData,
-            uid: user.id
-          });
-        }
-
-        return Promise.resolve(result);
+      if (data !== ROLES.ADMIN) {
+        this.setState({loading: false, error: ERRORS.NOT_AUTHORIZED});
+        return;
       }
-      
-      mapUsers(snapshot.docs).then(users => {
-        this.setState({
-          users: users,
-          loading: false
+
+      this.props.firebase.getUsers().then(snapshot => {
+        let mapUsers = async (users) => {
+          const result = [];
+
+          for (const user of users) {
+            const userData = await user.data();
+            result.push({
+              ...userData,
+              uid: user.id
+            });
+          }
+
+          return Promise.resolve(result);
+        }
+        
+        mapUsers(snapshot.docs).then(users => {
+          this.setState({
+            users: users,
+            loading: false
+          });
         });
       });
     });
   }
 
   render() {
-    const { users, loading } = this.state;
+    const { users, loading, error } = this.state;
 
-    return (
+    if (error) {
+      return (
+        <ErrorPanel code={error} />
+      );
+    }
+
+    return ( 
       <div>
         <h1>Admin</h1>
-        {loading && <div>Loading ...</div>}
+        {loading && <LoadingPanel />}
         {!loading && <p>{users.length} user(s)</p>}
-        <UserList users={users} />
+        {!loading && <UserList users={users} />}
       </div>
     );
   }
@@ -73,6 +90,6 @@ const UserList = ({ users }) => (
 );
 
 export default compose(
-  withAuthorization(authUser => !!authUser),
+  withAuthorization((authUser) => !!authUser),
   withFirebase,
 )(AdminPage);

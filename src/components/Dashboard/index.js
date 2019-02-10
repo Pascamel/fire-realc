@@ -9,4 +9,4 @@ const DashboardPage = () => (
   </div>
 );
 
-export default withAuthorization(authUser => !!authUser)(DashboardPage);
+export default withAuthorization((authUser) => !!authUser)(DashboardPage);

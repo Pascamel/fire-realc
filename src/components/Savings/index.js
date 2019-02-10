@@ -5,8 +5,9 @@ import _ from 'lodash';
 import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';
 import SavePanel from '../UI/SavePanel';
+import ErrorPanel from '../UI/ErrorPanel';
 import Bank from '../Finance/Bank';
-
+import * as ERRORS from '../../constants/errors';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
 
@@ -34,8 +35,13 @@ class SavingsPage extends Component {
       }, {});
     };
 
-    this.props.firebase.loadHeaders().then(snapshotHeaders => {
-      this.props.firebase.loadSavings().then(snapshotSavings => {
+    this.props.firebase.getHeaders().then((snapshotHeaders) => {
+      this.props.firebase.getSavings().then((snapshotSavings) => {
+
+        if (!snapshotHeaders.data()) {
+          this.setState({loading: false, error: ERRORS.NO_HEADERS});
+          return;
+        }
 
         let new_state = {};
         let headers = snapshotHeaders.data().data;
@@ -185,25 +191,31 @@ class SavingsPage extends Component {
       yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
     }
 
-    this.props.firebase.saveSavings(payload).then(() => {
+    this.props.firebase.setSavings(payload).then(() => {
       this.setState({updated: false});
     });
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, error } = this.state;
 
-    return (
-      <div>
-        <SavePanel label={'Savings'} saveClick={this.saveData} updated={this.state.updated} />
-        {loading && <LoadingPanel />}
-        {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
-      </div>
-    )
+    if (error) {
+      return (
+        <ErrorPanel code={error} />
+      );
+    } else {
+      return (
+        <div>
+          {loading && <LoadingPanel />}
+          {!loading && <SavePanel label={'Savings'} saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
+        </div>
+      );
+    }
   }
 }
 
 export default compose(
-  withAuthorization(authUser => !!authUser),
+  withAuthorization((authUser) => !!authUser),
   withFirebase,
 )(SavingsPage);
