@@ -141,6 +141,12 @@ class Bank {
     return Display.amount(value);
   };
 
+  totalMonthInstitution = (year, month, institution) => {
+    const value = _.reduce(['P', 'I'], (v, i) => v + _.get(this.savings, [year, month, institution, i], 0), 0);
+
+    return Display.amount(value);
+  }
+
   totalMonthSavings = (month, year, type) => {
     const m = _.get(this.savings, [year, month]);
     if (!m || !Object.keys(m).length) return 0;

@@ -131,3 +131,25 @@ background-color: #fff;
 .hidden {
   display: none;
 }
+
+.alert {
+  span {
+    line-height: 38px;
+    margin: 6px 0;
+
+    i {
+      padding-right: 5px;
+    }
+  }
+
+  span.title {
+    font-size: 2rem;
+    color: #333;
+  }
+
+  .btn-save {
+    i {
+      padding-right: 5px;
+    }
+  }
+}

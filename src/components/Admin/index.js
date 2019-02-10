@@ -72,9 +72,7 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-const condition = authUser => !!authUser; // && authUser.roles && authUser.roles.includes(ROLES.ADMIN);
-
 export default compose(
-  withAuthorization(condition),
+  withAuthorization(authUser => !!authUser),
   withFirebase,
 )(AdminPage);

@@ -9,6 +9,4 @@ const DashboardPage = () => (
   </div>
 );
 
-const condition = authUser => !!authUser;
-
-export default withAuthorization(condition)(DashboardPage);
+export default withAuthorization(authUser => !!authUser)(DashboardPage);

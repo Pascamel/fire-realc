@@ -36,9 +36,13 @@ class Firebase {
 
   // money
 
-  headers = () => this.firestore.collection('headers').doc(this.auth.currentUser.uid).get();
-  revenues = () => this.firestore.collection('income').doc(this.auth.currentUser.uid).get();
-  savings = () => this.firestore.collection('savings').doc(this.auth.currentUser.uid).get();
+  loadHeaders = () => this.firestore.collection('headers').doc(this.auth.currentUser.uid).get();
+  loadRevenues = () => this.firestore.collection('income').doc(this.auth.currentUser.uid).get();
+  loadSavings = () => this.firestore.collection('savings').doc(this.auth.currentUser.uid).get();
+
+  saveHeaders = (data) => this.firestore.collection('headers').doc(this.auth.currentUser.uid).set(data);
+  saveRevenues = (data) => this.firestore.collection('income').doc(this.auth.currentUser.uid).set(data);
+  saveSavings = (data) => this.firestore.collection('savings').doc(this.auth.currentUser.uid).set(data);
 }
 
 export default Firebase;

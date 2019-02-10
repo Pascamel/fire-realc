@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import RevenuesTable from './revenuesTable';
 import LoadingPanel from '../UI/LoadingPanel';
+import SavePanel from '../UI/SavePanel';
 import Bank from '../Finance/Bank';
 
 import { withFirebase } from '../Firebase';
@@ -15,6 +16,7 @@ class RevenuePage extends Component {
 
     this.state = {
       loading: false,
+      updated: false,
       income: [],
       headersLine: [],
       year_headers: {}
@@ -31,9 +33,9 @@ class RevenuePage extends Component {
       }, {});
     };
 
-    this.props.firebase.headers().then(snapshotHeaders => {
-      this.props.firebase.savings().then(snapshotSavings => {
-        this.props.firebase.revenues().then(snapshotIncome => {
+    this.props.firebase.loadHeaders().then(snapshotHeaders => {
+      this.props.firebase.loadSavings().then(snapshotSavings => {
+        this.props.firebase.loadRevenues().then(snapshotIncome => {
 
           let headers = snapshotHeaders.data().data;
           let savings_data = snapshotSavings.data().data;
@@ -107,7 +109,34 @@ class RevenuePage extends Component {
     const new_state = this.state;
     new_state.income = new_income;
 
-    this.setState({income: new_income, bank: this.newBank(new_state)});
+    this.setState({income: new_income, bank: this.newBank(new_state), updated: true});
+  }
+
+  formatDataToSave = () => {
+    let data = [];
+
+    _.each(this.state.income, (data_year, year) => {
+      _.each(data_year, (data_month, month) => {
+        _.each(data_month.income, (amount, institution) => {
+          data.push({year: parseInt(year), month: parseInt(month), type: institution, amount: amount});
+        })
+      });
+    });
+
+    return data;
+  };
+
+  saveData = () => {
+    const data = this.formatDataToSave();
+    const payload = {
+      last_update: (new Date()).getTime(),
+      data: JSON.parse(JSON.stringify(data)),
+      yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
+    }
+
+    this.props.firebase.saveRevenues(payload).then(() => {
+      this.setState({updated: false});
+    });
   }
 
   render() {
@@ -115,7 +144,7 @@ class RevenuePage extends Component {
 
     return (
       <div>
-        <h1>Revenues</h1>
+        <SavePanel label={'Revenues'} saveClick={this.saveData} updated={this.state.updated} />
         {loading && <LoadingPanel />}
         {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
       </div>

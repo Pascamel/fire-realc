@@ -4,18 +4,19 @@ import _ from 'lodash';
 
 import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';
+import SavePanel from '../UI/SavePanel';
 import Bank from '../Finance/Bank';
 
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
 
 class SavingsPage extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       loading: false,
+      updated: false,
       headersLine1: [],
       headersLine2: [],
       inputLine: [],
@@ -33,8 +34,8 @@ class SavingsPage extends Component {
       }, {});
     };
 
-    this.props.firebase.headers().then(snapshotHeaders => {
-      this.props.firebase.savings().then(snapshotSavings => {
+    this.props.firebase.loadHeaders().then(snapshotHeaders => {
+      this.props.firebase.loadSavings().then(snapshotSavings => {
 
         let new_state = {};
         let headers = snapshotHeaders.data().data;
@@ -144,7 +145,7 @@ class SavingsPage extends Component {
     const new_state = this.state;
     new_state.savings = new_savings;
 
-    this.setState({savings: new_savings, bank: this.newBank(new_state)});
+    this.setState({savings: new_savings, bank: this.newBank(new_state), updated: true});
   }
 
   updateGoal = (index, indexes, amount) => {
@@ -154,7 +155,39 @@ class SavingsPage extends Component {
     const new_state = this.state;
     new_state.year_headers = new_year_headers;
 
-    this.setState({year_headers: new_year_headers, bank: this.newBank(new_state)});
+    this.setState({year_headers: new_year_headers, bank: this.newBank(new_state), updated: true});
+  }
+
+  formatDataToSave = () => {
+    let data = [];
+
+    _.each(this.state.savings, (data_year, year) => {
+      _.each(data_year, (data_month, month) => {
+        _.each(data_month, (data_institution, institution) => {
+          _.each(data_institution, (amount, type) => {
+            if (type === 'T') return;
+            if (amount === 0) return;
+
+            data.push({year: parseInt(year), month: parseInt(month), institution: institution, type: type, amount: amount});
+          });
+        });
+      });
+    });
+
+    return data;
+  }; 
+
+  saveData = () => {
+    const data = this.formatDataToSave();
+    const payload = {
+      last_update: (new Date()).getTime(),
+      data: JSON.parse(JSON.stringify(data)),
+      yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
+    }
+
+    this.props.firebase.saveSavings(payload).then(() => {
+      this.setState({updated: false});
+    });
   }
 
   render() {
@@ -162,7 +195,7 @@ class SavingsPage extends Component {
 
     return (
       <div>
-        <h1>Savings</h1>
+        <SavePanel label={'Savings'} saveClick={this.saveData} updated={this.state.updated} />
         {loading && <LoadingPanel />}
         {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
       </div>

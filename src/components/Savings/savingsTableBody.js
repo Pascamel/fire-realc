@@ -63,12 +63,14 @@ class SavingsTableBody extends Component {
           <td>{ month[0] }</td>
           {inputLine.map((amount, idx) => (
           <td key={idx}>
+            {amount.type !== 'T' &&
             <FireAmount amount={_.get(month, [1, amount.id, amount.type])} 
                         callback-props={['savings', year, month[0], amount.id, amount.type]} 
-                        callback={callback} />
+                        callback={callback} />}
+            {amount.type === 'T' && bank && bank.totalMonthInstitution(year, month[0], amount.id)}
           </td>
           ))}
-          <td>{ Display.amount(bank.totalMonthSavings(month, year, 'T')) }</td>
+          <td>{ Display.amount(bank.totalMonthSavings(month[0], year, 'T')) }</td>
           <td className={Display.showIf(bank.totalMonthSavings(month[0], year, 'T') === 0)} colSpan={3}></td>
           <td className={Display.hideIf(bank.totalMonthSavings(month[0], year, 'T') === 0)}>
             { Display.amount(bank.totalHolding(month[0], year)) }
