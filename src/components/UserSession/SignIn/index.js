@@ -7,15 +7,6 @@ import { PasswordForgetLink } from '../../UserSession/PasswordForget';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
 
-const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
-  </div>
-);
-
 const INITIAL_STATE = {
   email: '',
   password: '',
@@ -30,18 +21,14 @@ class SignInFormBase extends Component {
   }
 
   onSubmit = event => {
-    
     const { email, password } = this.state;
 
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.DASHBOARD);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+    this.props.firebase.doSignInWithEmailAndPassword(email, password).then(() => {
+      this.setState({ ...INITIAL_STATE });
+      this.props.history.push(ROUTES.DASHBOARD);
+    }).catch(error => {
+      this.setState({ error });
+    });
 
     event.preventDefault();
   };
@@ -52,31 +39,38 @@ class SignInFormBase extends Component {
 
   render() {
     const { email, password, error } = this.state;
-
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+      <div className={'container'}>
+        <div className={'row justify-content-center'}>
+          <div className={'col-4'}>
+            <div className={'alert alert-secondary'}>
+              <h4 class="alert-heading">Login</h4>
+              <form onSubmit={this.onSubmit}>
+                <div className={'form-group'}>
+                  <input name="email" value={email} onChange={this.onChange} 
+                         className={'form-control'} type="text" placeholder="Email Address" />
+                </div>
+                <div className={'form-group'}>
+                  <input name="password" value={password} onChange={this.onChange} 
+                         className={'form-control'} type="password" placeholder="Password" />
+                </div>
+                <div className={'form-group'}>
+                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">Sign In</button>
+                </div>
 
-        {error && <p>{error.message}</p>}
-      </form>
+                {error && <p>{error.message}</p>}
+
+                <div className={'form-group'}>
+                  <SignUpLink />
+                  <PasswordForgetLink />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -86,6 +80,14 @@ const SignInForm = compose(
   withFirebase,
 )(SignInFormBase);
 
-export default SignInPage;
+class SignInPage extends Component {
+  render() {
+    return (
+      <div>
+        <SignInForm />
+      </div>
+    );
+  }
+}
 
-export { SignInForm };
+export default SignInPage;

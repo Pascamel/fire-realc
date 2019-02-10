@@ -48,27 +48,32 @@ class PasswordForgetFormBase extends Component {
     const isInvalid = email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={this.state.email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+      <div className={'container'}>
+        <div className={'row justify-content-center'}>
+          <div className={'col-4'}>
+            <div className={'alert alert-secondary'}>
+              <form onSubmit={this.onSubmit}>
+                <div className={'form-group'}>
+                  <input name="email" value={this.state.email} onChange={this.onChange}
+                    class={'form-control'} type="text" placeholder="Email Address" />
+                </div>
+                <button class={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
+                  Reset My Password
+                </button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+                {error && <p>{error.message}</p>}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 const PasswordForgetLink = () => (
   <p>
-    <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
+    Forgot Password? <Link to={ROUTES.PASSWORD_FORGET}>Click here</Link>
   </p>
 );
 

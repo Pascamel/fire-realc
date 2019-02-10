@@ -6,17 +6,10 @@ import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
 import * as ROLES from '../../../constants/roles';
 
-const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
-    <SignUpForm />
-  </div>
-);
-
 const INITIAL_STATE = {
-  email: 'test@domain.com',
-  passwordOne: 'test123',
-  passwordTwo: 'test123',
+  email: '',
+  passwordOne: '',
+  passwordTwo: '',
   error: null,
 };
 
@@ -68,35 +61,37 @@ class SignUpFormBase extends Component {
       email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
+      <div className={'container'}>
+        <div className={'row justify-content-center'}>
+          <div className={'col-4'}>
+            <div className={'alert alert-secondary'}>
+              <h4 class="alert-heading">Sign Up</h4>
+                <form onSubmit={this.onSubmit}>
+                  <div className={'form-group'}>
+                    <input name="email" value={email} onChange={this.onChange}
+                      className={'form-control'} type="text" placeholder="Email Address" />
+                  </div>
+                  <div className={'form-group'}>
+                    <input name="passwordOne" value={passwordOne} onChange={this.onChange}
+                      className={'form-control'} type="password" placeholder="Password" />
+                  </div>
+                  <div className={'form-group'}>
+                    <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
+                      className={'form-control'} type="password" placeholder="Confirm Password" />
+                  </div>
+                  <div className={'form-group'}>
+                    <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
+                      Sign Up
+                    </button>
+                  </div>
 
-        {error && <p>{error.message}</p>}
-
-      </form>
+                  {error && <p>{error.message}</p>}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     );
   }
 }
@@ -111,6 +106,16 @@ const SignUpForm = compose(
   withRouter,
   withFirebase,
 )(SignUpFormBase);
+
+class SignUpPage extends Component {
+  render () {
+    return (
+      <div>
+        <SignUpForm />
+      </div>
+    );
+  }
+}
 
 export default SignUpPage;
 

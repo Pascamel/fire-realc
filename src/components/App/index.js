@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navigation from '../Navigation';
-import LandingPage from '../Landing';
+import HomePage from '../Home';
 import SignUpPage from '../UserSession/SignUp';
 import SignInPage from '../UserSession/SignIn';
 import PasswordForgetPage from '../UserSession/PasswordForget';
@@ -24,7 +24,7 @@ const App = () => (
         <div>
           <Navigation />
           <hr />
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route exact path={ROUTES.HOME} component={HomePage} />
           <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route path={ROUTES.SIGN_IN} component={SignInPage} />
           <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
