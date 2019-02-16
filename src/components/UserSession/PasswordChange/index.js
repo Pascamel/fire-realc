@@ -41,27 +41,32 @@ class PasswordChangeForm extends Component {
       passwordOne !== passwordTwo || passwordOne === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+      <div className={'container'}>
+        <div className={'row justify-content-center'}>
+          <div className={'col-4'}>
+            <div className={'alert alert-secondary'}>
+              <h4 class="alert-heading">Password change</h4>
+              <form onSubmit={this.onSubmit}>
+                <div className={'form-group'}>
+                  <input name="passwordOne" value={passwordOne} onChange={this.onChange}
+                    class={'form-control'} type="password" placeholder="New Password" />
+                </div>
+                <div className={'form-group'}>
+                  <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
+                    class={'form-control'} type="password" placeholder="Confirm New Password" />
+                </div>
+                <div className={'form-group'}>
+                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
+                    Reset My Password
+                  </button>
+                </div>
 
-        {error && <p>{error.message}</p>}
-      </form>
+                {error && <p>{error.message}</p>}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

@@ -66,26 +66,26 @@ class SignUpFormBase extends Component {
           <div className={'col-4'}>
             <div className={'alert alert-secondary'}>
               <h4 class="alert-heading">Sign Up</h4>
-                <form onSubmit={this.onSubmit}>
-                  <div className={'form-group'}>
-                    <input name="email" value={email} onChange={this.onChange}
-                      className={'form-control'} type="text" placeholder="Email Address" />
-                  </div>
-                  <div className={'form-group'}>
-                    <input name="passwordOne" value={passwordOne} onChange={this.onChange}
-                      className={'form-control'} type="password" placeholder="Password" />
-                  </div>
-                  <div className={'form-group'}>
-                    <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
-                      className={'form-control'} type="password" placeholder="Confirm Password" />
-                  </div>
-                  <div className={'form-group'}>
-                    <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
-                      Sign Up
-                    </button>
-                  </div>
+              <form onSubmit={this.onSubmit}>
+                <div className={'form-group'}>
+                  <input name="email" value={email} onChange={this.onChange}
+                    className={'form-control'} type="text" placeholder="Email Address" />
+                </div>
+                <div className={'form-group'}>
+                  <input name="passwordOne" value={passwordOne} onChange={this.onChange}
+                    className={'form-control'} type="password" placeholder="Password" />
+                </div>
+                <div className={'form-group'}>
+                  <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
+                    className={'form-control'} type="password" placeholder="Confirm Password" />
+                </div>
+                <div className={'form-group'}>
+                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
+                    Sign Up
+                  </button>
+                </div>
 
-                  {error && <p>{error.message}</p>}
+                {error && <p>{error.message}</p>}
               </form>
             </div>
           </div>
@@ -96,16 +96,20 @@ class SignUpFormBase extends Component {
   }
 }
 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
-);
-
 const SignUpForm = compose(
   withRouter,
   withFirebase,
 )(SignUpFormBase);
+
+class SignUpLink extends Component {
+  render () {
+    return (
+      <p>
+        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+      </p>
+    );
+  }
+}
 
 class SignUpPage extends Component {
   render () {
