@@ -46,18 +46,18 @@ class SignInFormBase extends Component {
         <div className={'row justify-content-center'}>
           <div className={'col-4'}>
             <div className={'alert alert-secondary'}>
-              <h4 class="alert-heading">Login</h4>
+              <h4 className={'alert-heading'}>Login</h4>
               <form onSubmit={this.onSubmit}>
                 <div className={'form-group'}>
-                  <input name="email" value={email} onChange={this.onChange} 
-                         className={'form-control'} type="text" placeholder="Email Address" />
+                  <input name={'email'} value={email} onChange={this.onChange} 
+                         className={'form-control'} type={'text'} placeholder={'Email Address'} />
                 </div>
                 <div className={'form-group'}>
-                  <input name="password" value={password} onChange={this.onChange} 
-                         className={'form-control'} type="password" placeholder="Password" />
+                  <input name={'password'} value={password} onChange={this.onChange} 
+                         className={'form-control'} type={'password'} placeholder={'Password'} />
                 </div>
                 <div className={'form-group'}>
-                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">Sign In</button>
+                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>Sign In</button>
                 </div>
 
                 {error && <p>{error.message}</p>}

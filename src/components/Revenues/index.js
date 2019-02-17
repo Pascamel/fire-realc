@@ -43,7 +43,7 @@ class RevenuePage extends Component {
             return;
           }
 
-          let headers = snapshotHeaders.data().data;
+          let headers = snapshotHeaders.data();
           let savings_data = snapshotSavings.data().data;
           let income_data = snapshotIncome.data().data;
           let income_headers = snapshotIncome.data().yearly_data;

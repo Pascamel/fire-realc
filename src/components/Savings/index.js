@@ -44,16 +44,16 @@ class SavingsPage extends Component {
         }
 
         let new_state = {};
-        let headers = snapshotHeaders.data().data;
+        let headers = snapshotHeaders.data();
         let data = snapshotSavings.data().data;
         let savings_headers = snapshotSavings.data().yearly_data;
 
         new_state.firstMonth = headers.firstMonth
         new_state.firstYear = headers.firstYear;
         new_state.startingCapital = headers.startingCapital;
-        new_state.headers = headers.headers;
+        new_state.headers = headers.savings;
 
-        new_state.headersLine1 = _(headers.headers)
+        new_state.headersLine1 = _(headers.savings)
           .map((header) => {
             return {
               label: header.label,
@@ -71,7 +71,7 @@ class SavingsPage extends Component {
           })
           .value();
 
-        new_state.headersLine2 = _(headers.headers)
+        new_state.headersLine2 = _(headers.savings)
           .map((header) => {
             let headers = [header.sublabel || 'Principal'];
             if (header.interest) _.each(['Interest', 'Total'], (t) => headers.push(t)); 
@@ -86,7 +86,7 @@ class SavingsPage extends Component {
           .flatMap()
           .value();
 
-        new_state.inputLine = _(headers.headers)
+        new_state.inputLine = _(headers.savings)
           .map((header) => {
             let headers = [{id: header.id, type: 'P'}];
             if (header.interest) _.each(['I', 'T'], (t) => headers.push({id: header.id, type: t})); 

@@ -19,11 +19,6 @@ const NavigationAuth = () => (
       <div className={'col-sm'}>
         <ul className={'nav'}>
           <li className={'nav-item'}>
-            <Link to={ROUTES.HOME} className={'nav-link'}>
-              FiReCalc
-            </Link>
-          </li>
-          <li className={'nav-item'}>
             <Link to={ROUTES.DASHBOARD} className={'nav-link'}>Dashboard</Link>
           </li>  
           <li className={'nav-item'}>
@@ -43,7 +38,9 @@ const NavigationAuth = () => (
       <div className={'col-sm-3'}>
         <ul className={'nav justify-content-end'}>
           <li className={'nav-item'}>
-            <Link to={ROUTES.ACCOUNT} className={'nav-link'}>Account</Link>
+            <Link to={ROUTES.ACCOUNT} className={'nav-link'}>
+              My account <i className={'fa fa-caret-down'}></i>
+            </Link>
           </li>
         </ul>
       </div>
@@ -58,9 +55,7 @@ const NavigationNonAuth = () => (
       <div className={'col-sm'}>
         <ul className={'nav'}>
           <li className={'nav-item'}>
-            <Link to={ROUTES.HOME} className={'nav-link'}>
-              FiReCalc
-            </Link>
+            <Link to={ROUTES.HOME} className={'nav-link'}>FiReCalc</Link>
           </li>
         </ul>
       </div>

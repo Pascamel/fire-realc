@@ -40,7 +40,7 @@ label {
 
 .form-headers {
   .btn-link {
-    padding: 6px;
+    padding: .375rem !important;
   }
 
   div.checkbox {
@@ -76,6 +76,7 @@ background-color: #fff;
 }
 
 .table-finances {
+  font-size: 14px;
   thead {
     tr {
       .separator {
@@ -129,7 +130,7 @@ background-color: #fff;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .alert {

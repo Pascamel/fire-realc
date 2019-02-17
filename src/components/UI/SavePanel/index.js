@@ -17,7 +17,7 @@ class SavePanel extends Component {
             {label}
           </span>
           <button className={`btn btn-save pull-right ${updated ? 'btn-danger' : 'btn-light'}`} onClick={saveClick}>
-            <i className="fa fa-floppy-o"></i>
+            <i className={'fa fa-floppy-o'}></i>
             Save
           </button>
         </div>

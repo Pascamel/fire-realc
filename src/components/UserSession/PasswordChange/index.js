@@ -36,35 +36,30 @@ class PasswordChangeForm extends Component {
 
   render() {
     const { passwordOne, passwordTwo, error } = this.state;
-
-    const isInvalid =
-      passwordOne !== passwordTwo || passwordOne === '';
+    const isInvalid = passwordOne !== passwordTwo || passwordOne === '';
 
     return (
-      <div className={'container'}>
-        <div className={'row justify-content-center'}>
-          <div className={'col-4'}>
-            <div className={'alert alert-secondary'}>
-              <h4 class="alert-heading">Password change</h4>
-              <form onSubmit={this.onSubmit}>
-                <div className={'form-group'}>
-                  <input name="passwordOne" value={passwordOne} onChange={this.onChange}
-                    class={'form-control'} type="password" placeholder="New Password" />
-                </div>
-                <div className={'form-group'}>
-                  <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
-                    class={'form-control'} type="password" placeholder="Confirm New Password" />
-                </div>
-                <div className={'form-group'}>
-                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
-                    Reset My Password
-                  </button>
-                </div>
-
-                {error && <p>{error.message}</p>}
-              </form>
+      
+      <div className={'col-4'}>
+        <div className={'alert alert-secondary'}>
+          <h4 className={'alert-heading'}>Password change</h4>
+          <form onSubmit={this.onSubmit}>
+            <div className={'form-group'}>
+              <input name={'passwordOne'} value={passwordOne} onChange={this.onChange}
+                className={'form-control'} type={'password'} placeholder={'New Password'} />
             </div>
-          </div>
+            <div className={'form-group'}>
+              <input name={'passwordTwo'} value={passwordTwo} onChange={this.onChange}
+                className={'form-control'} type={'password'} placeholder={'Confirm New Password'} />
+            </div>
+            <div className={'form-group'}>
+              <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>
+                Reset My Password
+              </button>
+            </div>
+
+            {error && <p>{error.message}</p>}
+          </form>
         </div>
       </div>
     );

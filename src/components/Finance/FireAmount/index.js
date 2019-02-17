@@ -31,7 +31,7 @@ class FireAmount extends Component {
     this.setState({inputValue: e.target.value})
   }
 
-  saveEdit = () => {
+  confirmEdit = () => {
     this.setState({edit: false, amount: this.state.inputValue});
     this.props.callback(this.index, this.indexes, parseFloat(this.state.inputValue) || 0);
   }
@@ -41,13 +41,13 @@ class FireAmount extends Component {
   }
 
   handleKeyUp = (event) => {
-    if (event.key === 'Enter' && this.state.edit) this.saveEdit();
+    if (event.key === 'Enter' && this.state.edit) this.confirmEdit();
     if (event.key === 'Escape' && this.state.edit) this.cancelEdit();
   }
 
   @keydown(ENTER, ESC)
   handleKeyDown (event) {
-    if (event.which === ENTER && this.state.edit) this.saveEdit();
+    if (event.which === ENTER && this.state.edit) this.confirmEdit();
     if (event.which === ESC && this.state.edit) this.cancelEdit();
   }
 

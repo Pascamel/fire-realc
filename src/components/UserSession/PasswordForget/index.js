@@ -41,26 +41,21 @@ class PasswordForgetFormBase extends Component {
     const isInvalid = email === '';
 
     return (
-      <div className={'container'}>
-        <div className={'row justify-content-center'}>
-          <div className={'col-4'}>
-            <div className={'alert alert-secondary'}>
-              <h4 class="alert-heading">Password reset</h4>
-              <form onSubmit={this.onSubmit}>
-                <div className={'form-group'}>
-                  <input name="email" value={this.state.email} onChange={this.onChange}
-                    class={'form-control'} type="text" placeholder="Email Address" />
-                </div>
-                <div className={'form-group'}>
-                  <button class={'btn btn-primary btn-block'} disabled={isInvalid} type="submit">
-                    Reset My Password
-                  </button>
-                </div>
-
-                {error && <p>{error.message}</p>}
-              </form>
+      <div className={'col-4'}>
+        <div className={'alert alert-secondary'}>
+          <h4 className={'alert-heading'}>Password reset</h4>
+          <form onSubmit={this.onSubmit}>
+            <div className={'form-group'}>
+              <input name={'email'} value={this.state.email} onChange={this.onChange}
+                className={'form-control'} type={'text'} placeholder={'Email Address'} />
             </div>
-          </div>
+            <div className={'form-group'}>
+              <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>
+                Reset My Password
+              </button>
+            </div>
+            {error && <p>{error.message}</p>}
+          </form>
         </div>
       </div>
     );
@@ -68,8 +63,10 @@ class PasswordForgetFormBase extends Component {
 }
 
 const PasswordForgetPage = () => (
-  <div>
-    <PasswordForgetForm />
+  <div className={'container'}>
+    <div className={'row justify-content-center'}>
+      <PasswordForgetForm />
+    </div>
   </div>
 );
 
