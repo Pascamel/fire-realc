@@ -12,6 +12,7 @@ import AdminPage from '../Admin';
 import HeadersPage from '../Headers';
 import RevenuesPage from '../Revenues';
 import SavingsPage from '../Savings';
+import MonthPage from '../Month';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../UserSession/Session';
@@ -34,6 +35,7 @@ const App = () => (
           <Route path={ROUTES.HEADERS} component={HeadersPage} />
           <Route path={ROUTES.REVENUES} component={RevenuesPage} />
           <Route path={ROUTES.SAVINGS} component={SavingsPage} />
+          <Route path={ROUTES.MONTH} component={MonthPage} />
         </div>
       </Router>
     </div>

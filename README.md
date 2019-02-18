@@ -32,7 +32,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 In the project directory, you can run:
 
-### `firebase serve [--port=5005]`
+### `firebase serve`
 
 Todo
 

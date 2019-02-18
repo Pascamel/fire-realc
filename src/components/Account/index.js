@@ -3,7 +3,7 @@ import React from 'react';
 import { AuthUserContext, withAuthorization } from '../UserSession/Session';
 import { PasswordForgetForm } from '../UserSession/PasswordForget';
 import PasswordChangeForm from '../UserSession/PasswordChange';
-import SignOutButton from '../UserSession/SignOut';
+import SignOutPanel from '../UserSession/SignOut';
 
 const AccountPage = () => (
   
@@ -18,7 +18,7 @@ const AccountPage = () => (
         <div className="row">
           <PasswordForgetForm />
           <PasswordChangeForm />
-          <SignOutButton />
+          <SignOutPanel />
         </div>
       </div>
     )}

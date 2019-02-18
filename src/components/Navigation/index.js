@@ -7,6 +7,13 @@ import { AuthUserContext } from '../UserSession/Session';
 
 class NavigationAuth extends Component {
   render () {
+
+    const
+
+    currentYear = new Date().getFullYear(),
+      currentMonth = new Date().getMonth() + 1,
+      route = ROUTES.MONTH.replace(':year', currentYear).replace(':month', currentMonth);
+
     return (
       <div className="container">
         <div className="row">
@@ -19,13 +26,16 @@ class NavigationAuth extends Component {
                 <NavLink to={ROUTES.ADMIN} className="nav-link" activeClassName="disabled">Admin</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to={ROUTES.HEADERS} className="nav-link" activeClassName="disabled">Headers</NavLink>
+                <NavLink to={ROUTES.HEADERS} className="nav-link" activeClassName="disabled">Settings</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink to={ROUTES.REVENUES} className="nav-link" activeClassName="disabled">Revenues</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink to={ROUTES.SAVINGS} className="nav-link" activeClassName="disabled">Savings</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to={route} className="nav-link" activeClassName="disabledd">Month</NavLink>
               </li>
             </ul>
           </div>
