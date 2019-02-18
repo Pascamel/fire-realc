@@ -11,13 +11,17 @@ class SavingsHeaders extends Component {
   moveUpHeader = (index) => {}
   moveDownHeader = (index) => {}
 
+  newHeader = () => {
+    this.props.addCallback('savings');
+  }
+
   render() {
     const {headers} = this.props;
 
     return (
       <React.Fragment>
         <div className={'row'}>
-        <div className={'col'}>
+          <div className={'col mt-4'}>
             <h3>Savings</h3>
           </div>
         </div>
@@ -56,10 +60,10 @@ class SavingsHeaders extends Component {
             </div>
           </div>
           <div className={'col-3'} style={{textAlign: 'right'}}>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.editHeaderConfirm(header)}>
+            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={header => this.editHeaderConfirm(header)}>
               <i className={'fa fa-lg fa-check'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.editHeaderCancel(header)}>
+            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={header => this.editHeaderCancel(header)}>
               <i className={'fa fa-lg fa-times'}></i>
             </span>
             <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.editHeader(header)}>
@@ -68,25 +72,21 @@ class SavingsHeaders extends Component {
             <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.removeHeader(header)}>
               <i className={'fa fa-lg fa-trash-o'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.moveUpHeader(key)} disabled={key===0}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key === 0) ? 'disabled' : ''}`} onClick={header => this.moveUpHeader(key)}>
               <i className={'fa fa-lg fa-chevron-up'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.moveDownHeader(key)} disabled={key>=headers.savings.length-1}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key >= headers.savings.length-1) ? 'disabled' : ''}`} onClick={header => this.moveDownHeader(key)}>
               <i className={'fa fa-lg fa-chevron-down'}></i>
             </span>
           </div>
         </div>
         ))}
-        
+
         <div className={'row'}>
-        <div className={'col-2'}>
-            <input type={'text'} ng-model={'newHeaderLabel'} className={'form-control'} />
-          </div>
-          <div className={'col-2'}>
-            <input type={'text'} ng-model={'newHeaderSublabel'} className={'form-control'} />
-          </div>
-          <div className={'col-2'}>
-            <input type={'text'} ng-model={'newHeaderIcon'} className={'form-control input-block'} />
+          <div className={'col'}>
+            <button type={'button'} className={'btn btn-light btn-block'} onClick={this.newHeader}>
+              Add new
+            </button>
           </div>
         </div>
       </React.Fragment>

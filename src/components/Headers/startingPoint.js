@@ -16,7 +16,7 @@ class StartingPoint extends Component {
 
   onValueChange = (type, value) => {
     this.setState({inputStartingCapital: value})
-    this.props.callback(['headers', type], value);
+    this.props.updateCallback(['headers', type], value);
   }
 
   render() {

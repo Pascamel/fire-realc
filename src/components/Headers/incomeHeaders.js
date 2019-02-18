@@ -11,13 +11,17 @@ class IncomeHeaders extends Component {
   moveUpHeader = (index) => {}
   moveDownHeader = (index) => {}
 
+  newHeader = () => {
+    this.props.addCallback('incomes');
+  }
+
   render() {
     const { headers } = this.props;
 
     return (
       <React.Fragment>
         <div className={'row'}>
-          <div className={'col'}>
+          <div className={'col mt-4'}>
             <h3>Income</h3>
           </div>
         </div>
@@ -52,10 +56,10 @@ class IncomeHeaders extends Component {
             </div>
           </div>
           <div className={'col-3'} style={{textAlign: 'right'}}>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.editHeaderConfirm('incomes', income)}>
+            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={this.editHeaderConfirm('incomes', income)}>
               <i className={'fa fa-lg fa-check'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.editHeaderCancel('incomes', income)}>
+            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={this.editHeaderCancel('incomes', income)}>
               <i className={'fa fa-lg fa-times'}></i>
             </span>
             <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.editHeader('incomes', income)}>
@@ -74,21 +78,11 @@ class IncomeHeaders extends Component {
         </div>
         ))}
 
-        <div className={'form-row form-headers'}>
-          <div className={'col-xs-7'}>
-            <input defaultValue={this.newIncomeLabel} className={'form-control'} />
-          </div>
-          <div className={'col-xs-3'}>
-            <div style={{display: 'inline-block'}}>
-              <label>
-                <input type={'checkbox'} value={this.newIncomePretax} /> Pre-tax
-              </label>
-            </div>
-            <div className={'btn-group'}>
-              <label className={'btn btn-light'} value={this.newIncomeCount}>1</label>
-              <label className={'btn btn-light'} value={this.newIncomeCount}>2</label>
-            </div>
-            <button className={'btn btn-default'} onClick={this.addHeader}>Add</button>
+        <div className={'row'}>
+          <div className={'col'}>
+            <button type={'button'} className={'btn btn-light btn-block'} onClick={this.newHeader}>
+              Add new
+            </button>
           </div>
         </div>
       </React.Fragment>
