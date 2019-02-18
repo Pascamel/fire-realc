@@ -16,13 +16,6 @@ class HeadersPage extends Component {
   constructor(props) {
     super(props);
 
-    this.newHeaderLabel = '';
-    this.newHeaderSublabel = '';
-    this.newHeaderIcon = '';
-    this.newIncomeLabel = '';
-    this.newIncomePretax = false;
-    this.newIncomeCount = 1;
-
     this.state = {
       loading: true,
       updated: false,
@@ -60,7 +53,6 @@ class HeadersPage extends Component {
 
   callbacks = {
     editHeaderCallback: (type, header) => {
-      console.log('editHeaderCallback', type, header);
       let new_headers = JSON.parse(JSON.stringify(this.state.headers));
 
       _.each(new_headers[type], (h) => {
@@ -72,11 +64,25 @@ class HeadersPage extends Component {
     },
 
     confirmEditHeaderCallback: (type, header) => {
-      console.log('confirmEditHeaderCallback', type, header);
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+
+      _.each(new_headers[type], (h) => {
+        if (h.id !== header.id) return;
+        h.$edit = false;
+      });
+
+      this.setState({updated: true, headers: new_headers});
     },
 
     cancelEditHeaderCallback: (type, header) => {
-      console.log('cancelEditHeaderCallback', type, header);
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+
+      _.each(new_headers[type], (h) => {
+        if (h.id !== header.id) return;
+        h.$edit = false;
+      });
+
+      this.setState({updated: true, headers: new_headers});
     },
 
     deleteHeaderCallback: (type, header) => {
@@ -107,16 +113,12 @@ class HeadersPage extends Component {
       this.setState({updated: true, headers: new_headers});
     },
 
-
     updateCallback: (indexes, value) => {
       let head = indexes.shift();
       let update = JSON.parse(JSON.stringify(this.state[head]));
   
       _.set(update, indexes, value);
-      let state_update = {updated: true}
-      state_update[head] = update;
-      
-      this.setState(state_update);
+      this.setState({[head]: update, updated: true});
     },
     addHeaderCallback: (type) => {
       let new_headers = JSON.parse(JSON.stringify(this.state.headers));
@@ -133,7 +135,7 @@ class HeadersPage extends Component {
     const {loading} = this.state;
 
     return (
-      <div className={'container'}>
+      <div className="container">
         {loading && <LoadingPanel />}
         {!loading && <SavePanel label={'Savings'} saveClick={this.saveHeaders} updated={this.state.updated} />}
         {!loading && <StartingPoint {...this.state} {...this.callbacks} /> }
