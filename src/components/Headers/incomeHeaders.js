@@ -3,16 +3,22 @@ import Display from '../UI/Display';
 
 
 class IncomeHeaders extends Component {
-
   editHeaderConfirm = (header) => {}
   editHeaderCancel = (header) => {}
-  editHeader = (header) => {}
-  removeHeader = (header) => {}
-  moveUpHeader = (index) => {}
-  moveDownHeader = (index) => {}
-
+  editHeader = (header) => {
+    this.props.editHeaderCallback('incomes', header);
+  }
+  removeHeader = (header) => {
+    this.props.deleteHeaderCallback('incomes', header);
+  }
+  moveUpHeader = (index) => {
+    this.props.moveUpHeaderCallback('incomes', index);
+  }
+  moveDownHeader = (index) => {
+    this.props.moveDownHeaderCallback('incomes', index);
+  }
   newHeader = () => {
-    this.props.addCallback('incomes');
+    this.props.addHeaderCallback('incomes');
   }
 
   render() {
@@ -56,22 +62,22 @@ class IncomeHeaders extends Component {
             </div>
           </div>
           <div className={'col-3'} style={{textAlign: 'right'}}>
-            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={this.editHeaderConfirm('incomes', income)}>
+            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={e => this.editHeaderConfirm(income)}>
               <i className={'fa fa-lg fa-check'}></i>
             </span>
-            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={this.editHeaderCancel('incomes', income)}>
+            <span className={`btn btn-link ${Display.showIf(income.$edit)}`} onClick={e => this.editHeaderCancel(income)}>
               <i className={'fa fa-lg fa-times'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.editHeader('incomes', income)}>
+            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={e => this.editHeader(income)}>
               <i className={'fa fa-lg fa-pencil'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.removeHeader('incomes', income)}>
+            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={e => this.removeHeader(income)}>
               <i className={'fa fa-lg fa-trash-o'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.moveUpHeader(key)} disabled={key===0}>
+            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={e => this.moveUpHeader(key)} disabled={key===0}>
               <i className={'fa fa-lg fa-chevron-up'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={this.moveDownHeader(key)} disabled={key>=headers.savings.length-1}>
+            <span className={`btn btn-link ${Display.hideIf(income.$edit)}`} onClick={e => this.moveDownHeader(key)} disabled={key>=headers.savings.length-1}>
               <i className={'fa fa-lg fa-chevron-down'}></i>
             </span>
           </div>

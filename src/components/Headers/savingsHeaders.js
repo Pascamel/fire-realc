@@ -3,20 +3,27 @@ import Display from '../UI/Display';
 
 
 class SavingsHeaders extends Component {
-
   editHeaderConfirm = (header) => {}
   editHeaderCancel = (header) => {}
-  editHeader = (header) => {}
-  removeHeader = (header) => {}
-  moveUpHeader = (index) => {}
-  moveDownHeader = (index) => {}
-
+  editHeader = (header) => {
+    this.props.editHeaderCallback('savings', header);
+  }
+  removeHeader = (header) => {
+    this.props.deleteHeaderCallback('savings', header);
+  }
+  moveUpHeader = (index) => {
+    this.props.moveUpHeaderCallback('savings', index);
+  }
+  moveDownHeader = (index) => {
+    this.props.moveDownHeaderCallback('savings', index);
+  }
   newHeader = () => {
-    this.props.addCallback('savings');
+    this.props.addHeaderCallback('savings');
   }
 
   render() {
     const {headers} = this.props;
+    console.log('headers', headers);
 
     return (
       <React.Fragment>
@@ -60,22 +67,22 @@ class SavingsHeaders extends Component {
             </div>
           </div>
           <div className={'col-3'} style={{textAlign: 'right'}}>
-            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={header => this.editHeaderConfirm(header)}>
+            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={e => this.editHeaderConfirm(header)}>
               <i className={'fa fa-lg fa-check'}></i>
             </span>
-            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={header => this.editHeaderCancel(header)}>
+            <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={e => this.editHeaderCancel(header)}>
               <i className={'fa fa-lg fa-times'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.editHeader(header)}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={e => this.editHeader(header)}>
               <i className={'fa fa-lg fa-pencil'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={header => this.removeHeader(header)}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={e => this.removeHeader(header)}>
               <i className={'fa fa-lg fa-trash-o'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key === 0) ? 'disabled' : ''}`} onClick={header => this.moveUpHeader(key)}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key === 0) ? 'disabled' : ''}`} onClick={e => this.moveUpHeader(key)}>
               <i className={'fa fa-lg fa-chevron-up'}></i>
             </span>
-            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key >= headers.savings.length-1) ? 'disabled' : ''}`} onClick={header => this.moveDownHeader(key)}>
+            <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(key >= headers.savings.length-1) ? 'disabled' : ''}`} onClick={e => this.moveDownHeader(key)}>
               <i className={'fa fa-lg fa-chevron-down'}></i>
             </span>
           </div>

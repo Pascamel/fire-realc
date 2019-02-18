@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 import _ from 'lodash';
+import uuid from "uuid";
 
 import { withAuthorization } from '../UserSession/Session';
 import { withFirebase } from '../Firebase';
@@ -57,43 +58,77 @@ class HeadersPage extends Component {
     });
   }
 
-  updateCallback = (indexes, value) => {
-    let head = indexes.shift();
-    let update = JSON.parse(JSON.stringify(this.state[head]));
+  callbacks = {
+    editHeaderCallback: (type, header) => {
+      console.log('editHeaderCallback', type, header);
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
 
-    _.set(update, indexes, value);
-    let state_update = {updated: true}
-    state_update[head] = update;
-    
-    this.setState(state_update);
-  }
+      _.each(new_headers[type], (h) => {
+        if (h.id !== header.id) return;
+        h.$edit = true;
+      });
 
-  addHeaderCallback = (type) => {
-    let new_headers = JSON.parse(JSON.stringify(this.state.headers));
-    new_headers[type].push({$edit: true});
+      this.setState({updated: true, headers: new_headers});
+    },
 
-    this.setState({updated: true, headers: new_headers});
-  }
+    confirmEditHeaderCallback: (type, header) => {
+      console.log('confirmEditHeaderCallback', type, header);
+    },
 
-  callbacks = () => {
-    return {
-      updateCallback: (indexes, value) => {
-        let head = indexes.shift();
-        let update = JSON.parse(JSON.stringify(this.state[head]));
-    
-        _.set(update, indexes, value);
-        let state_update = {updated: true}
-        state_update[head] = update;
-        
-        this.setState(state_update);
-      },
-    
-      addHeaderCallback: (type) => {
-        console.log('addHeaderCallback', type);
-      }
+    cancelEditHeaderCallback: (type, header) => {
+      console.log('cancelEditHeaderCallback', type, header);
+    },
+
+    deleteHeaderCallback: (type, header) => {
+      console.log('deleteHeaderCallback', type, header);
+    },
+
+    moveUpHeaderCallback: (type, index) => {
+      if (index <= 0 || index >= this.state.headers[type].length) return;
+
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+  
+      var tmp = new_headers[type][index-1];
+      new_headers[type][index-1] = new_headers[type][index];
+      new_headers[type][index] = tmp;
+
+      this.setState({updated: true, headers: new_headers});
+    },
+  
+    moveDownHeaderCallback: (type, index) => {
+      if (index < 0 || index >= this.state.headers[type].length - 1) return;
+
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+  
+      var tmp = new_headers[type][index+1];
+      new_headers[type][index+1] = new_headers[type][index];
+      new_headers[type][index] = tmp;
+
+      this.setState({updated: true, headers: new_headers});
+    },
+
+
+    updateCallback: (indexes, value) => {
+      let head = indexes.shift();
+      let update = JSON.parse(JSON.stringify(this.state[head]));
+  
+      _.set(update, indexes, value);
+      let state_update = {updated: true}
+      state_update[head] = update;
+      
+      this.setState(state_update);
+    },
+    addHeaderCallback: (type) => {
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+      new_headers[type].push({
+        $edit: true,
+        id: uuid.v4()
+      });
+  
+      this.setState({updated: true, headers: new_headers});
     }
-  }
-
+  };
+  
   render () {
     const {loading} = this.state;
 
@@ -101,15 +136,9 @@ class HeadersPage extends Component {
       <div className={'container'}>
         {loading && <LoadingPanel />}
         {!loading && <SavePanel label={'Savings'} saveClick={this.saveHeaders} updated={this.state.updated} />}
-        {!loading && <StartingPoint {...this.state} updateCallback={this.updateCallback} />}
-        {!loading && <SavingsHeaders {...this.state} 
-                                     updateCallback={this.updateCallback} 
-                                     addCallback={this.addHeaderCallback} 
-                                     /> }
-        {!loading && <IncomeHeaders {...this.state} 
-                                    updateCallback={this.updateCallback}
-                                    addCallback={this.addHeaderCallback} 
-                                    /> }
+        {!loading && <StartingPoint {...this.state} {...this.callbacks} /> }
+        {!loading && <SavingsHeaders {...this.state} {...this.callbacks} /> }
+        {!loading && <IncomeHeaders {...this.state} {...this.callbacks} /> }
       </div>        
     );
   }

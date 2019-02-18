@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../UserSession/Session';
@@ -71,7 +71,7 @@ class NavigationNonAuth extends Component {
 
 class Navigation extends Component {
   render () {
-    const { authUser } = this.props;
+    // const { authUser } = this.props;
     return (
       <div>
        <AuthUserContext.Consumer>
