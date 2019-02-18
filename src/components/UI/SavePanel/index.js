@@ -9,7 +9,7 @@ class SavePanel extends Component {
       <div className={`alert ${updated ? 'alert-danger' : 'alert-light'}`}>
         <div style={{height: '38px'}}>
           <span className={Display.showIf(updated)}>
-            <i className={'fa fa-lg fa-exclamation-triangle'}></i>
+            <i className="fa fa-lg fa-exclamation-triangle"></i>
             Updates have been detected. Save now!
           </span>
 
@@ -17,7 +17,7 @@ class SavePanel extends Component {
             {label}
           </span>
           <button className={`btn btn-save pull-right ${updated ? 'btn-danger' : 'btn-light'}`} onClick={saveClick}>
-            <i className={'fa fa-floppy-o'}></i>
+            <i className="fa fa-floppy-o"></i>
             Save
           </button>
         </div>

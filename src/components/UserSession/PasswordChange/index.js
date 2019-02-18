@@ -40,20 +40,20 @@ class PasswordChangeForm extends Component {
 
     return (
       
-      <div className={'col-4'}>
-        <div className={'alert alert-secondary'}>
-          <h4 className={'alert-heading'}>Password change</h4>
+      <div className="col-4">
+        <div className="alert alert-secondary">
+          <h4 className="alert-heading">Password change</h4>
           <form onSubmit={this.onSubmit}>
-            <div className={'form-group'}>
-              <input name={'passwordOne'} value={passwordOne} onChange={this.onChange}
-                className={'form-control'} type={'password'} placeholder={'New Password'} />
+            <div className="form-group">
+              <input name="passwordOne" value={passwordOne} onChange={this.onChange}
+                className="form-control" type="password" placeholder="New Password" />
             </div>
-            <div className={'form-group'}>
-              <input name={'passwordTwo'} value={passwordTwo} onChange={this.onChange}
-                className={'form-control'} type={'password'} placeholder={'Confirm New Password'} />
+            <div className="form-group">
+              <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
+                className="form-control" type="password" placeholder="Confirm New Password" />
             </div>
-            <div className={'form-group'}>
-              <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>
+            <div className="form-group">
+              <button className="btn btn-primary btn-block" disabled={isInvalid} type="submit">
                 Reset My Password
               </button>
             </div>

@@ -8,7 +8,7 @@ class SavingsTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: props.year_headers.collapsed[props.year]};
+    this.state = {collapsed: _.get(props.year_headers.collapsed, props.year, false)};
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
@@ -25,11 +25,11 @@ class SavingsTableBody extends Component {
     return (
       <tbody>
         <tr>
-          <td className={'td-chevron'}>
+          <td className="td-chevron">
             <i className={`fa ${this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} onClick={this.handleClickToggle}></i>
           </td>
           <td colSpan={headersLine2.length + 4} className={Display.hideIf(this.state.collapsed)}>
-            <span className={'pull-left'} style={{paddingLeft: '10px'}}>
+            <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
             <span>
@@ -84,14 +84,14 @@ class SavingsTableBody extends Component {
         </tr>
         ))}
         <tr className={`tr-total ${Display.hideIf(this.state.collapsed)}`}>
-          <td><i className={'fa fa-calendar-plus-o'}></i></td>
+          <td><i className="fa fa-calendar-plus-o"></i></td>
           {inputLine.map((amount, idx) => (
           <td key={idx}>
             { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
           </td>
           ))}
           <td>Total</td>
-          <td className={'table-warning'}>{ Display.amount(bank.totalHolding('12', year)) }</td>
+          <td className="table-warning">{ Display.amount(bank.totalHolding('12', year)) }</td>
           <td>Goal</td>
           <td className={Display.goal(bank.goalYearToDate('12', year), 0)}>
             { Display.amount(bank.goalYearToDate('12', year), true) }

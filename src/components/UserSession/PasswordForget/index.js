@@ -41,16 +41,16 @@ class PasswordForgetFormBase extends Component {
     const isInvalid = email === '';
 
     return (
-      <div className={'col-4'}>
-        <div className={'alert alert-secondary'}>
-          <h4 className={'alert-heading'}>Password reset</h4>
+      <div className="col-4">
+        <div className="alert alert-secondary">
+          <h4 className="alert-heading">Password reset</h4>
           <form onSubmit={this.onSubmit}>
-            <div className={'form-group'}>
-              <input name={'email'} value={this.state.email} onChange={this.onChange}
-                className={'form-control'} type={'text'} placeholder={'Email Address'} />
+            <div className="form-group">
+              <input name="email" value={this.state.email} onChange={this.onChange}
+                className="form-control" type="text" placeholder="Email Address" />
             </div>
-            <div className={'form-group'}>
-              <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>
+            <div className="form-group">
+              <button className="btn btn-primary btn-block" disabled={isInvalid} type="submit">
                 Reset My Password
               </button>
             </div>
@@ -63,8 +63,8 @@ class PasswordForgetFormBase extends Component {
 }
 
 const PasswordForgetPage = () => (
-  <div className={'container'}>
-    <div className={'row justify-content-center'}>
+  <div className="container">
+    <div className="row justify-content-center">
       <PasswordForgetForm />
     </div>
   </div>

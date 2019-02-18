@@ -42,27 +42,27 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <div className={'container'}>
-        <div className={'row justify-content-center'}>
-          <div className={'col-4'}>
-            <div className={'alert alert-secondary'}>
-              <h4 className={'alert-heading'}>Login</h4>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-4">
+            <div className="alert alert-secondary">
+              <h4 className="alert-heading">Login</h4>
               <form onSubmit={this.onSubmit}>
-                <div className={'form-group'}>
-                  <input name={'email'} value={email} onChange={this.onChange} 
-                         className={'form-control'} type={'text'} placeholder={'Email Address'} />
+                <div className="form-group">
+                  <input name="email" value={email} onChange={this.onChange} 
+                         className="form-control" type="text" placeholder="Email Address" />
                 </div>
-                <div className={'form-group'}>
-                  <input name={'password'} value={password} onChange={this.onChange} 
-                         className={'form-control'} type={'password'} placeholder={'Password'} />
+                <div className="form-group">
+                  <input name="password" value={password} onChange={this.onChange} 
+                         className="form-control" type="password" placeholder="Password" />
                 </div>
-                <div className={'form-group'}>
-                  <button className={'btn btn-primary btn-block'} disabled={isInvalid} type={'submit'}>Sign In</button>
+                <div className="form-group">
+                  <button className="btn btn-primary btn-block" disabled={isInvalid} type="submit">Sign In</button>
                 </div>
 
                 {error && <p>{error.message}</p>}
 
-                <div className={'form-group'}>
+                <div className="form-group">
                   <SignUpLink />
                   <PasswordForgetLink />
                 </div>

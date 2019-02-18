@@ -13,22 +13,22 @@ class SavingsHeaders extends Component {
 
     return (
       <React.Fragment>
-        <div className={'row'}>
-          <div className={'col mt-4'}>
+        <div className="row">
+          <div className="col mt-4">
             <h3>Savings</h3>
           </div>
         </div>
         <div className={`row ${Display.showIf(!headers.savings.length)}`}>
-          <div className={'col'}>
+          <div className="col">
             No headers
           </div>
         </div>
         {headers.savings.map((header, key) => (
           <SavingsHeader key={key} header={header} index={key} {...this.props} />
         ))}
-        <div className={'row'}>
-          <div className={'col'}>
-            <button type={'button'} className={'btn btn-light btn-block'} onClick={this.newHeader}>
+        <div className="row">
+          <div className="col">
+            <button type="button" className="btn btn-light btn-block" onClick={this.newHeader}>
               Add new
             </button>
           </div>

@@ -8,7 +8,7 @@ class RevenuesTable extends Component {
     const { income } = this.props;
 
     return (
-      <table className={'table table-striped table-finances'}>
+      <table className="table table-striped table-finances">
         <RevenuesTableHeader {...this.props} />
         {Object.entries(income).map((year) => (
         <RevenuesTableBody key={year[0]} year={year[0]} {...this.props} />

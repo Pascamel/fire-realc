@@ -9,7 +9,7 @@ class SavingsTable extends Component {
     const {savings} = this.props;
 
     return (
-      <table className={'table table-striped table-finances'}>
+      <table className="table table-striped table-finances">
         <SavingsTableHeader {...this.props} />
         {Object.entries(savings).map((year) => (
         <SavingsTableBody key={year[0]} year={year[0]} {...this.props} />

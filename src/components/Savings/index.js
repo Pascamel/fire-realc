@@ -44,9 +44,9 @@ class SavingsPage extends Component {
         }
 
         let new_state = {};
-        let headers = snapshotHeaders.data();
-        let data = snapshotSavings.data().data;
-        let savings_headers = snapshotSavings.data().yearly_data;
+        let headers = snapshotHeaders.data() || [];
+        let data = _.get(snapshotSavings.data(), 'data', []);
+        let savings_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
 
         new_state.firstMonth = headers.firstMonth
         new_state.firstYear = headers.firstYear;
@@ -207,7 +207,7 @@ class SavingsPage extends Component {
       return (
         <div>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label={'Savings'} saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <SavePanel label="Savings" saveClick={this.saveData} updated={this.state.updated} />}
           {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
         </div>
       );

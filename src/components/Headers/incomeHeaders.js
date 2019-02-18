@@ -32,7 +32,7 @@ class IncomeHeaders extends Component {
 
         <div className="row">
           <div className="col">
-            <button type={'button'} className="btn btn-light btn-block" onClick={this.newHeader}>
+            <button type="button" className="btn btn-light btn-block" onClick={this.newHeader}>
               Add new
             </button>
           </div>

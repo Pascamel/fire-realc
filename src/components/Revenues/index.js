@@ -43,10 +43,10 @@ class RevenuePage extends Component {
             return;
           }
 
-          let headers = snapshotHeaders.data();
-          let savings_data = snapshotSavings.data().data;
-          let income_data = snapshotIncome.data().data;
-          let income_headers = snapshotIncome.data().yearly_data;
+          let headers = snapshotHeaders.data() || [];
+          let savings_data = _.get(snapshotSavings.data(), 'data', []);
+          let income_data = _.get(snapshotIncome.data(), 'data', []);
+          let income_headers = _.get(snapshotIncome.data(), 'yearly_data', {});
           let new_state = {};
           
           // format headers
@@ -156,7 +156,7 @@ class RevenuePage extends Component {
       return (
         <div>          
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label={'Revenues'} saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <SavePanel label="Revenues" saveClick={this.saveData} updated={this.state.updated} />}
           {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
         </div>
       );

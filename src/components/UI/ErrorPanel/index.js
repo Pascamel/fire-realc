@@ -13,7 +13,7 @@ class ErrorPanel extends Component {
     if (code === ERRORS.NO_HEADERS) content = (
       <div>
         Your headers have not been created yet.&nbsp;
-        <Link to={ROUTES.HEADERS} className={'alert-link'}>Headers</Link>
+        <Link to={ROUTES.HEADERS} className="alert-link">Headers</Link>
       </div>
     );
 
@@ -24,7 +24,7 @@ class ErrorPanel extends Component {
     );
 
     return (
-      <div className={'alert alert-danger'}>
+      <div className="alert alert-danger">
         {content}
       </div>
     )

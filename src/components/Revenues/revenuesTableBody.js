@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import _ from 'lodash';
 import FireAmount from '../Finance/FireAmount';
 import Display from '../UI/Display';
 
@@ -7,7 +7,7 @@ class RevenuesTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: props.year_headers.collapsed[props.year]};
+    this.state = {collapsed: _.get(props.year_headers.collapsed, props.year, false)};
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
@@ -24,11 +24,11 @@ class RevenuesTableBody extends Component {
     return (
       <tbody>
         <tr>
-          <td className={'td-chevron'}>
+          <td className="td-chevron">
             <i className={"fa " + (this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down')} onClick={this.handleClickToggle}></i>
           </td>
           <td className={Display.hideIf(this.state.collapsed)} colSpan={headersLine.length + 4}>
-            <span className={'pull-left'} style={{paddingLeft: '10px'}}>
+            <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
           </td>
@@ -76,7 +76,7 @@ class RevenuesTableBody extends Component {
         ))}
 
         <tr className={Display.hideIf(this.state.collapsed)}>
-          <td><i className={'fa fa-calendar-plus-o'}></i></td>
+          <td><i className="fa fa-calendar-plus-o"></i></td>
           <td>{ bank.yearlySavings(year) }</td>
           {headersLine.map((h) => (
           <td key={h.id}>{ bank.yearlyIncome(income, year, h) }</td>

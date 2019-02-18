@@ -55,14 +55,14 @@ class FireAmount extends Component {
     const { edit } = this.state;
 
     return (
-      <div className={'amount-container'} onKeyDown={this.handleKeyDown}>
-        {!edit && <span className={'amount'} onClick={this.setEditMode}>{ Display.amount(this.props.amount) }</span>}
+      <div className="amount-container" onKeyDown={this.handleKeyDown}>
+        {!edit && <span className="amount" onClick={this.setEditMode}>{ Display.amount(this.props.amount) }</span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
                         defaultValue={this.state.amount} 
                         onChange={(value) => this.onChange(value)} 
                         onKeyUp={this.handleKeyUp}  />}
-        {edit && <span onClick={this.saveEdit}><i className={'fa fa-check'}></i></span>}
-        {edit && <span onClick={this.cancelEdit}><i className={'fa fa-times'}></i></span>}
+        {edit && <span onClick={this.saveEdit}><i className="fa fa-check"></i></span>}
+        {edit && <span onClick={this.cancelEdit}><i className="fa fa-times"></i></span>}
       </div>
     );
   }

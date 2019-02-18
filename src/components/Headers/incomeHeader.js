@@ -5,8 +5,6 @@ class IncomeHeader extends Component {
   constructor(props) {
     super(props);
 
-    console.log('this.props.header.count', this.props.header.count);
-
     this.state = {
       editLabel: this.props.header.label,
       editPretax: this.props.header.pretax,
@@ -63,7 +61,7 @@ class IncomeHeader extends Component {
                  onChange={this.handleInputChange} 
                  className={`form-control ${Display.showIf(header.$edit)}`} />
         </div>
-        <div className={'col-2'}>
+        <div className="col-2">
           <div style={{display: 'inline-block'}}>
           <i className={`fa ${header.pretax?'fa-check-square-o':'fa-square-o'} ${Display.hideIf(header.$edit)}`}></i>
             <label>
@@ -72,9 +70,7 @@ class IncomeHeader extends Component {
                      checked={this.state.editPretax}  
                      onChange={this.handleInputChange} 
                      className={Display.showIf(header.$edit)} />
-              <span className={'ml-1'}>
-                Pre-tax
-              </span>
+              <span className="ml-1">Pre-tax</span>
             </label>
           </div>
 
@@ -88,24 +84,24 @@ class IncomeHeader extends Component {
             <label className={`btn ${this.state.editCount === 2 ? 'btn-primary' : 'btn-light'}`} onClick={e => {this.setState({editCount: 2});}}>2</label>
           </div>
         </div>
-        <div className={'col-3'} style={{textAlign: 'right'}}>
+        <div className="col-3" style={{textAlign: 'right'}}>
           <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={e => this.editHeaderConfirm(header)}>
-            <i className={'fa fa-lg fa-check'}></i>
+            <i className="fa fa-lg fa-check"></i>
           </span>
           <span className={`btn btn-link ${Display.showIf(header.$edit)}`} onClick={e => this.editHeaderCancel(header)}>
-            <i className={'fa fa-lg fa-times'}></i>
+            <i className="fa fa-lg fa-times"></i>
           </span>
           <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={e => this.editHeader(header)}>
-            <i className={'fa fa-lg fa-pencil'}></i>
+            <i className="fa fa-lg fa-pencil"></i>
           </span>
           <span className={`btn btn-link ${Display.hideIf(header.$edit)}`} onClick={e => this.removeHeader(header)}>
-            <i className={'fa fa-lg fa-trash-o'}></i>
+            <i className="fa fa-lg fa-trash-o"></i>
           </span>
           <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(index === 0) ? 'disabled' : ''}`} onClick={e => this.moveUpHeader(index)}>
-            <i className={'fa fa-lg fa-chevron-up'}></i>
+            <i className="fa fa-lg fa-chevron-up"></i>
           </span>
           <span className={`btn btn-link ${Display.hideIf(header.$edit)} ${(index >= headers.savings.length-1) ? 'disabled' : ''}`} onClick={e => this.moveDownHeader(index)}>
-            <i className={'fa fa-lg fa-chevron-down'}></i>
+            <i className="fa fa-lg fa-chevron-down"></i>
           </span>
         </div>
       </div>

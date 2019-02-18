@@ -24,23 +24,23 @@ class StartingPoint extends Component {
 
     return (
       <React.Fragment>
-        <div className={'row'}>
-          <div className={'col'}>
+        <div className="row">
+          <div className="col">
             <h3>Starting point</h3>
           </div>
         </div>
-        <div className={'row'}>
-          <div className={'col'}>
-            <div className={'form-inline'}>
+        <div className="row">
+          <div className="col">
+            <div className="form-inline">
               <label>Starting Capital</label>
-              <input type={'text'} 
+              <input type="text"
                      value={headers.startingCapital} 
                      onChange={(e) => this.onValueChange('startingCapital', parseFloat(e.target.value) || 0)}
-                     className={'form-control'} 
+                     className="form-control"
                      style={{width: '80px', margin: '0 10px'}} />
               <label>First month</label>
               <select value={headers.firstMonth}
-                      className={'form-control'} 
+                      className="form-control"
                       onChange={(e) => this.onValueChange('firstMonth', parseInt(e.target.value) || 0)} 
                       style={{margin: '0 10px'}}>
                 {_.range(1, 13).map((m, key) => (
@@ -48,7 +48,7 @@ class StartingPoint extends Component {
                 ))}
               </select>
               <select value={headers.firstYear}
-                      className={'form-control'} 
+                      className="form-control"
                       onChange={(e) => this.onValueChange('firstYear', parseInt(e.target.value) || 0)}>
                 {_.range(this.currentYear - 10, this.currentYear + 1).map((y, key) => (
                   <option value={y} key={key}>{y}</option>
