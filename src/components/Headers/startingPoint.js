@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import moment from 'moment';
+import Display from '../UI/Display';
 
 class StartingPoint extends Component {
 
@@ -8,10 +8,6 @@ class StartingPoint extends Component {
     super(props);
 
     this.currentYear = new Date().getFullYear();
-  }
-
-  labelMonth = (m) => {
-    return moment().month(m-1).format('MMMM');
   }
 
   onValueChange = (type, value) => {
@@ -44,7 +40,7 @@ class StartingPoint extends Component {
                       onChange={(e) => this.onValueChange('firstMonth', parseInt(e.target.value) || 0)} 
                       style={{margin: '0 10px'}}>
                 {_.range(1, 13).map((m, key) => (
-                  <option value={m} key={key}>{this.labelMonth(m)}</option>
+                  <option value={m} key={key}>{Display.labelMonth(m)}</option>
                 ))}
               </select>
               <select value={headers.firstYear}

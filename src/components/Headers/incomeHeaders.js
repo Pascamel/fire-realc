@@ -27,7 +27,6 @@ class IncomeHeaders extends Component {
 
         {headers.incomes.map((header, key) => (
           <IncomeHeader key={key} header={header} index={key} {...this.props} />
-        
         ))}
 
         <div className="row">

@@ -86,7 +86,11 @@ class HeadersPage extends Component {
     },
 
     deleteHeaderCallback: (type, header) => {
-      console.log('deleteHeaderCallback', type, header);
+      let new_headers = JSON.parse(JSON.stringify(this.state.headers));
+
+      _.remove(new_headers[type], (h) => h.id === header.id);
+
+      this.setState({updated: true, headers: new_headers});
     },
 
     moveUpHeaderCallback: (type, index) => {

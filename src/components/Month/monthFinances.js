@@ -8,7 +8,7 @@ class MonthFinances extends Component {
           <div className="col">
             <div className="alert alert-light">
               Income
-              <div class="row">
+              <div className="row">
                 <div className="col">todo</div>
                 <div className="col">todo</div>
               </div>
@@ -17,7 +17,7 @@ class MonthFinances extends Component {
           <div className="col">
             <div className="alert alert-light">
               Savings
-              <div class="row">
+              <div className="row">
                 <div className="col">todo</div>
                 <div className="col">todo</div>
               </div>

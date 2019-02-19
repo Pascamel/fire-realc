@@ -10,6 +10,8 @@ import Bank from '../Finance/Bank';
 import * as ERRORS from '../../constants/errors';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
+import FinanceHelpers from '../Finance/FinanceHelpers';
+
 
 class RevenuePage extends Component {
   constructor(props) {
@@ -27,17 +29,9 @@ class RevenuePage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    let formatYear = (months, value) => {
-      return _(months).reduce((acc, m) => {
-        acc[m] = _.cloneDeep(value);
-        return acc;
-      }, {});
-    };
-
     this.props.firebase.getHeaders().then((snapshotHeaders) => {
       this.props.firebase.getSavings().then((snapshotSavings) => {
         this.props.firebase.getRevenues().then((snapshotIncome) => {
-
           if (!snapshotHeaders.data()) {
             this.setState({loading: false, error: ERRORS.NO_HEADERS});
             return;
@@ -49,42 +43,9 @@ class RevenuePage extends Component {
           let income_headers = _.get(snapshotIncome.data(), 'yearly_data', {});
           let new_state = {};
           
-          // format headers
-          new_state.firstMonth = headers.firstMonth
-          new_state.firstYear = headers.firstYear;
+          new_state.income = FinanceHelpers.income(income_data, savings_data, headers);
+          new_state.headersLine = FinanceHelpers.headersLine(headers);
           new_state.startingCapital = headers.startingCapital;
-          new_state.incomes = headers.incomes;
-          new_state.headersLine = _.map(headers.incomes, (h, idx) => {
-            h.last = (idx === headers.incomes.length - 1);
-            return h;
-          });
-          
-          // format savings and income
-          let income = {};
-          let years = _.range(headers.firstYear, new Date().getFullYear() + 1);
-    
-          _(years).each((y, idx) => {
-            if (idx === 0 && years.length === 1) {
-              income[y] = formatYear(_.range(headers.firstMonth, new Date().getMonth() + 2), {});
-            } else if (idx === 0) {
-              income[y] = formatYear(_.range(headers.firstMonth, 13), {});
-            } else {
-              income[y] = formatYear(_.range(1, 13), {});
-            }
-          });
-    
-          _(savings_data).each((d) => {
-            let current_value = _.get(income, [d.year, d.month, 'savings'], 0);
-            _.set(income, [d.year, d.month, 'savings'], current_value + d.amount);
-          });
-    
-          _(income_data).each((d) => {
-            _.set(income, [d.year, d.month, 'income', d.type], d.amount);
-          });
-    
-          new_state.income = income;
-
-          // year headers
           new_state.year_headers = income_headers || {collapsed: {}};
 
           new_state.bank = this.newBank(new_state);
@@ -96,16 +57,7 @@ class RevenuePage extends Component {
   }
 
   newBank = (state) => {
-    const bank = new Bank.Bank(
-      state.income, 
-      state.savings, 
-      state.headersLine, 
-      state.startingCapital, 
-      state.year_headers, 
-      state.inputLine
-    )
-
-    return bank;
+    return new Bank.Bank(state.income, null, state.headersLine, state.startingCapital, state.year_headers, null);
   }
 
   updateIncome = (index, indexes, amount) => {

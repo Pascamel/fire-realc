@@ -43,7 +43,10 @@ class Bank {
       const header = _.keyBy(this.headersLine, 'id')[type];
       return sum + amount / header.count;
     }, 0);
-    const value = this.income[year][month].savings / i;
+
+    if (i === 0) return formatted ? '?' : 0;
+  
+    const value = (this.income[year][month].savings / i) || 0;
 
     if (!formatted) return value;
     return Display.percentage(value * 100);
@@ -87,10 +90,6 @@ class Bank {
     return Display.amount(value, true);
   };
 
-  // const yearlyTotal = (income, headers, year) => {
-  //   return totalYearPre(income, headers, year) + totalYearPost(income, headers, year);
-  // };
-
   savingRateYear = (year) => {
     let i = _.reduce(this.income[year], (sum, month) => {
       return sum + _.reduce(_.get(month, 'income', {}), (sum, amount, type) => {
@@ -105,14 +104,14 @@ class Bank {
     return s / i;
   };
 
-  // dhubfgoudsbfgoubsdogfosdfbgpsdfng;ldsknf;lkdnf;gknsdf;lkgnsd;lknfg
+  // Savings
 
   startOfYearAmount = (year) => {
     const keys = _.keys(this.savings), idx = keys.indexOf(year);
 
     if (idx <= 0) return this.startingCapital;
     
-    const value = this.totalHolding(this.savings, '12', keys[idx - 1], this.startingCapital);
+    const value = this.totalHolding('12', keys[idx - 1]);
 
     return Display.amount(value);
   };
@@ -121,8 +120,8 @@ class Bank {
     const keys = _.keys(this.savings), idxYear = keys.indexOf(year);
     if (idxYear < 0) return 0;
 
-    const yearData = this.savings[year], idxMonth = _.keys(yearData).indexOf(month);
-    if (idxMonth < 0) return 0;
+    // const yearData = this.savings[year], idxMonth = _.keys(yearData).indexOf(month);
+    if (month < 0 || month >= this.savings[year].length) return 0;
 
     const value = _.reduce(this.savings, (sum, data_y, y) => {
       if (parseInt(y) > parseInt(year)) return sum;
@@ -156,7 +155,7 @@ class Bank {
     return _.reduce(m, (v, i) => v + _.get(i, [type], 0), 0);
   };
 
-  monthlyGoal = (year) => {
+  monthlyGoal = (year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
@@ -164,6 +163,7 @@ class Bank {
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
 
+    if (!formatted) return goal;
     return Display.amount(goal);
   }
 
@@ -183,14 +183,14 @@ class Bank {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
-    const idxMonth = _(this.savings[year]).keys().indexOf(month);
-    if (idxYear < 0) return 0;
+    if (month.substring) month = parseInt(month) || 0;
+    if (month < 0 || month >= this.savings[year].length) return 0;
 
     const goal_year = _.get(this.year_headers, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
     const goal_by_month = (goal_year - start_of_year) / _.keys(this.savings[year]).length;
-    const goal = start_of_year + goal_by_month * (idxMonth + 1);
-    const achieved = this.totalHolding(month, year, 'T');
+    const goal = start_of_year + goal_by_month * (month + _.keys(this.savings[year]).length - 12);
+    const achieved = this.totalHolding(month, year, false);
 
     return Display.roundFloat(achieved - goal);
   };

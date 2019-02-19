@@ -23,10 +23,7 @@ class NavigationAuth extends Component {
                 <NavLink to={ROUTES.DASHBOARD} className="nav-link" activeClassName="disabled">Dashboard</NavLink>
               </li>  
               <li className="nav-item">
-                <NavLink to={ROUTES.ADMIN} className="nav-link" activeClassName="disabled">Admin</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to={ROUTES.HEADERS} className="nav-link" activeClassName="disabled">Settings</NavLink>
+                <NavLink exact to={route} className="nav-link" activeClassName="disabledd">Month</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink to={ROUTES.REVENUES} className="nav-link" activeClassName="disabled">Revenues</NavLink>
@@ -35,7 +32,10 @@ class NavigationAuth extends Component {
                 <NavLink to={ROUTES.SAVINGS} className="nav-link" activeClassName="disabled">Savings</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to={route} className="nav-link" activeClassName="disabledd">Month</NavLink>
+                <NavLink to={ROUTES.HEADERS} className="nav-link" activeClassName="disabled">Settings</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to={ROUTES.ADMIN} className="nav-link" activeClassName="disabled">Admin</NavLink>
               </li>
             </ul>
           </div>

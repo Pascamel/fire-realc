@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const amount = (number, display_if_zero) => {
   if ((!number || number === 0) && !display_if_zero) return '';
   return Number(number).toFixed(2);     
@@ -30,11 +32,16 @@ const hideIf = (bool, className) => {
   return bool ? className : '';
 };
 
+const labelMonth = (m) => {
+  return moment().month(m-1).format('MMMM');
+}
+
 export default {
   amount, 
   percentage,
   goal,
   roundFloat,
   showIf,
-  hideIf
+  hideIf,
+  labelMonth
 };

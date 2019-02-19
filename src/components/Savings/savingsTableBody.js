@@ -37,7 +37,7 @@ class SavingsTableBody extends Component {
               <FireAmount amount={_.get(this.props.year_headers, ['goals', year])}
                           callback-props={['year_headers', 'goals', year]}
                           callback={callbackGoal} />
-              &nbsp;({ bank.monthlyGoal(year) }/mo)
+              &nbsp;({ bank.monthlyGoal(year, true) }/mo)
             </span>
           </td>
           {inputLine.map((amount, idx) => (
