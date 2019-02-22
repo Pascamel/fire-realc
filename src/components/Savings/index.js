@@ -43,6 +43,7 @@ class SavingsPage extends Component {
         let data = _.get(snapshotSavings.data(), 'data', []);
         let savings_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
 
+        new_state.headers = headers.savings;
         new_state.headersLine1 = FinanceHelpers.headersLine1(headers.savings);
         new_state.headersLine2 = FinanceHelpers.headersLine2(headers.savings);
         
@@ -92,32 +93,12 @@ class SavingsPage extends Component {
     this.setState({year_headers: new_year_headers, bank: this.newBank(new_state), updated: true});
   }
 
-  formatDataToSave = () => {
-    let data = [];
-
-    _.each(this.state.savings, (data_year, year) => {
-      _.each(data_year, (data_month, month) => {
-        _.each(data_month, (data_institution, institution) => {
-          _.each(data_institution, (amount, type) => {
-            if (type === 'T') return;
-            if (amount === 0) return;
-
-            data.push({year: parseInt(year), month: parseInt(month), institution: institution, type: type, amount: amount});
-          });
-        });
-      });
-    });
-
-    return data;
-  }; 
-
   saveData = () => {
-    const data = this.formatDataToSave();
     const payload = {
       last_update: (new Date()).getTime(),
-      data: JSON.parse(JSON.stringify(data)),
+      data: JSON.parse(JSON.stringify(FinanceHelpers.formatSavingstaToSave(this.state.savings))),
       yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
-    }
+    };
 
     this.props.firebase.setSavings(payload).then(() => {
       this.setState({updated: false});

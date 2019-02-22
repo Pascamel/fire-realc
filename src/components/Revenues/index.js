@@ -70,25 +70,10 @@ class RevenuePage extends Component {
     this.setState({income: new_income, bank: this.newBank(new_state), updated: true});
   }
 
-  formatDataToSave = () => {
-    let data = [];
-
-    _.each(this.state.income, (data_year, year) => {
-      _.each(data_year, (data_month, month) => {
-        _.each(data_month.income, (amount, institution) => {
-          data.push({year: parseInt(year), month: parseInt(month), type: institution, amount: amount});
-        })
-      });
-    });
-
-    return data;
-  };
-
   saveData = () => {
-    const data = this.formatDataToSave();
     const payload = {
       last_update: (new Date()).getTime(),
-      data: JSON.parse(JSON.stringify(data)),
+      data: JSON.parse(JSON.stringify(FinanceHelpers.formatIncomeToSave(this.state.income))),
       yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
     }
 

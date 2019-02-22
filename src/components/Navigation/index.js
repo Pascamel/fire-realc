@@ -7,10 +7,7 @@ import { AuthUserContext } from '../UserSession/Session';
 
 class NavigationAuth extends Component {
   render () {
-
-    const
-
-    currentYear = new Date().getFullYear(),
+    const currentYear = new Date().getFullYear(),
       currentMonth = new Date().getMonth() + 1,
       route = ROUTES.MONTH.replace(':year', currentYear).replace(':month', currentMonth);
 

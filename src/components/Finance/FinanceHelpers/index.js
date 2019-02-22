@@ -112,11 +112,46 @@ const income = (income_data, savings_data, headers) => {
   return result;
 }
 
+const formatSavingstaToSave = (savings) => {
+  let data = [];
+
+  _.each(savings, (data_year, year) => {
+    _.each(data_year, (data_month, month) => {
+      _.each(data_month, (data_institution, institution) => {
+        _.each(data_institution, (amount, type) => {
+          if (type === 'T') return;
+          if (amount === 0) return;
+
+          data.push({year: parseInt(year), month: parseInt(month), institution: institution, type: type, amount: amount});
+        });
+      });
+    });
+  });
+
+  return data;
+}; 
+
+const formatIncomeToSave = (income) => {
+  let data = [];
+
+  _.each(income, (data_year, year) => {
+    _.each(data_year, (data_month, month) => {
+      _.each(data_month.income, (amount, institution) => {
+        data.push({year: parseInt(year), month: parseInt(month), type: institution, amount: amount});
+      })
+    });
+  });
+
+  return data;
+};
+
 export default {
   headersLine1,
   headersLine2,
   headersLine,
   inputLine,
   savings,
-  income
+  income,
+  formatSavingstaToSave,
+  formatIncomeToSave
 };

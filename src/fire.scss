@@ -26,6 +26,10 @@ label {
   display: inline-block;
   line-height: 34px;
   width: 100%;
+
+  &.smaller {
+    width: 70%;
+  }
 }
 
 .alert span {
@@ -164,6 +168,7 @@ background-color: #fff;
 }
 
 .chart-label {
+  color: #666;
   position: absolute;
   top: 36px;
   width:155px;
@@ -171,4 +176,11 @@ background-color: #fff;
   font-size: 28px;
   font-weight: bolder;
   display: inline-block;
+  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}
+
+.month-amount {
+  &:hover {
+    background: #f7f7f7;
+  }
 }
