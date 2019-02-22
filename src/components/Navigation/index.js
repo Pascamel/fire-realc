@@ -1,84 +1,122 @@
 import React, { Component } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import {
+  Collapse,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown
+} from 'reactstrap';
 
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../UserSession/Session';
+import { SignOutLink } from '../UserSession/SignOut'; 
 
 
 class NavigationAuth extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
   render () {
     const currentYear = new Date().getFullYear(),
       currentMonth = new Date().getMonth() + 1,
       route = ROUTES.MONTH.replace(':year', currentYear).replace(':month', currentMonth);
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-sm">
-            <ul className="nav">
-              <li className="nav-item">
-                <NavLink to={ROUTES.DASHBOARD} className="nav-link" activeClassName="disabled">Dashboard</NavLink>
-              </li>  
-              <li className="nav-item">
-                <NavLink exact to={route} className="nav-link" activeClassName="disabledd">Month</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to={ROUTES.REVENUES} className="nav-link" activeClassName="disabled">Revenues</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to={ROUTES.SAVINGS} className="nav-link" activeClassName="disabled">Savings</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to={ROUTES.HEADERS} className="nav-link" activeClassName="disabled">Settings</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to={ROUTES.ADMIN} className="nav-link" activeClassName="disabled">Admin</NavLink>
-              </li>
-            </ul>
-          </div>
-          <div className="col-sm-3">
-            <ul className="nav justify-content-end">
-              <li className="nav-item">
-                <NavLink to={ROUTES.ACCOUNT} className="nav-link" activeClassName="disabled">
-                  My account <i className="fa fa-caret-down"></i>
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Navbar light expand="md">
+        <NavbarBrand href={ROUTES.DASHBOARD}>FiReCalc</NavbarBrand>
+        <NavbarToggler onClick={this.toggle} />
+        <Collapse isOpen={this.state.isOpen} navbar>
+          <Nav navbar>
+            <NavItem>
+              <NavLink href={route}>Month</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href={ROUTES.REVENUES}>Revenues</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href={ROUTES.SAVINGS}>Savings</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href={ROUTES.HEADERS}>Settings</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href={ROUTES.ADMIN}>Admin</NavLink>
+            </NavItem>
+          </Nav> 
+          <Nav className="ml-auto" navbar>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Options
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem tag="a" href={ROUTES.ACCOUNT} >Account</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>
+                  <SignOutLink />
+                </DropdownItem>
+              </DropdownMenu> 
+            </UncontrolledDropdown> 
+          </Nav>
+        </Collapse>
+      </Navbar>
     );
   }
 }
 
 class NavigationNonAuth extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
   render () {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-sm">
-            <ul className="nav">
-              <li className="nav-item">
-                <NavLink to={ROUTES.HOME} className="nav-link" activeClassName="disabled">FiReCalc</NavLink>
-              </li>
-            </ul>
-          </div>
-          <div className="col-sm">
-            <ul className="nav justify-content-end">
-              <li className="nav-item">
-                <NavLink to={ROUTES.SIGN_IN} className="nav-link" activeClassName="disabled">Sign In</NavLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <Navbar light expand="md">
+        <NavbarBrand href={ROUTES.HOME}>FiReCalc</NavbarBrand>
+        <NavbarToggler onClick={this.toggle} />
+        <Collapse isOpen={this.state.isOpen} navbar>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+      </Navbar>
     );
   }
 }
 
 class Navigation extends Component {
   render () {
-    // const { authUser } = this.props;
     return (
       <div>
        <AuthUserContext.Consumer>
