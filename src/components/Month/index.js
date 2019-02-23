@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
+import { Container, Row } from 'reactstrap';
 import { compose } from 'recompose';
 import _ from 'lodash';
 
+import Bank from '../Finance/Bank';
+import FinanceHelpers from '../Finance/FinanceHelpers';
 import * as ROUTES from '../../constants/routes';
 import * as ERRORS from '../../constants/errors';
 import MonthChart from './monthChart';
 import MonthFinances from './monthFinances';
 import LoadingPanel from '../UI/LoadingPanel';
-import SavePanelMonth from './savePanelMonth';
+import { SavePanelMonth } from '../UI/SavePanel';
 import ErrorPanel from '../UI/ErrorPanel';
-import Bank from '../Finance/Bank';
-import FinanceHelpers from '../Finance/FinanceHelpers';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
 
@@ -51,16 +52,18 @@ class MonthPage extends Component {
           let income_data = _.get(snapshotIncome.data(), 'data', []);
           let new_state = {};
           
-          new_state.income = FinanceHelpers.income(income_data, savings_data, headers);
+          new_state.startingCapital = headers.startingCapital;
+          
           new_state.savings = FinanceHelpers.savings(savings_data, headers);
           new_state.savings_headers = headers.savings;
           new_state.headersLine = FinanceHelpers.headersLine(headers);
-          new_state.headersLine1 = FinanceHelpers.headersLine1(headers.savings);
-          new_state.headersLine2 = FinanceHelpers.headersLine2(headers.savings)
-          new_state.startingCapital = headers.startingCapital;
-          new_state.income_headers = _.get(snapshotIncome.data(), 'yearly_data', {});
+          new_state.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(headers.savings);
+          new_state.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(headers.savings)
+          
+          new_state.income = FinanceHelpers.income(income_data, savings_data, headers);
+          new_state.income_headers = headers.incomes;
           new_state.year_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
-          new_state.inputLine = FinanceHelpers.inputLine(headers.savings);
+          new_state.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
 
           new_state.bank = this.newBank(new_state);
           new_state.loading = false;
@@ -87,7 +90,14 @@ class MonthPage extends Component {
   }
 
   newBank = (state) => {
-    return new Bank.Bank(state.income, state.savings, state.headersLine, state.startingCapital, state.year_headers, state.inputLine);
+    return new Bank.Bank(
+      state.income, 
+      state.savings, 
+      state.headersLine, 
+      state.startingCapital, 
+      state.year_headers, 
+      state.savingsInputs
+    );
   }
 
   prevMonth = () => {
@@ -180,10 +190,13 @@ class MonthPage extends Component {
         <React.Fragment>
           {loading && <LoadingPanel />}
           {!loading && <SavePanelMonth saveClick={this.saveData} prevMonth={this.prevMonth} nextMonth={this.nextMonth} {...this.state}  />}
-          {!loading && <div className="row">
-            <MonthFinances {...this.state} callbackSavings={this.updateSavings} callbackIncome={this.updateIncome} />
-            <MonthChart {...this.state} />
-          </div>}
+          {!loading && <Container>
+            <Row>
+              <MonthFinances {...this.state} callbackSavings={this.updateSavings} callbackIncome={this.updateIncome} />
+              <MonthChart {...this.state} />
+            </Row>
+          </Container>}
+          
         </React.Fragment>
       );
     }

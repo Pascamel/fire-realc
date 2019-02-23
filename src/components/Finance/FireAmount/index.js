@@ -13,9 +13,9 @@ class FireAmount extends Component {
 
     this.indexes = props['callback-props'];
     this.index = this.indexes.shift();
-    this.readonly = _.last(this.indexes) === 'T';
-
+    
     this.state = {
+      readonly: _.last(this.indexes) === 'T',
       edit: false, 
       amount: props.amount,
       inputValue: props.amount
@@ -23,7 +23,7 @@ class FireAmount extends Component {
   }
 
   setEditMode = () => {
-    if (this.readonly) return;
+    if (this.state.readonly) return;
     this.setState({edit: true, amount: this.props.amount });
   }
 
@@ -32,7 +32,10 @@ class FireAmount extends Component {
   }
 
   confirmEdit = () => {
-    this.setState({edit: false, amount: this.state.inputValue});
+    this.setState({
+      edit: false, amount: 
+      this.state.inputValue
+    });
     this.props.callback(this.index, this.indexes, parseFloat(this.state.inputValue) || 0);
   }
 
@@ -52,17 +55,18 @@ class FireAmount extends Component {
   }
 
   render() {
-    const { edit } = this.state;
+    const { readonly, edit } = this.state;
 
     return (
-      <div className="amount-container" onKeyDown={this.handleKeyDown}>
+      <div className={`amount-container ${readonly ? 'read-only' : ''}`} onKeyDown={this.handleKeyDown}>
         {!edit && <span className="amount" onClick={this.setEditMode}>{ Display.amount(this.props.amount) }</span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
+                        className="form-control"
                         defaultValue={this.state.amount} 
                         onChange={(value) => this.onChange(value)} 
                         onKeyUp={this.handleKeyUp}  />}
-        {edit && <span onClick={this.saveEdit}><i className="fa fa-check"></i></span>}
-        {edit && <span onClick={this.cancelEdit}><i className="fa fa-times"></i></span>}
+        {/* {edit && <span onClick={this.saveEdit}><i className="fa fa-check"></i></span>} */}
+        {/* {edit && <span onClick={this.cancelEdit}><i className="fa fa-times"></i></span>} */}
       </div>
     );
   }

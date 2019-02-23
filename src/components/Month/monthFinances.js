@@ -10,7 +10,7 @@ class MonthFinances extends Component {
     return (
       <React.Fragment>
         <div className="col">
-          {this.props.inputLine.map((header, key) => (
+          {this.props.savingsInputs.map((header, key) => (
             <MonthSavings key={key} 
                           header={header}
                           data={_.get(bank.savings, [year, month])}

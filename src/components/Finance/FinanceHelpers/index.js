@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const headersLine1 = (savings) => {
+const savingsHeadersLine1 = (savings) => {
   return _(savings)
     .map((header) => {
       return {
@@ -20,7 +20,7 @@ const headersLine1 = (savings) => {
     .value();
 }
 
-const headersLine2 = (savings) => {
+const savingsHeadersLine2 = (savings) => {
   return _(savings)
     .map((header) => {
       let headers = [header.sublabel || 'Principal'];
@@ -44,7 +44,7 @@ const headersLine = (headers) => {
   });
 }
 
-const inputLine = (savings) => {
+const savingsInputs = (savings) => {
   return _(savings)
     .map((header) => {
       let headers = [{id: header.id, type: 'P'}];
@@ -146,10 +146,10 @@ const formatIncomeToSave = (income) => {
 };
 
 export default {
-  headersLine1,
-  headersLine2,
+  savingsHeadersLine1,
+  savingsHeadersLine2,
   headersLine,
-  inputLine,
+  savingsInputs,
   savings,
   income,
   formatSavingstaToSave,

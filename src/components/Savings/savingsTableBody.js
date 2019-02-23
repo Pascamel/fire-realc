@@ -20,7 +20,7 @@ class SavingsTableBody extends Component {
   }
 
   render() {
-    const {savings, year, headersLine2, inputLine, bank, callback, callbackGoal} = this.props;
+    const {savings, year, savingsInputs, bank, callback, callbackGoal} = this.props;
     
     return (
       <tbody>
@@ -28,7 +28,7 @@ class SavingsTableBody extends Component {
           <td className="td-chevron">
             <i className={`fa ${this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} onClick={this.handleClickToggle}></i>
           </td>
-          <td colSpan={headersLine2.length + 4} className={Display.hideIf(this.state.collapsed)}>
+          <td colSpan={savingsInputs.length + 4} className={Display.hideIf(this.state.collapsed)}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
@@ -40,7 +40,7 @@ class SavingsTableBody extends Component {
               &nbsp;({ bank.monthlyGoal(year, true) }/mo)
             </span>
           </td>
-          {inputLine.map((amount, idx) => (
+          {savingsInputs.map((amount, idx) => (
           <td className={Display.showIf(this.state.collapsed)} key={idx}>
             { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
           </td>
@@ -61,7 +61,7 @@ class SavingsTableBody extends Component {
         {Object.entries(savings[year]).map((month, idx) => (
         <tr key={idx} className={Display.hideIf(this.state.collapsed)}>
           <td>{ month[0] }</td>
-          {inputLine.map((amount, idx) => (
+          {savingsInputs.map((amount, idx) => (
           <td key={idx}>
             {amount.type !== 'T' &&
             <FireAmount amount={_.get(month, [1, amount.id, amount.type])} 
@@ -85,7 +85,7 @@ class SavingsTableBody extends Component {
         ))}
         <tr className={`tr-total ${Display.hideIf(this.state.collapsed)}`}>
           <td><i className="fa fa-calendar-plus-o"></i></td>
-          {inputLine.map((amount, idx) => (
+          {savingsInputs.map((amount, idx) => (
           <td key={idx}>
             { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
           </td>

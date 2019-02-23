@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
+  Container, Row, Col,
   Collapse,
   DropdownItem,
   DropdownMenu,
@@ -36,48 +37,53 @@ class NavigationAuth extends Component {
   }
 
   render () {
-    const currentYear = new Date().getFullYear(),
+    const {authUser} = this.props,
+      currentYear = new Date().getFullYear(),
       currentMonth = new Date().getMonth() + 1,
       route = ROUTES.MONTH.replace(':year', currentYear).replace(':month', currentMonth);
 
     return (
-      <Navbar light expand="md">
-        <NavbarBrand href={ROUTES.DASHBOARD}>FiReCalc</NavbarBrand>
-        <NavbarToggler onClick={this.toggle} />
-        <Collapse isOpen={this.state.isOpen} navbar>
-          <Nav navbar>
-            <NavItem>
-              <NavLink href={route}>Month</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href={ROUTES.REVENUES}>Revenues</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href={ROUTES.SAVINGS}>Savings</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href={ROUTES.HEADERS}>Settings</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href={ROUTES.ADMIN}>Admin</NavLink>
-            </NavItem>
-          </Nav> 
-          <Nav className="ml-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem tag="a" href={ROUTES.ACCOUNT} >Account</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  <SignOutLink />
-                </DropdownItem>
-              </DropdownMenu> 
-            </UncontrolledDropdown> 
-          </Nav>
-        </Collapse>
-      </Navbar>
+      <Container>
+        <Row>
+          <Col>
+            <Navbar light expand="md">
+              <NavbarBrand href={ROUTES.DASHBOARD}>FiReCalc</NavbarBrand>
+              <NavbarToggler onClick={this.toggle} />
+              <Collapse isOpen={this.state.isOpen} navbar>
+                <Nav navbar>
+                  <NavItem>
+                    <NavLink href={route}>Month</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href={ROUTES.REVENUES}>Revenues</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href={ROUTES.SAVINGS}>Savings</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href={ROUTES.HEADERS}>Settings</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href={ROUTES.ADMIN}>Admin</NavLink>
+                  </NavItem>
+                </Nav> 
+                <Nav className="ml-auto" navbar>
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>{authUser.email}</DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem tag="a" href={ROUTES.ACCOUNT} >Account</DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem>
+                        <SignOutLink />
+                      </DropdownItem>
+                    </DropdownMenu> 
+                  </UncontrolledDropdown> 
+                </Nav>
+              </Collapse>
+            </Navbar>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
@@ -100,17 +106,23 @@ class NavigationNonAuth extends Component {
 
   render () {
     return (
-      <Navbar light expand="md">
-        <NavbarBrand href={ROUTES.HOME}>FiReCalc</NavbarBrand>
-        <NavbarToggler onClick={this.toggle} />
-        <Collapse isOpen={this.state.isOpen} navbar>
-          <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Navbar>
+      <Container>
+        <Row>
+          <Col>
+            <Navbar light expand="md">
+              <NavbarBrand href={ROUTES.HOME}>FiReCalc</NavbarBrand>
+              <NavbarToggler onClick={this.toggle} />
+              <Collapse isOpen={this.state.isOpen} navbar>
+                <Nav className="ml-auto" navbar>
+                  <NavItem>
+                    <NavLink href={ROUTES.SIGN_IN}>Sign In</NavLink>
+                  </NavItem>
+                </Nav>
+              </Collapse>
+            </Navbar>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
@@ -120,7 +132,7 @@ class Navigation extends Component {
     return (
       <div>
        <AuthUserContext.Consumer>
-         {(authUser) => authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+         {(authUser) => authUser ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />}
        </AuthUserContext.Consumer>
      </div>
     );

@@ -19,27 +19,23 @@ import { withAuthentication } from '../UserSession/Session';
 
 
 const App = () => (
-  <div className="container">
-    <div className="col-xs">
-      <Router>
-        <div>
-          <Navigation />
-          <hr />
-          <Route exact path={ROUTES.HOME} component={HomePage} />
-          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-          <Route path={ROUTES.DASHBOARD} component={DashboardPage} />
-          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-          <Route path={ROUTES.ADMIN} component={AdminPage} />
-          <Route path={ROUTES.HEADERS} component={HeadersPage} />
-          <Route path={ROUTES.REVENUES} component={RevenuesPage} />
-          <Route path={ROUTES.SAVINGS} component={SavingsPage} />
-          <Route path={ROUTES.MONTH} component={MonthPage} />
-        </div>
-      </Router>
+  <Router>
+    <div>
+      <Navigation />
+      {/* <hr /> */}
+      <Route exact path={ROUTES.HOME} component={HomePage} />
+      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+      <Route path={ROUTES.DASHBOARD} component={DashboardPage} />
+      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+      <Route path={ROUTES.ADMIN} component={AdminPage} />
+      <Route path={ROUTES.HEADERS} component={HeadersPage} />
+      <Route path={ROUTES.REVENUES} component={RevenuesPage} />
+      <Route path={ROUTES.SAVINGS} component={SavingsPage} />
+      <Route path={ROUTES.MONTH} component={MonthPage} />
     </div>
-  </div>
+  </Router>
 );
 
 export default withAuthentication(App);

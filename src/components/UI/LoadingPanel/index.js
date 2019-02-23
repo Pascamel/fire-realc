@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 
 class LoadingPanel extends Component {
   render() {
     return (
-      <div className="loading-spinner">
-        <div className="fa fa-spinner fa-spin">
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <div className="loading-spinner">
+              <div className="fa fa-spinner fa-spin"></div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      
     )
   };
 }

@@ -2,13 +2,13 @@ import _ from 'lodash';
 import Display from '../../UI/Display';
 
 class Bank {
-  constructor(income, savings, headersLine, startingCapital, year_headers, inputLine) {
+  constructor(income, savings, headersLine, startingCapital, year_headers, savingsInput) {
     this.income = income;
     this.savings = savings;
     this.headersLine = headersLine;
     this.startingCapital = startingCapital;
     this.year_headers = year_headers;
-    this.inputLine = inputLine;
+    this.savingsInput = savingsInput;
   }
 
   totalMonthPreOrPost = (year, month, isPre) => {
@@ -212,7 +212,7 @@ class Bank {
       return Display.amount(value, true);
     }
 
-    const sp = (type === 'P' && _.findIndex(this.inputLine, (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
+    const sp = (type === 'P' && _.findIndex(this.savingsInputs, (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
     const ti = _(this.savings).keys().reduce((acc, year) => acc + this.totalInstitution(year, institution, type), 0);
 
     if (!formatted) return sp + ti;

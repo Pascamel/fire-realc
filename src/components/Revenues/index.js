@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import { compose } from 'recompose';
 import _ from 'lodash';
 
@@ -40,13 +41,13 @@ class RevenuePage extends Component {
           let headers = snapshotHeaders.data() || [];
           let savings_data = _.get(snapshotSavings.data(), 'data', []);
           let income_data = _.get(snapshotIncome.data(), 'data', []);
-          let income_headers = _.get(snapshotIncome.data(), 'yearly_data', {});
+          let income_year_headers = _.get(snapshotIncome.data(), 'yearly_data', {});
           let new_state = {};
           
           new_state.income = FinanceHelpers.income(income_data, savings_data, headers);
           new_state.headersLine = FinanceHelpers.headersLine(headers);
           new_state.startingCapital = headers.startingCapital;
-          new_state.year_headers = income_headers || {collapsed: {}};
+          new_state.year_headers = income_year_headers || {collapsed: {}};
 
           new_state.bank = this.newBank(new_state);
           new_state.loading = false;
@@ -91,11 +92,17 @@ class RevenuePage extends Component {
       );
     } else {
       return (
-        <div>          
+        <React.Fragment>
           {loading && <LoadingPanel />}
           {!loading && <SavePanel label="Revenues" saveClick={this.saveData} updated={this.state.updated} />}
-          {!loading && <RevenuesTable {...this.state} callback={this.updateIncome} />}
-        </div>
+          {!loading && <Container>
+            <Row>
+              <Col>
+                <RevenuesTable {...this.state} callback={this.updateIncome} />
+              </Col>
+            </Row>
+          </Container>}
+        </React.Fragment>
       );
     }
   }

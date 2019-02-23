@@ -4,14 +4,29 @@ import FireAmount from '../Finance/FireAmount';
 
 
 class MonthSavings extends Component {
+  constructor (props) {
+    super(props);
+
+    let header_label = _(props.savings_headers).keyBy('id').get([props.header.id, 'label'], 'N/A');
+    if (_(props.savings_headers).keyBy('id').get([props.header.id, 'interest'])) {
+      header_label += ' > ' + props.header.type;
+    }
+    
+    this.state = {
+      label: header_label
+    }
+  }
+
   render () {
     const { header, month, year, callback, data } = this.props;
 
     return (
       <React.Fragment>
         <div className="month-amount">
-          <span className="label-fake-input smaller">Title</span>
-          <div className="pull-right pt-2">
+          <span className="label-fake-input smaller mb-1">
+            {this.state.label}
+          </span>
+          <div className="pull-right">
             <FireAmount amount={_.get(data, [header.id, header.type])} 
                         callback-props={['savings', year, month, header.id, header.type]} 
                         callback={callback} />

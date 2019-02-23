@@ -20,9 +20,9 @@ class SavingsPage extends Component {
     this.state = {
       loading: false,
       updated: false,
-      headersLine1: [],
-      headersLine2: [],
-      inputLine: [],
+      savingsHeadersLine1: [],
+      savingsHeadersLine2: [],
+      savingsInputs: [],
       savings: []
     }
   }
@@ -44,13 +44,13 @@ class SavingsPage extends Component {
         let savings_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
 
         new_state.headers = headers.savings;
-        new_state.headersLine1 = FinanceHelpers.headersLine1(headers.savings);
-        new_state.headersLine2 = FinanceHelpers.headersLine2(headers.savings);
+        new_state.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(headers.savings);
+        new_state.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(headers.savings);
         
         new_state.savings = FinanceHelpers.savings(data, headers);
         new_state.startingCapital = headers.startingCapital;
         new_state.year_headers = savings_headers || {collapsed: {}, goals: {}};
-        new_state.inputLine = FinanceHelpers.inputLine(headers.savings);
+        new_state.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
 
         new_state.bank = this.newBank(new_state);
         new_state.loading = false;
@@ -61,7 +61,14 @@ class SavingsPage extends Component {
   }
 
   newBank = (state) => {
-    return new Bank.Bank(null, state.savings, null, state.startingCapital, state.year_headers, state.inputLine);
+    return new Bank.Bank(
+      null, 
+      state.savings, 
+      null, 
+      state.startingCapital, 
+      state.year_headers, 
+      state.savingsInputs
+    );
   }
 
   updateSavings = (index, indexes, amount) =>{
