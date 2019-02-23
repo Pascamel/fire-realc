@@ -8,7 +8,9 @@ class SavingsTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: _.get(props.year_headers.collapsed, props.year, false)};
+    this.state = {
+      collapsed: _.get(props.bank.year_headers.collapsed, props.year, false)
+    };
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
@@ -20,7 +22,7 @@ class SavingsTableBody extends Component {
   }
 
   render() {
-    const {savings, year, savingsInputs, bank, callback, callbackGoal} = this.props;
+    const { year, bank, callback, callbackGoal } = this.props;
     
     return (
       <tbody>
@@ -28,7 +30,7 @@ class SavingsTableBody extends Component {
           <td className="td-chevron">
             <i className={`fa ${this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} onClick={this.handleClickToggle}></i>
           </td>
-          <td colSpan={savingsInputs.length + 4} className={Display.hideIf(this.state.collapsed)}>
+          <td colSpan={bank.savingsInputs.length + 4} className={Display.hideIf(this.state.collapsed)}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
@@ -40,7 +42,7 @@ class SavingsTableBody extends Component {
               &nbsp;({ bank.monthlyGoal(year, true) }/mo)
             </span>
           </td>
-          {savingsInputs.map((amount, idx) => (
+          {bank.savingsInputs.map((amount, idx) => (
           <td className={Display.showIf(this.state.collapsed)} key={idx}>
             { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
           </td>
@@ -58,10 +60,10 @@ class SavingsTableBody extends Component {
             { Display.amount(bank.goalYearToDate('12', year), true) }
           </td>
         </tr>
-        {Object.entries(savings[year]).map((month, idx) => (
+        {Object.entries(bank.savings[year]).map((month, idx) => (
         <tr key={idx} className={Display.hideIf(this.state.collapsed)}>
           <td>{ month[0] }</td>
-          {savingsInputs.map((amount, idx) => (
+          {bank.savingsInputs.map((amount, idx) => (
           <td key={idx}>
             {amount.type !== 'T' &&
             <FireAmount amount={_.get(month, [1, amount.id, amount.type])} 
@@ -85,7 +87,7 @@ class SavingsTableBody extends Component {
         ))}
         <tr className={`tr-total ${Display.hideIf(this.state.collapsed)}`}>
           <td><i className="fa fa-calendar-plus-o"></i></td>
-          {savingsInputs.map((amount, idx) => (
+          {bank.savingsInputs.map((amount, idx) => (
           <td key={idx}>
             { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
           </td>

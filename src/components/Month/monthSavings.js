@@ -7,8 +7,8 @@ class MonthSavings extends Component {
   constructor (props) {
     super(props);
 
-    let header_label = _(props.savings_headers).keyBy('id').get([props.header.id, 'label'], 'N/A');
-    if (_(props.savings_headers).keyBy('id').get([props.header.id, 'interest'])) {
+    let header_label = _(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'label'], 'N/A');
+    if (_(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'interest'])) {
       header_label += ' > ' + props.header.type;
     }
     

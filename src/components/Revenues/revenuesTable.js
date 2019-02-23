@@ -5,12 +5,12 @@ import RevenuesTableBody from './revenuesTableBody';
 
 class RevenuesTable extends Component {
   render() {
-    const { income } = this.props;
+    const { bank } = this.props;
 
     return (
       <table className="table table-striped table-finances">
         <RevenuesTableHeader {...this.props} />
-        {Object.entries(income).map((year) => (
+        {Object.entries(bank.income).map((year) => (
         <RevenuesTableBody key={year[0]} year={year[0]} {...this.props} />
         ))}
       </table>

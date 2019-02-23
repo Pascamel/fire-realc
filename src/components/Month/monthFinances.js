@@ -10,7 +10,7 @@ class MonthFinances extends Component {
     return (
       <React.Fragment>
         <div className="col">
-          {this.props.savingsInputs.map((header, key) => (
+          {bank.savingsInputs.map((header, key) => (
             <MonthSavings key={key} 
                           header={header}
                           data={_.get(bank.savings, [year, month])}
@@ -19,7 +19,7 @@ class MonthFinances extends Component {
           ))}
         </div>
         <div className="col">
-          {this.props.headersLine.map((header, key) => (
+          {bank.incomeHeaders.map((header, key) => (
             <MonthIncome key={key} 
                          header={header} 
                          data={_.get(bank.income, [year, month, 'income'])} 

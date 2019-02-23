@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 class SavingsTableFooter extends Component {
   render() {
-    const {savingsInputs, bank} = this.props;
+    const {bank} = this.props;
 
     return (
       <tfoot>
         <tr>
           <td><i className="fa fa-university"></i></td>
-          {savingsInputs.map((amount, key) => (
+          {bank.savingsInputs.map((amount, key) => (
           <td className="table-warning" key={key}>
             { bank.grandTotalInstitution(amount.id, amount.type, true) }
           </td>

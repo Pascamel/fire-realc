@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class RevenuesTableHeader extends Component {
   render () {
-    const {headersLine} = this.props;
+    const {bank} = this.props;
 
     return (
       <thead>
@@ -15,7 +15,7 @@ class RevenuesTableHeader extends Component {
         <tr>
           <th></th>
           <th className="separator">Savings</th>
-          {headersLine.map((header) => (
+          {bank.incomeHeaders.map((header) => (
             <th key={header.id} className={header.last ? 'separator' : ''}>{header.label}</th>
           ))}
           <th>Post</th>

@@ -7,7 +7,7 @@ class RevenuesTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: _.get(props.year_headers.collapsed, props.year, false)};
+    this.state = {collapsed: _.get(props.bank.year_headers.collapsed, props.year, false)};
 
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
@@ -19,7 +19,7 @@ class RevenuesTableBody extends Component {
   }
 
   render() {
-    const {income, headersLine, year, bank, callback} = this.props;
+    const {year, bank, callback} = this.props;
 
     return (
       <tbody>
@@ -27,7 +27,7 @@ class RevenuesTableBody extends Component {
           <td className="td-chevron">
             <i className={"fa " + (this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down')} onClick={this.handleClickToggle}></i>
           </td>
-          <td className={Display.hideIf(this.state.collapsed)} colSpan={headersLine.length + 4}>
+          <td className={Display.hideIf(this.state.collapsed)} colSpan={bank.incomeHeaders.length + 4}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
@@ -35,7 +35,7 @@ class RevenuesTableBody extends Component {
           <td className={Display.showIf(this.state.collapsed)}>
             { bank.yearlySavings(year) }
           </td>
-          {headersLine.map((header) => (
+          {bank.incomeHeaders.map((header) => (
           <td key={header.id} className={Display.showIf(this.state.collapsed)}>
             { bank.yearlyIncome(year, header) }
           </td>
@@ -51,11 +51,11 @@ class RevenuesTableBody extends Component {
           </td> 
         </tr> 
 
-        {Object.entries(income[year]).map((month) => (
+        {Object.entries(bank.income[year]).map((month) => (
         <tr className={Display.hideIf(this.state.collapsed)} key={month[0]}>
           <td>{ month[0] }</td>
           <td>{ Display.amount(month[1].savings) }</td>
-          {headersLine.map((header) => (
+          {bank.incomeHeaders.map((header) => (
           <td key={year + '-' + month[0] + '-' + header.id}>
             <FireAmount amount={(month[1].income || {})[header.id]} 
                         callback-props={['income', year, month[0], 'income', header.id]} 
@@ -78,8 +78,8 @@ class RevenuesTableBody extends Component {
         <tr className={Display.hideIf(this.state.collapsed)}>
           <td><i className="fa fa-calendar-plus-o"></i></td>
           <td>{ bank.yearlySavings(year) }</td>
-          {headersLine.map((h) => (
-          <td key={h.id}>{ bank.yearlyIncome(income, year, h) }</td>
+          {bank.incomeHeaders.map((h) => (
+          <td key={h.id}>{ bank.yearlyIncome(year, h) }</td>
           ))}
           <td>{ bank.totalYearPost(year) }</td>
           <td>{ bank.totalYearPre(year) }</td>

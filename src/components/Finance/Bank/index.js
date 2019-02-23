@@ -1,19 +1,71 @@
 import _ from 'lodash';
+import FinanceHelpers from '../../Finance/FinanceHelpers';
 import Display from '../../UI/Display';
 
 class Bank {
-  constructor(income, savings, headersLine, startingCapital, year_headers, savingsInput) {
-    this.income = income;
-    this.savings = savings;
-    this.headersLine = headersLine;
-    this.startingCapital = startingCapital;
-    this.year_headers = year_headers;
-    this.savingsInput = savingsInput;
+  constructor(firebase) {
+    this.loaded = false;
+    this.firebase = firebase;
+  }
+
+  load = () => {
+    var promise = new Promise( (resolve, reject) => {
+      this.firebase.getHeaders().then((snapshotHeaders) => {
+        this.firebase.getSavings().then((snapshotSavings) => {
+          this.firebase.getRevenues().then((snapshotIncome) => {
+
+            let headers = snapshotHeaders.data() || [];
+            let savings_data = _.get(snapshotSavings.data(), 'data', []);
+            let income_data = _.get(snapshotIncome.data(), 'data', []);
+
+            this.income = FinanceHelpers.income(income_data, savings_data, headers);
+            this.savings = FinanceHelpers.savings(savings_data, headers);
+            this.incomeHeaders = FinanceHelpers.incomeHeaders(headers);
+            this.savingsHeaders = headers.savings;
+            this.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(this.savings);
+            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine1(this.savings);
+            this.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
+
+            this.startingCapital = headers.startingCapital;
+            this.year_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
+            // state.savingsInputs
+
+            this.loaded = true;
+
+            resolve(true);
+          }).catch(function(error) {
+            reject(false);
+          });
+        }).catch(function(error) {
+          reject(false);
+        });
+      }).catch(function(error) {
+        reject(false);
+      });
+    });
+
+    return promise;
+  }
+
+  save = () => {
+
+  }
+
+  monthlyGoal = (year, formatted) => {
+    const idxYear = _(this.savings).keys().indexOf(year);
+    if (idxYear < 0) return 0;
+
+    const goal_year = _.get(this.year_headers, ['goals', year], 0);
+    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
+    const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
+
+    if (!formatted) return goal;
+    return Display.amount(goal);
   }
 
   totalMonthPreOrPost = (year, month, isPre) => {
     return _.reduce(this.income[year][month].income, (sum, amount, type) => {
-      const header = _.keyBy(this.headersLine, 'id')[type];
+      const header = _.keyBy(this.incomeHeaders, 'id')[type];
       if (!header || header.pretax !== isPre) return sum;
       return sum + amount / header.count;
     }, 0);
@@ -40,7 +92,7 @@ class Bank {
 
   savingRateMonth = (year, month, formatted) => {
     const i = _.reduce(this.income[year][month].income, (sum, amount, type) => {
-      const header = _.keyBy(this.headersLine, 'id')[type];
+      const header = _.keyBy(this.incomeHeaders, 'id')[type];
       return sum + amount / header.count;
     }, 0);
 
@@ -71,7 +123,7 @@ class Bank {
   totalYearPreOrPost = (year, isPre) => {
     return _.reduce(this.income[year], (sum, month) => {
       return sum + _.reduce(_.get(month, 'income', {}), (sum, amount, type) => {
-        const header = _.keyBy(this.headersLine, 'id')[type];
+        const header = _.keyBy(this.incomeHeaders, 'id')[type];
         if (!header || header.pretax !== isPre) return sum;
         return sum + amount / header.count;
       }, 0);
@@ -93,7 +145,7 @@ class Bank {
   savingRateYear = (year) => {
     let i = _.reduce(this.income[year], (sum, month) => {
       return sum + _.reduce(_.get(month, 'income', {}), (sum, amount, type) => {
-        const header = _.keyBy(this.headersLine, 'id')[type];
+        const header = _.keyBy(this.incomeHeaders, 'id')[type];
         return sum + amount / header.count;
       }, 0);
     }, 0);
@@ -155,17 +207,7 @@ class Bank {
     return _.reduce(m, (v, i) => v + _.get(i, [type], 0), 0);
   };
 
-  monthlyGoal = (year, formatted) => {
-    const idxYear = _(this.savings).keys().indexOf(year);
-    if (idxYear < 0) return 0;
-
-    const goal_year = _.get(this.year_headers, ['goals', year], 0);
-    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
-    const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
-
-    if (!formatted) return goal;
-    return Display.amount(goal);
-  }
+  
 
   goalMonth = (month, year) => {
     const idxYear = _(this.savings).keys().indexOf(year);
@@ -231,7 +273,5 @@ class Bank {
     return Display.amount(value);
   };
 }
-
-export default {
-  Bank
-}
+  
+export default Bank;

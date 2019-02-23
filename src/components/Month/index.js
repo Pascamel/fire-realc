@@ -3,10 +3,8 @@ import { Container, Row } from 'reactstrap';
 import { compose } from 'recompose';
 import _ from 'lodash';
 
-import Bank from '../Finance/Bank';
 import FinanceHelpers from '../Finance/FinanceHelpers';
 import * as ROUTES from '../../constants/routes';
-import * as ERRORS from '../../constants/errors';
 import MonthChart from './monthChart';
 import MonthFinances from './monthFinances';
 import LoadingPanel from '../UI/LoadingPanel';
@@ -14,6 +12,7 @@ import { SavePanelMonth } from '../UI/SavePanel';
 import ErrorPanel from '../UI/ErrorPanel';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
+import Bank from '../Finance/Bank';
 
 
 class MonthPage extends Component {
@@ -23,54 +22,24 @@ class MonthPage extends Component {
     this.state = {
       updated: false,
       loading: true,
+      year: (parseInt(props.match.params.year) || 0).toString(),
+      month: parseInt(props.match.params.month) || 0,
       bank: {}
     };
   }
 
   componentDidMount() {
-    const year = parseInt(this.props.match.params.year) || 0,
-      month = parseInt(this.props.match.params.month) || 0,
-      currentYear = new Date().getFullYear(),
-      currentMonth = new Date().getMonth() + 1,
-      route = ROUTES.MONTH.replace(':year', currentYear).replace(':month', currentMonth);
+    const y = new Date().getFullYear(), 
+      m = new Date().getMonth() + 1,
+      route = ROUTES.MONTH.replace(':year', y).replace(':month', m);
 
-    if (month < 1 || month > 12) this.props.history.push(route);
-    if (year > currentYear) this.props.history.push(route);
+    if (this.state.month < 1 || this.state.month > 12) this.props.history.push(route);
+    if (this.state.year > y) this.props.history.push(route);
 
-    this.setState({month: month, year: year.toString()});
-
-    this.props.firebase.getHeaders().then((snapshotHeaders) => {
-      this.props.firebase.getSavings().then((snapshotSavings) => {
-        this.props.firebase.getRevenues().then((snapshotIncome) => {
-          if (!snapshotHeaders.data()) {
-            this.setState({loading: false, error: ERRORS.NO_HEADERS});
-            return;
-          }
-
-          let headers = snapshotHeaders.data() || [];
-          let savings_data = _.get(snapshotSavings.data(), 'data', []);
-          let income_data = _.get(snapshotIncome.data(), 'data', []);
-          let new_state = {};
-          
-          new_state.startingCapital = headers.startingCapital;
-          
-          new_state.savings = FinanceHelpers.savings(savings_data, headers);
-          new_state.savings_headers = headers.savings;
-          new_state.headersLine = FinanceHelpers.headersLine(headers);
-          new_state.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(headers.savings);
-          new_state.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(headers.savings)
-          
-          new_state.income = FinanceHelpers.income(income_data, savings_data, headers);
-          new_state.income_headers = headers.incomes;
-          new_state.year_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
-          new_state.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
-
-          new_state.bank = this.newBank(new_state);
-          new_state.loading = false;
-          this.setState(new_state);
-        });
-      });
-    });
+    let bank = new Bank(this.props.firebase);
+    bank.load().then(loaded => {
+      this.setState({bank: bank, loading: !loaded});
+    }).catch(function(error) {});
   }
 
   componentDidUpdate(prevProps) {
@@ -87,17 +56,6 @@ class MonthPage extends Component {
 
       this.setState({month: month, year: year.toString()});
     }
-  }
-
-  newBank = (state) => {
-    return new Bank.Bank(
-      state.income, 
-      state.savings, 
-      state.headersLine, 
-      state.startingCapital, 
-      state.year_headers, 
-      state.savingsInputs
-    );
   }
 
   prevMonth = () => {

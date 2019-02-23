@@ -37,7 +37,7 @@ const savingsHeadersLine2 = (savings) => {
     .value();
 }
 
-const headersLine = (headers) => {
+const incomeHeaders = (headers) => {
   return _.map(headers.incomes, (h, idx) => {
     h.last = (idx === headers.incomes.length - 1);
     return h;
@@ -148,7 +148,7 @@ const formatIncomeToSave = (income) => {
 export default {
   savingsHeadersLine1,
   savingsHeadersLine2,
-  headersLine,
+  incomeHeaders,
   savingsInputs,
   savings,
   income,

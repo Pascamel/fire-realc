@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import { compose } from 'recompose';
 import _ from 'lodash';
 
@@ -7,7 +8,6 @@ import LoadingPanel from '../UI/LoadingPanel';
 import SavePanel from '../UI/SavePanel';
 import ErrorPanel from '../UI/ErrorPanel';
 import Bank from '../Finance/Bank';
-import * as ERRORS from '../../constants/errors';
 import FinanceHelpers from '../Finance/FinanceHelpers';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
@@ -18,57 +18,17 @@ class SavingsPage extends Component {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       updated: false,
-      savingsHeadersLine1: [],
-      savingsHeadersLine2: [],
-      savingsInputs: [],
-      savings: []
+      bank: {}
     }
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-
-    this.props.firebase.getHeaders().then((snapshotHeaders) => {
-      this.props.firebase.getSavings().then((snapshotSavings) => {
-
-        if (!snapshotHeaders.data()) {
-          this.setState({loading: false, error: ERRORS.NO_HEADERS});
-          return;
-        }
-
-        let new_state = {};
-        let headers = snapshotHeaders.data() || [];
-        let data = _.get(snapshotSavings.data(), 'data', []);
-        let savings_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
-
-        new_state.headers = headers.savings;
-        new_state.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(headers.savings);
-        new_state.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(headers.savings);
-        
-        new_state.savings = FinanceHelpers.savings(data, headers);
-        new_state.startingCapital = headers.startingCapital;
-        new_state.year_headers = savings_headers || {collapsed: {}, goals: {}};
-        new_state.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
-
-        new_state.bank = this.newBank(new_state);
-        new_state.loading = false;
-
-        this.setState(new_state);
-      });
-    });
-  }
-
-  newBank = (state) => {
-    return new Bank.Bank(
-      null, 
-      state.savings, 
-      null, 
-      state.startingCapital, 
-      state.year_headers, 
-      state.savingsInputs
-    );
+    let bank = new Bank(this.props.firebase);
+    bank.load().then(loaded => {
+      this.setState({bank: bank, loading: !loaded});
+    }).catch(function(error) {});
   }
 
   updateSavings = (index, indexes, amount) =>{
@@ -87,7 +47,7 @@ class SavingsPage extends Component {
     const new_state = this.state;
     new_state.savings = new_savings;
 
-    this.setState({savings: new_savings, bank: this.newBank(new_state), updated: true});
+    // this.setState({savings: new_savings, bank: this.newBank(new_state), updated: true});
   }
 
   updateGoal = (index, indexes, amount) => {
@@ -97,7 +57,7 @@ class SavingsPage extends Component {
     const new_state = this.state;
     new_state.year_headers = new_year_headers;
 
-    this.setState({year_headers: new_year_headers, bank: this.newBank(new_state), updated: true});
+    // this.setState({year_headers: new_year_headers, bank: this.newBank(new_state), updated: true});
   }
 
   saveData = () => {
@@ -121,11 +81,17 @@ class SavingsPage extends Component {
       );
     } else {
       return (
-        <div>
+        <React.Fragment>
           {loading && <LoadingPanel />}
           {!loading && <SavePanel label="Savings" saveClick={this.saveData} updated={this.state.updated} />}
-          {!loading && <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />}
-        </div>
+          {!loading && <Container>
+            <Row>
+              <Col>
+                <SavingsTable {...this.state} callback={this.updateSavings} callbackGoal={this.updateGoal} />
+              </Col>
+            </Row>
+          </Container>}
+        </React.Fragment>
       );
     }
   }
