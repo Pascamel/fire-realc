@@ -17,9 +17,11 @@ class MonthIncome extends Component {
     return (
       <React.Fragment>
         <div className="month-amount">
-          <span className="label-fake-input smaller">{this.state.label}</span>
-          <div className="pull-right pt-2">
+          <span className="label-fake-input smaller mb-1">{this.state.label}</span>
+          <div className="pull-right">
             <FireAmount amount={_.get(data, header.id)} 
+                        extraClassName="label-fake-input"
+                        display-if-zero="true"
                         callback-props={['income', year, month, 'income', header.id]} 
                         callback={callback} />
           </div>

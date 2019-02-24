@@ -10,15 +10,18 @@ class MonthFinances extends Component {
     return (
       <React.Fragment>
         <div className="col">
-          {bank.savingsInputs.map((header, key) => (
+          <h3>Savings</h3>
+          {bank.savingsInputs.filter(header => header.type!=='T').map((header, key) => (
             <MonthSavings key={key} 
                           header={header}
                           data={_.get(bank.savings, [year, month])}
                           callback={callbackSavings}
                           {...this.props} />
+                        
           ))}
         </div>
         <div className="col">
+          <h3>Income</h3>
           {bank.incomeHeaders.map((header, key) => (
             <MonthIncome key={key} 
                          header={header} 

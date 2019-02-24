@@ -16,24 +16,32 @@ class MonthChart extends Component {
     const monthlyGoal = mg;
     const resultMonth = rm;
     const pctMonth = Math.min(100, Math.max(0, 100 + 100 * (rm / mg)));
+    const savingRateMonth = this.props.bank.savingRateMonth(year, month);
+
+    const yearlyGoal = month * monthlyGoal;
     const resultYear = ry;
     const pctYear = Math.min(100, Math.max(0, 100 + 100 * (ry / (mg * month))));
-    const savingRateMonth = this.props.bank.savingRateMonth(year, month);
     const savingRateYear = this.props.bank.savingRateYear(year, month);
     
     return (
       <React.Fragment>
         <Col>
           <Alert color="secondary">
-            <MonthChartProgress result={resultMonth} 
+            <MonthChartProgress label="Month"
+                                result={resultMonth} 
                                 goal={monthlyGoal} 
                                 percentage={pctMonth} />
-            <MonthChartProgress result={resultYear} 
-                                goal={month * monthlyGoal} 
+            <MonthChartProgress label="Year"
+                                result={resultYear} 
+                                goal={yearlyGoal} 
                                 percentage={pctYear} />
             <Row>
               <MonthChartDoughnut savingRate={savingRateMonth} />
               <MonthChartDoughnut savingRate={savingRateYear} />
+            </Row>
+            <Row className="text-center">
+              <Col>Month</Col>
+              <Col>Year</Col>
             </Row>
           </Alert>
         </Col>

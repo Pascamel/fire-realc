@@ -25,11 +25,11 @@ class MonthSavings extends Component {
     return (
       <React.Fragment>
         <div className="month-amount">
-          <span className="label-fake-input smaller mb-1">
-            {this.state.label}
-          </span>
+          <span className="label-fake-input smaller mb-1">{this.state.label}</span>
           <div className="pull-right">
             <FireAmount amount={_.get(data, [header.id, header.type])} 
+                        extraClassName="label-fake-input"
+                        display-if-zero="true"
                         callback-props={['savings', year, month, header.id, header.type]} 
                         callback={callback} />
           </div>

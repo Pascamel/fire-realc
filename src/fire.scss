@@ -70,17 +70,36 @@ label {
     padding: 0.25rem 0.5rem;
     line-height: 1.25;
   }
+
+  &.bold {
+    span.amount {
+      font-weight: bold;
+    }
+  }
+
+  &.label-fake-input {
+    min-width: 95px;
+  }
+
+  &:not(.read-only) {
+    span {
+      cursor: pointer;
+    }
+  }
 }
 
-.amount-container.bold span.amount {
-  font-weight: bold;
+.month-amount {
+  .amount-container {
+    .amount {
+      height: 34px;
+    }
+  }
+
+  &:hover {
+    background: #f7f7f7;
+  }
 }
-.amount-container:not(.read-only) span {
-  cursor: pointer;
-}
-.amount-container:not(.read-only) span:hover {
-  background: rgba(0,0,0,0.1);
-}
+
 
 table.floatThead-table {
   border-top: none;
@@ -186,10 +205,4 @@ table.floatThead-table {
   font-weight: bolder;
   display: inline-block;
   text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
-}
-
-.month-amount {
-  &:hover {
-    background: #f7f7f7;
-  }
 }

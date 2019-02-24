@@ -4,13 +4,13 @@ import Display from '../UI/Display';
 
 class MonthChartProgress extends Component {
   render () {
-    const { result, goal, percentage } = this.props
+    const { result, goal, percentage, label } = this.props
 
     return (
       <React.Fragment>
         <div className="row">
           <div className="col">
-            <span>Month</span>
+            <span>{label}</span>
           </div>
           <div className="col text-right">
             <span className={`${result >= 0 ? 'text-success':'text-danger'} ${Display.hideIf(result === 0)}`}>

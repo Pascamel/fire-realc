@@ -3,9 +3,9 @@ import moment from 'moment';
 const amount = (number, display_if_zero) => {
   if ((!number || number === 0) && !display_if_zero) return '';
 
-  return Number(number).toLocaleString(
+  return Number(number || 0).toLocaleString(
     undefined, 
-    { minimumFractionDigits: 2 }
+    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
   );
 };  
 

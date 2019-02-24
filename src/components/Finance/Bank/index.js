@@ -60,7 +60,7 @@ class Bank {
   }
 
   totalMonthPreOrPost = (year, month, isPre) => {
-    return _.reduce(this.income[year][month].income, (sum, amount, type) => {
+    return _.reduce(_(this.income).get([year, month, 'income'], {}), (sum, amount, type) => {
       const header = _.keyBy(this.incomeHeaders, 'id')[type];
       if (!header || header.pretax !== isPre) return sum;
       return sum + amount / header.count;
@@ -79,21 +79,18 @@ class Bank {
     return Display.amount(value);
   };
 
-  totalMonthIncome = (year, month, formatted) => {
+  totalMonthIncome = (year, month) => {
     const value = this.totalMonthPreOrPost(year, month, true) + this.totalMonthPreOrPost(year, month, false);
     
     return value;
   };
 
   savingRateMonth = (year, month, formatted) => {
-    const i = _.reduce(this.income[year][month].income, (sum, amount, type) => {
-      const header = _.keyBy(this.incomeHeaders, 'id')[type];
-      return sum + amount / header.count;
-    }, 0);
+    const i = this.totalMonthIncome(year, month);
 
     if (i === 0) return formatted ? '?' : 0;
   
-    const value = (this.income[year][month].savings / i) || 0;
+    const value = (this.totalMonthSavings(month, year, 'T') / i) || 0;
 
     if (!formatted) return value;
     return Display.percentage(value * 100);
