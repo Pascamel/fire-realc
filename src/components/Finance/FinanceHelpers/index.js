@@ -1,5 +1,15 @@
 import _ from 'lodash';
 
+const labelSavings = (saving) => {
+  const labels = {
+    'P': 'Principal',
+    'I': 'Interest',
+    'T': 'Total'
+  };
+
+  return _.get(labels, saving, 'N/A');
+}
+
 const savingsHeadersLine1 = (savings) => {
   return _(savings)
     .map((header) => {
@@ -23,8 +33,8 @@ const savingsHeadersLine1 = (savings) => {
 const savingsHeadersLine2 = (savings) => {
   return _(savings)
     .map((header) => {
-      let headers = [header.sublabel || 'Principal'];
-      if (header.interest) _.each(['Interest', 'Total'], (t) => headers.push(t)); 
+      let headers = [header.sublabel || labelSavings('P')];
+      if (header.interest) _.each(['I', 'T'], (t) => headers.push(labelSavings(t))); 
       headers = _.map(headers, (h, idx) => {
         return {
           label: h,
@@ -146,6 +156,7 @@ const formatIncomeToSave = (income) => {
 };
 
 export default {
+  labelSavings,
   savingsHeadersLine1,
   savingsHeadersLine2,
   incomeHeaders,

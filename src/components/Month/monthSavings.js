@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import FireAmount from '../Finance/FireAmount';
+import FinanceHelpers from '../Finance/FinanceHelpers';
 
 
 class MonthSavings extends Component {
   constructor (props) {
     super(props);
 
-    let header_label = _(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'label'], 'N/A');
+    const h = _(props.bank.savingsHeaders).keyBy('id').get([props.header.id], 'N/A');
 
-    if (_(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'interest'])) {
-      header_label += ' > ' + props.header.type;
-    }
+    let header_label = h.label || 'N/A';
+    if (h.sublabel) header_label += ' > ' + h.sublabel;
+    if (h.interest) header_label += ' > ' + FinanceHelpers.labelSavings(props.header.type);
 
     this.state = {
       label: header_label
     }
   }
 
-  render () {
+  render () {    
     const { header, month, year, callback, data } = this.props;
 
     return (

@@ -17,12 +17,12 @@ class MonthChart extends Component {
     const mg = this.props.bank.monthlyGoal(year);
     const rm = this.props.bank.goalMonth(month, year);
     const ry = this.props.bank.goalYearToDate(month, year);
-    
+
     const monthlyGoal = mg;
     const resultMonth = rm;
     const pctMonth = Math.min(100, Math.max(0, 100 + 100 * (rm / mg)));
     const resultYear = ry;
-    const pctYear = Math.min(1000, Math.max(0, 100 + 100 * (ry / (mg * month))));
+    const pctYear = Math.min(100, Math.max(0, 100 + 100 * (ry / (mg * month))));
     const savingRateMonth = this.props.bank.savingRateMonth(year, month);
     const savingRateYear = this.props.bank.savingRateYear(year);
 

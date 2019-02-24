@@ -23,7 +23,7 @@ class Bank {
             this.incomeHeaders = FinanceHelpers.incomeHeaders(headers);
             this.savingsHeaders = headers.savings;
             this.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(this.savingsHeaders);
-            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine1(this.savingsHeaders);
+            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(this.savingsHeaders);
             this.savingsInputs = FinanceHelpers.savingsInputs(this.savingsHeaders);
 
             this.startingCapital = headers.startingCapital;
@@ -224,7 +224,7 @@ class Bank {
     if (month.substring) month = parseInt(month) || 0;
     if (month < 0 || month >= this.savings[year].length) return 0;
 
-    const goal_year = _.get(this.year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
     const goal_by_month = (goal_year - start_of_year) / _.keys(this.savings[year]).length;
     const goal = start_of_year + goal_by_month * (month + _.keys(this.savings[year]).length - 12);

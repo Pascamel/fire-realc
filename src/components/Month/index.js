@@ -84,7 +84,7 @@ class MonthPage extends Component {
     this.setState({month: month, year: year.toString()});
   }
 
-  updateSavings = (index, indexes, amount) =>{
+  updateSavings = (index, indexes, amount) => {
     this.state.bank.updateValue(index, indexes, amount);
     this.setState({bank: this.state.bank, updated: true});
   }
@@ -120,7 +120,6 @@ class MonthPage extends Component {
               <MonthChart {...this.state} />
             </Row>
           </Container>}
-          
         </React.Fragment>
       );
     }

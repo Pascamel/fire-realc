@@ -11,9 +11,6 @@ class FireAmount extends Component {
   constructor(props) {
     super(props);
     
-    this.indexes = props['callback-props'];
-    this.index = this.indexes.shift();
-    
     this.state = {
       readonly: _.last(this.indexes) === 'T',
       extraClassName: props.extraClassName || '',
@@ -37,7 +34,11 @@ class FireAmount extends Component {
       edit: false, amount: 
       this.state.inputValue
     });
-    this.props.callback(this.index, this.indexes, parseFloat(this.state.inputValue) || 0);
+
+    let indexes = this.props['callback-props'];
+    let index = indexes.shift();
+
+    this.props.callback(index, indexes, parseFloat(this.state.inputValue) || 0);
   }
 
   cancelEdit = () => {
