@@ -22,13 +22,13 @@ class Bank {
             this.savings = FinanceHelpers.savings(savings_data, headers);
             this.incomeHeaders = FinanceHelpers.incomeHeaders(headers);
             this.savingsHeaders = headers.savings;
-            this.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(this.savings);
-            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine1(this.savings);
-            this.savingsInputs = FinanceHelpers.savingsInputs(headers.savings);
+            this.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(this.savingsHeaders);
+            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine1(this.savingsHeaders);
+            this.savingsInputs = FinanceHelpers.savingsInputs(this.savingsHeaders);
 
             this.startingCapital = headers.startingCapital;
-            this.year_headers = _.get(snapshotSavings.data(), 'yearly_data', {});
-            // state.savingsInputs
+            this.income_year_headers = _.get(snapshotIncome.data(), 'yearly_data', {collapsed:{}});
+            this.savings_year_headers = _.get(snapshotSavings.data(), 'yearly_data', {collapsed: {}, goals: {}});
 
             this.loaded = true;
 
@@ -47,15 +47,11 @@ class Bank {
     return promise;
   }
 
-  save = () => {
-
-  }
-
   monthlyGoal = (year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
-    const goal_year = _.get(this.year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
 
@@ -213,7 +209,7 @@ class Bank {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
-    const goal_year = _.get(this.year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
     const achieved = this.totalMonthSavings(month, year, 'T');
@@ -271,6 +267,46 @@ class Bank {
     const value = this.totalHolding(month, year);
 
     return Display.amount(value);
+  };
+
+  updateValue = (index, indexes, value) => {
+    _.set(this[index], indexes, value);
+  };
+
+  saveIncome = () => {
+    var promise = new Promise((resolve, reject) => {
+      const payload = {
+        last_update: (new Date()).getTime(),
+        data: JSON.parse(JSON.stringify(FinanceHelpers.formatIncomeToSave(this.income))),
+        yearly_data: JSON.parse(JSON.stringify(this.income_year_headers))
+      };
+
+      this.firebase.setRevenues(payload).then(() => {
+        resolve(true);
+      }).catch((error) => {
+        reject(false);
+      });
+    });
+  
+    return promise;
+  };
+
+  saveSavings = () => {
+    var promise = new Promise((resolve, reject) => {
+      const payload = {
+        last_update: (new Date()).getTime(),
+        data: JSON.parse(JSON.stringify(FinanceHelpers.formatSavingstaToSave(this.savings))),
+        yearly_data: JSON.parse(JSON.stringify(this.savings_year_headers))
+      };
+
+      this.firebase.setSavings(payload).then(() => {
+        resolve(true);
+      }).catch((error) => {
+        reject(false);
+      });
+    });
+    
+    return promise;
   };
 }
   

@@ -10,12 +10,13 @@ const { ENTER, ESC } = Keys;
 class FireAmount extends Component {
   constructor(props) {
     super(props);
-
+    
     this.indexes = props['callback-props'];
     this.index = this.indexes.shift();
     
     this.state = {
       readonly: _.last(this.indexes) === 'T',
+      extraClassName: props.extraClassName || '',
       edit: false, 
       amount: props.amount,
       inputValue: props.amount
@@ -44,21 +45,25 @@ class FireAmount extends Component {
   }
 
   handleKeyUp = (event) => {
-    if (event.key === 'Enter' && this.state.edit) this.confirmEdit();
-    if (event.key === 'Escape' && this.state.edit) this.cancelEdit();
+    if (!this.state.edit) return;
+
+    if (event.key === 'Enter') this.confirmEdit();
+    if (event.key === 'Escape') this.cancelEdit();
   }
 
   @keydown(ENTER, ESC)
   handleKeyDown (event) {
-    if (event.which === ENTER && this.state.edit) this.confirmEdit();
-    if (event.which === ESC && this.state.edit) this.cancelEdit();
+    if (!this.state.edit) return;
+
+    if (event.which === ENTER) this.confirmEdit();
+    if (event.which === ESC) this.cancelEdit();
   }
 
   render() {
-    const { readonly, edit } = this.state;
+    const { readonly, edit, extraClassName } = this.state;
 
     return (
-      <div className={`amount-container ${readonly ? 'read-only' : ''}`} onKeyDown={this.handleKeyDown}>
+      <div className={`amount-container ${readonly ? 'read-only' : ''} ${extraClassName}`} onKeyDown={this.handleKeyDown}>
         {!edit && <span className="amount" onClick={this.setEditMode}>{ Display.amount(this.props.amount) }</span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
                         className="form-control"

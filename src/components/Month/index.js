@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import { Container, Row } from 'reactstrap';
 import { compose } from 'recompose';
-import _ from 'lodash';
 
-import FinanceHelpers from '../Finance/FinanceHelpers';
 import * as ROUTES from '../../constants/routes';
 import MonthChart from './monthChart';
 import MonthFinances from './monthFinances';
@@ -87,53 +85,21 @@ class MonthPage extends Component {
   }
 
   updateSavings = (index, indexes, amount) =>{
-    let new_savings = JSON.parse(JSON.stringify(this.state[index]));
-
-    _.set(new_savings, indexes, amount);
-    const header = _.keyBy(this.state.savings_headers, 'id')[_.nth(indexes, indexes.length - 2)];
-    if (!header) return;
-
-    if (header.interest) {
-      indexes.pop();
-      const value = _.reduce(['P', 'I'], (acc, v) => acc + _.get(new_savings, _.concat(indexes, v)), 0);
-      _.set(new_savings, _.concat(indexes, 'T'), value);
-    }
-    
-    const new_state = this.state;
-    new_state.savings = new_savings;
-
-    this.setState({savings: new_savings, bank: this.newBank(new_state), updated: true});
+    this.state.bank.updateValue(index, indexes, amount);
+    this.setState({bank: this.state.bank, updated: true});
   }
 
   updateIncome = (index, indexes, amount) => {
-    const new_income = JSON.parse(JSON.stringify(this.state[index]));
-    _.set(new_income, indexes, amount);
-    
-    const new_state = this.state;
-    new_state.income = new_income;
-
-    this.setState({income: new_income, bank: this.newBank(new_state), updated: true});
+    this.state.bank.updateValue(index, indexes, amount);
+    this.setState({bank: this.state.bank, updated: true});
   }
 
   saveData = () => {
-    const payload = {
-      last_update: (new Date()).getTime(),
-      data: JSON.parse(JSON.stringify(FinanceHelpers.formatSavingstaToSave(this.state.savings))),
-      yearly_data: JSON.parse(JSON.stringify(this.state.year_headers))
-    };
-
-    this.props.firebase.setSavings(payload).then(() => {
-      
-      const payload = {
-        last_update: (new Date()).getTime(),
-        data: JSON.parse(JSON.stringify(FinanceHelpers.formatIncomeToSave(this.state.income))),
-        yearly_data: JSON.parse(JSON.stringify(this.state.income_headers))
-      }
-  
-      this.props.firebase.setRevenues(payload).then(() => {
+    this.state.bank.saveSavings().then(saved => {
+      this.state.bank.saveIncome().then(saved => {
         this.setState({updated: false});
-      });
-    });
+      }).catch((error) => {});
+    }).catch((error) => {});
   }
 
   render () {

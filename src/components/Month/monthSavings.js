@@ -8,10 +8,11 @@ class MonthSavings extends Component {
     super(props);
 
     let header_label = _(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'label'], 'N/A');
+
     if (_(props.bank.savingsHeaders).keyBy('id').get([props.header.id, 'interest'])) {
       header_label += ' > ' + props.header.type;
     }
-    
+
     this.state = {
       label: header_label
     }

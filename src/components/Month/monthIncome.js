@@ -7,7 +7,7 @@ class MonthIncome extends Component {
     super(props);
 
     this.state = {
-      label: _(props.income_headers).keyBy('id').get([props.header.id, 'label'], 'N/A')
+      label: _(props.bank.incomeHeaders).keyBy('id').get([props.header.id, 'label'], 'N/A')
     };
   }
   
