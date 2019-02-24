@@ -64,7 +64,7 @@ class MonthChart extends Component {
             <div className="row">
               <div className="col">
                 <span>Month</span>
-                <span className={`pull-right ${resultMonth > 0 ? 'text-success':'text-danger'}`}>
+                <span className={`pull-right ${resultMonth >= 0 ? 'text-success':'text-danger'} ${Display.hideIf(resultMonth === 0)}`}>
                   ${Display.amount(Math.abs(resultMonth))} {resultMonth > 0 ? 'over' : 'left'}
                 </span>
               </div>
@@ -72,7 +72,7 @@ class MonthChart extends Component {
             <div className="row">
               <div className="col">
                 <div className="progress mb-2">
-                  <div className={`progress-bar ${resultMonth > 0 ? 'bg-success' : 'bg-danger'}`}
+                  <div className={`progress-bar ${resultMonth >= 0 ? 'bg-success' : 'bg-danger'}`}
                       role="progressbar" 
                       style={{width: pctMonth + '%'}}>
                     ${Display.amount(resultMonth + monthlyGoal)}
@@ -83,7 +83,7 @@ class MonthChart extends Component {
             <div className="row">
               <div className="col">
                 <span>Year</span>
-                <span className={`pull-right ${resultYear > 0 ? 'text-success':'text-danger'}`}>
+                <span className={`pull-right ${resultYear >= 0 ? 'text-success':'text-danger'} ${Display.hideIf(resultYear === 0)}`}>
                   ${Display.amount(Math.abs(resultYear))} {resultYear > 0 ? 'over' : 'left'}
                 </span>
               </div>
@@ -91,7 +91,7 @@ class MonthChart extends Component {
             <div className="row">
               <div className="col">
                 <div className="progress">
-                  <div className={`progress-bar ${resultYear > 0 ? 'bg-success' : 'bg-danger'}`}
+                  <div className={`progress-bar ${resultYear >= 0 ? 'bg-success' : 'bg-danger'}`}
                       role="progressbar" 
                       style={{width: pctYear + '%'}}>
                     ${Display.amount(resultYear + month * monthlyGoal)}

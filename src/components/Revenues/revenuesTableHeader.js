@@ -8,7 +8,7 @@ class RevenuesTableHeader extends Component {
       <thead>
         <tr>
           <th colSpan={2}></th>
-          <th className="separator" colSpan={6}>Revenues</th>
+          <th className="separator" colSpan={bank.incomeHeaders.length}>Revenues</th>
           <th className="separator" colSpan={2}>Total</th>
           <th colSpan={1} style={{width: '70px'}}>Perf</th>
         </tr>
