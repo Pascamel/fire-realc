@@ -32,7 +32,7 @@ class SavingsTableBody extends Component {
               { year }
             </span>
             <span>
-              Begins at <b>{ bank.startOfYearAmount(year) }</b> - Goal is&nbsp;
+              Begins at <b>{ bank.startOfYearAmount(year, true) }</b> - Goal is&nbsp;
               <FireAmount amount={_.get(bank.savings_year_headers, ['goals', year])}
                           extraClassName="bold"
                           callback-props={['savings_year_headers', 'goals', year]}

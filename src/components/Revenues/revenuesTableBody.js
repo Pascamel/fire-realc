@@ -26,13 +26,10 @@ class RevenuesTableBody extends Component {
           <td className="td-chevron">
             <i className={"fa " + (this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down')} onClick={this.handleClickToggle}></i>
           </td>
-          <td className={Display.hideIf(this.state.collapsed)} colSpan={bank.incomeHeaders.length + 4}>
+          <td className={Display.hideIf(this.state.collapsed)} colSpan={bank.incomeHeaders.length + 3}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
-          </td>
-          <td className={Display.showIf(this.state.collapsed)}>
-            { bank.yearlySavings(year) }
           </td>
           {bank.incomeHeaders.map((header) => (
           <td key={header.id} className={Display.showIf(this.state.collapsed)}>
@@ -40,10 +37,10 @@ class RevenuesTableBody extends Component {
           </td>
           ))}
           <td className={Display.showIf(this.state.collapsed)}>
-            { bank.totalYearPost(year) }
+            { bank.totalYearPost(year, true) }
           </td>
           <td className={Display.showIf(this.state.collapsed)}>
-            { bank.totalYearPre(year) }
+            { bank.totalYearPre(year, true) }
           </td>
           <td className={Display.showIf(this.state.collapsed)}>
             { Display.percentage(bank.savingRateYear(year) * 100) }
@@ -53,7 +50,6 @@ class RevenuesTableBody extends Component {
         {Object.entries(bank.income[year]).map((month) => (
         <tr className={Display.hideIf(this.state.collapsed)} key={month[0]}>
           <td>{ month[0] }</td>
-          <td>{ Display.amount(month[1].savings) }</td>
           {bank.incomeHeaders.map((header) => (
           <td key={year + '-' + month[0] + '-' + header.id}>
             <FireAmount amount={(month[1].income || {})[header.id]} 
@@ -63,10 +59,10 @@ class RevenuesTableBody extends Component {
           ))}
           <td className={Display.showIf(bank.totalMonthIncome(year, month[0]) === 0)} colSpan={3}></td>
           <td className={Display.hideIf(bank.totalMonthIncome(year, month[0]) === 0)}>
-            { bank.totalMonthPost(year, month[0]) }
+            { bank.totalMonthPost(year, month[0], true) }
           </td>
           <td className={Display.hideIf(bank.totalMonthIncome(year, month[0]) === 0)}>
-            { bank.totalMonthPre(year, month[0]) }
+            { bank.totalMonthPre(year, month[0], true) }
           </td>
           <td className={`${Display.hideIf(bank.totalMonthIncome(year, month[0]) === 0)} ${Display.goal(bank.savingRateMonth(year, month[0]), 0.5)}`}>
             { bank.savingRateMonth(year, month[0], true) }
@@ -76,12 +72,11 @@ class RevenuesTableBody extends Component {
 
         <tr className={Display.hideIf(this.state.collapsed)}>
           <td><i className="fa fa-calendar-plus-o"></i></td>
-          <td>{ bank.yearlySavings(year) }</td>
           {bank.incomeHeaders.map((h) => (
           <td key={h.id}>{ bank.yearlyIncome(year, h) }</td>
           ))}
-          <td>{ bank.totalYearPost(year) }</td>
-          <td>{ bank.totalYearPre(year) }</td>
+          <td>{ bank.totalYearPost(year, true) }</td>
+          <td>{ bank.totalYearPre(year, true) }</td>
           <td className={Display.goal(bank.savingRateYear(year), 0.5)}>
             { Display.percentage(bank.savingRateYear(year) * 100) }
           </td>
