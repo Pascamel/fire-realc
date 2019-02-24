@@ -7,7 +7,7 @@ const amount = (number, display_if_zero) => {
     undefined, 
     { minimumFractionDigits: 2 }
   );
-};
+};  
 
 const percentage = (number) => {
   return Number(number).toFixed(2) + '%';     
