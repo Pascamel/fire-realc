@@ -178,6 +178,12 @@ table.floatThead-table {
   span.title {
     font-size: 2rem;
     color: #333;
+    display: inline-block;
+    text-align: center;
+    width: calc(100% - 400px);
+    position: absolute;
+    left: 0;
+    margin: 0 200px;
   }
 
   .btn-save {

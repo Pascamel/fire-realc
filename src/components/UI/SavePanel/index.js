@@ -7,12 +7,33 @@ class SavePanel extends Component {
     const { label, updated, saveClick } = this.props;
 
     return (
-      <Container fluid className={`alert ${updated ? 'alert-danger' : 'alert-light'}`}>
+      <Container fluid className={`alert ${updated ? 'alert-warning' : 'alert-light'}`}>
         <Row>
           <Col>
             <Container>
               <Row>
-                <Col>
+                <Col className="text-center">
+
+                  {label === 'Savings' && 
+                  <div className={`btn ${updated ? 'btn-warning' : 'btn-light'} pull-left`}>
+                    todo savings
+                  </div>}
+
+                  {label === 'Revenues' && 
+                  <div className={`btn ${updated ? 'btn-warning' : 'btn-light'} pull-left`}>
+                    todo Revenues
+                  </div>}
+
+                  {label !== 'Savings' && label !== 'Revenues' && label !== 'Settings' && 
+                  <div className="btn-group pull-left">
+                    <button className={`btn ${updated ? 'btn-warning' : 'btn-light'}`} onClick={this.props.prevMonth}>
+                      <i className="fa fa-backward"></i>
+                    </button>
+                    <button className={`btn ${updated ? 'btn-warning' : 'btn-light'}`} onClick={this.props.nextMonth}>  
+                      <i className="fa fa-forward"></i>
+                    </button>
+                  </div>}                
+
                   <span className={Display.showIf(updated)}>
                     <i className="fa fa-lg fa-exclamation-triangle"></i>
                     Updates have been detected. Save now!
@@ -20,7 +41,8 @@ class SavePanel extends Component {
                   <span className={`title ${Display.hideIf(updated)}`}>
                     {label}
                   </span>
-                  <button className={`btn btn-save pull-right ${updated ? 'btn-danger' : ''}`} onClick={saveClick}>
+
+                  <button className={`btn btn-save pull-right ${updated ? 'btn-warning' : 'btn-light'}`} onClick={saveClick}>
                     <i className="fa fa-floppy-o"></i>
                     Save
                   </button>
@@ -34,44 +56,4 @@ class SavePanel extends Component {
   }
 } 
 
-class SavePanelMonth extends Component {
-  render() {
-    const { month, year, updated, saveClick } = this.props;
-
-    return (
-      <Container fluid className={`alert ${updated ? 'alert-danger' : 'alert-light'}`}>
-        <Row>
-          <Col>
-            <Container>
-              <Row>
-                <Col className="text-center">
-                  <div className="btn-group pull-left">
-                    <button className={`btn ${updated ? 'btn-danger' : 'btn-light'}`} onClick={this.props.prevMonth}>
-                      <i className="fa fa-backward"></i>
-                    </button>
-                    <button className={`btn ${updated ? 'btn-danger' : 'btn-light'}`} onClick={this.props.nextMonth}>  
-                      <i className="fa fa-forward"></i>
-                    </button>
-                  </div>
-                  <span className="title">
-                    {Display.labelMonth(month)} {year}
-                  </span>
-                  <button className={`btn btn-save pull-right ${updated ? 'btn-danger' : 'btn-light'}`} onClick={saveClick}>
-                    <i className="fa fa-floppy-o"></i>
-                    Save
-                  </button>
-                </Col>
-              </Row>
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
-
-
-
 export default SavePanel;
-
-export { SavePanelMonth };

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Container, Row, Col } from 'reactstrap';
 import { AuthUserContext, withAuthorization } from '../UserSession/Session';
 import { PasswordForgetForm } from '../UserSession/PasswordForget';
 import PasswordChangeForm from '../UserSession/PasswordChange';
@@ -9,18 +9,18 @@ const AccountPage = () => (
   
   <AuthUserContext.Consumer>
     {(authUser) => (
-      <div className="container">
-        <div className="row">
-          <div className="col">
+      <Container>
+        <Row>
+          <Col>
             <h1>Account: {authUser.email}</h1>
-          </div>
-        </div>
-        <div className="row">
+          </Col>
+        </Row>
+        <Row>
           <PasswordForgetForm />
           <PasswordChangeForm />
           <SignOutPanel />
-        </div>
-      </div>
+        </Row>
+      </Container>
     )}
   </AuthUserContext.Consumer>
 );

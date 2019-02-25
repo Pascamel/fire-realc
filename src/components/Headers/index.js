@@ -140,7 +140,7 @@ class HeadersPage extends Component {
 
     return (
       <React.Fragment>
-      {!loading && <SavePanel label="Savings" saveClick={this.saveHeaders} updated={this.state.updated} />}
+      {!loading && <SavePanel label="Settings" saveClick={this.saveHeaders} updated={this.state.updated} />}
       <div className="container">
         {loading && <LoadingPanel />}
         {!loading && <StartingPoint {...this.state} {...this.callbacks} /> }

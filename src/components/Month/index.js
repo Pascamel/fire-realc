@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { Container, Row } from 'reactstrap';
 import { compose } from 'recompose';
+import Display from '../UI/Display';
 
 import * as ROUTES from '../../constants/routes';
 import MonthChart from './monthChart';
 import MonthFinances from './monthFinances';
 import LoadingPanel from '../UI/LoadingPanel';
-import { SavePanelMonth } from '../UI/SavePanel';
+import SavePanel from '../UI/SavePanel';
 import ErrorPanel from '../UI/ErrorPanel';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../UserSession/Session';
@@ -103,7 +104,7 @@ class MonthPage extends Component {
   }
 
   render () {
-    const { loading, error } = this.state;
+    const { loading, error, month, year } = this.state;
 
     if (error) {
       return (
@@ -113,7 +114,7 @@ class MonthPage extends Component {
       return (
         <React.Fragment>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanelMonth saveClick={this.saveData} prevMonth={this.prevMonth} nextMonth={this.nextMonth} {...this.state}  />}
+          {!loading && <SavePanel label={`${Display.labelMonth(month)} ${year}`} saveClick={this.saveData} prevMonth={this.prevMonth} nextMonth={this.nextMonth} {...this.state}  />}
           {!loading && <Container>
             <Row>
               <MonthFinances {...this.state} callbackSavings={this.updateSavings} callbackIncome={this.updateIncome} />
