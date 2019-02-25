@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { compose } from 'recompose';
+import _ from 'lodash';
 
 import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';
@@ -29,7 +30,7 @@ class SavingsPage extends Component {
     }).catch(function(error) {});
   }
 
-  updateSavings = (index, indexes, amount) =>{
+  updateSavings = (index, indexes, amount) => {
     this.state.bank.updateValue(index, indexes, amount);
     this.setState({bank: this.state.bank, updated: true});
   }
@@ -41,7 +42,7 @@ class SavingsPage extends Component {
   }
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, updated, error } = this.state;
 
     if (error) {
       return (
@@ -51,7 +52,7 @@ class SavingsPage extends Component {
       return (
         <React.Fragment>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label="Savings" saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <SavePanel label="Savings" updated={updated} saveClick={this.saveData} callback={this.updateSavings} {...this.state} />}
           {!loading && <Container>
             <Row>
               <Col>

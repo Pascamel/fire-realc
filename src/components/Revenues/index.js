@@ -41,7 +41,7 @@ class RevenuePage extends Component {
   }
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, error, updated } = this.state;
 
     if (error) {
       return (
@@ -51,7 +51,7 @@ class RevenuePage extends Component {
       return (
         <React.Fragment>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label="Revenues" saveClick={this.saveData} updated={this.state.updated} />}
+          {!loading && <SavePanel label="Revenues" updated={updated} saveClick={this.saveData} callback={this.updateValue} {...this.state} />}
           {!loading && <Container>
             <Row>
               <Col>

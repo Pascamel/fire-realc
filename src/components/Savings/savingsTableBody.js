@@ -35,6 +35,7 @@ class SavingsTableBody extends Component {
               Begins at <b>{ bank.startOfYearAmount(year, true) }</b> - Goal is&nbsp;
               <FireAmount amount={_.get(bank.savings_year_headers, ['goals', year])}
                           extraClassName="bold"
+                          display-decimals={bank.showDecimals}
                           callback-props={['savings_year_headers', 'goals', year]}
                           callback={callback} />
               &nbsp;({ bank.monthlyGoal(year, true) }/mo)
@@ -42,7 +43,7 @@ class SavingsTableBody extends Component {
           </td>
           {bank.savingsInputs.map((amount, idx) => (
           <td className={Display.showIf(this.state.collapsed)} key={idx}>
-            { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
+            { bank.totalInstitution(year, amount.id, amount.type, true) }
           </td>
           ))}
           <td className={Display.showIf(this.state.collapsed)}>
@@ -54,8 +55,8 @@ class SavingsTableBody extends Component {
           <td className={Display.showIf(this.state.collapsed)}>
             Goal
           </td>
-          <td className={`${Display.showIf(this.state.collapsed)} ${Display.goal(bank.goalYearToDate('12', this.props.year), 0)}`}>
-            { Display.amount(bank.goalYearToDate('12', year), true) }
+          <td className={`${Display.showIf(this.state.collapsed)} ${Display.goal(bank.goalYearToDate('12', this.props.year, false), 0)}`}>
+            { bank.goalYearToDate('12', year, true) }
           </td>
         </tr>
         {Object.entries(bank.savings[year]).map((month, idx) => (
@@ -65,21 +66,22 @@ class SavingsTableBody extends Component {
           <td key={idx}>
             {amount.type !== 'T' &&
             <FireAmount amount={_.get(month, [1, amount.id, amount.type])} 
+                        display-decimals={bank.showDecimals}
                         callback-props={['savings', year, month[0], amount.id, amount.type]} 
                         callback={callback} />}
             {amount.type === 'T' && bank && bank.totalMonthInstitution(year, month[0], amount.id)}
           </td>
           ))}
-          <td>{ Display.amount(bank.totalMonthSavings(month[0], year, 'T')) }</td>
-          <td className={Display.showIf(bank.totalMonthSavings(month[0], year, 'T') === 0)} colSpan={3}></td>
-          <td className={Display.hideIf(bank.totalMonthSavings(month[0], year, 'T') === 0)}>
-            { Display.amount(bank.totalHolding(month[0], year)) }
+          <td>{ bank.totalMonthSavings(month[0], year, 'T', true) }</td>
+          <td className={Display.showIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} colSpan={3}></td>
+          <td className={Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)}>
+            { bank.totalHolding(month[0], year, true) }
           </td>
-          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T') === 0)} ${Display.goal(bank.goalMonth(month[0], this.props.year), 0)}`} >
-            { Display.amount(bank.goalMonth(month[0], year), true) }
+          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} ${Display.goal(bank.goalMonth(month[0], this.props.year, false), 0)}`} >
+            { bank.goalMonth(month[0], year, true) }
           </td>
-          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T') === 0)} ${Display.goal(bank.goalYearToDate(month[0], this.props.year), 0)}`} >
-            { Display.amount(bank.goalYearToDate(month[0], year), true) }
+          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} ${Display.goal(bank.goalYearToDate(month[0], this.props.year, false), 0)}`} >
+            { bank.goalYearToDate(month[0], year, true) }
           </td>
         </tr>
         ))}
@@ -87,14 +89,14 @@ class SavingsTableBody extends Component {
           <td><i className="fa fa-calendar-plus-o"></i></td>
           {bank.savingsInputs.map((amount, idx) => (
           <td key={idx}>
-            { Display.amount(bank.totalInstitution(year, amount.id, amount.type), true) }
+            { bank.totalInstitution(year, amount.id, amount.type, true) }
           </td>
           ))}
           <td>Total</td>
-          <td className="table-warning">{ Display.amount(bank.totalHolding('12', year)) }</td>
+          <td className="table-warning">{ bank.totalHolding('12', year, true) }</td>
           <td>Goal</td>
           <td className={Display.goal(bank.goalYearToDate('12', year), 0)}>
-            { Display.amount(bank.goalYearToDate('12', year), true) }
+            { bank.goalYearToDate('12', year, true) }
           </td>
         </tr>
       </tbody>

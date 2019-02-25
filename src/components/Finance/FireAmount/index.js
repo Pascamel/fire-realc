@@ -17,7 +17,8 @@ class FireAmount extends Component {
       edit: false, 
       amount: props.amount,
       inputValue: props.amount,
-      displayIfZero: props['display-if-zero'] || false
+      displayIfZero: props['display-if-zero'] || false,
+      showDecimals: props['display-decimals'] || false
     };
   }
 
@@ -62,12 +63,12 @@ class FireAmount extends Component {
   }
 
   render() {
-    const { readonly, edit, extraClassName, displayIfZero } = this.state;
+    const { readonly, edit, extraClassName, displayIfZero, showDecimals } = this.state;
 
     return (
       <div className={`amount-container ${readonly ? 'read-only' : ''} ${extraClassName}`} onKeyDown={this.handleKeyDown}>
         {!edit && <span className="amount" onClick={this.setEditMode}>
-          { Display.amount(this.props.amount, displayIfZero) }
+          { Display.amount(this.props.amount, displayIfZero, showDecimals) }
         </span>}
         {edit && <input ref={(input) => {if (input != null) input.focus();}}
                         className="form-control"

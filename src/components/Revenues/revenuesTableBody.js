@@ -43,7 +43,7 @@ class RevenuesTableBody extends Component {
             { bank.totalYearPre(year, true) }
           </td>
           <td className={Display.showIf(this.state.collapsed)}>
-            { Display.percentage(bank.savingRateYear(year) * 100) }
+            { bank.savingRateYear(year, 12, true) }
           </td> 
         </tr> 
 
@@ -52,7 +52,8 @@ class RevenuesTableBody extends Component {
           <td>{ month[0] }</td>
           {bank.incomeHeaders.map((header) => (
           <td key={year + '-' + month[0] + '-' + header.id}>
-            <FireAmount amount={(month[1].income || {})[header.id]} 
+            <FireAmount amount={(month[1].income || {})[header.id]}
+                        display-decimals={bank.showDecimals}
                         callback-props={['income', year, month[0], 'income', header.id]} 
                         callback={callback} />
           </td>
@@ -77,8 +78,8 @@ class RevenuesTableBody extends Component {
           ))}
           <td>{ bank.totalYearPost(year, true) }</td>
           <td>{ bank.totalYearPre(year, true) }</td>
-          <td className={Display.goal(bank.savingRateYear(year), 0.5)}>
-            { Display.percentage(bank.savingRateYear(year) * 100) }
+          <td className={Display.goal(bank.savingRateYear(year, 12, false), 0.5)}>
+            { bank.savingRateYear(year, 12, true) }
           </td>
         </tr>
       </tbody>

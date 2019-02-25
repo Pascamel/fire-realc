@@ -5,39 +5,29 @@ import MonthChartDoughnut from './monthChartDoughnut';
 
 
 class MonthChart extends Component {
+
+  clean_pct(pct) {
+    return Math.min(100, Math.max(0, 100 + 100 * pct));
+  }
+
   render() {
-    const month = this.props.month;
-    const year = this.props.year;
-
-    const mg = this.props.bank.monthlyGoal(year);
-    const rm = this.props.bank.goalMonth(month, year);
-    const ry = this.props.bank.goalYearToDate(month, year);
-
-    const monthlyGoal = mg;
-    const resultMonth = rm;
-    const pctMonth = Math.min(100, Math.max(0, 100 + 100 * (rm / mg)));
-    const savingRateMonth = this.props.bank.savingRateMonth(year, month);
-
-    const yearlyGoal = month * monthlyGoal;
-    const resultYear = ry;
-    const pctYear = Math.min(100, Math.max(0, 100 + 100 * (ry / (mg * month))));
-    const savingRateYear = this.props.bank.savingRateYear(year, month);
+    const { month, year, bank } = this.props;
     
     return (
       <React.Fragment>
         <Col>
           <Alert color="secondary">
             <MonthChartProgress label="Month"
-                                result={resultMonth} 
-                                goal={monthlyGoal} 
-                                percentage={pctMonth} />
+                                result={bank.goalMonth(month, year, false)} 
+                                goal={bank.monthlyGoal(year)} 
+                                percentage={this.clean_pct(bank.goalMonth(month, year, false) / bank.monthlyGoal(year))} />
             <MonthChartProgress label="Year"
-                                result={resultYear} 
-                                goal={yearlyGoal} 
-                                percentage={pctYear} />
+                                result={bank.goalYearToDate(month, year, false)} 
+                                goal={month * bank.monthlyGoal(year)} 
+                                percentage={this.clean_pct(bank.goalYearToDate(month, year, false) / bank.monthlyGoal(year) / month)} />
             <Row>
-              <MonthChartDoughnut savingRate={savingRateMonth} />
-              <MonthChartDoughnut savingRate={savingRateYear} />
+              <MonthChartDoughnut savingRate={bank.savingRateMonth(year, month)} />
+              <MonthChartDoughnut savingRate={bank.savingRateYear(year, month, false)} />
             </Row>
             <Row className="text-center">
               <Col>Month</Col>

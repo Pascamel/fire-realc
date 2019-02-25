@@ -6,6 +6,7 @@ class Bank {
   constructor(firebase) {
     this.loaded = false;
     this.firebase = firebase;
+    this.showDecimals = true;
   }
 
   load = () => {
@@ -52,11 +53,11 @@ class Bank {
     if (idxYear < 0) return 0;
 
     const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
-    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
+    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
 
     if (!formatted) return goal;
-    return Display.amount(goal);
+    return Display.amount(goal, false, this.showDecimals);
   }
 
   totalMonthPreOrPost = (year, month, isPre) => {
@@ -70,13 +71,13 @@ class Bank {
   totalMonthPre = (year, month) => {
     const value = this.totalMonthPreOrPost(year, month, true);
 
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   };
 
   totalMonthPost = (year, month) => {
     const value = this.totalMonthPreOrPost(year, month, false);
 
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   };
 
   totalMonthIncome = (year, month) => {
@@ -90,7 +91,7 @@ class Bank {
 
     if (i === 0) return formatted ? '?' : 0;
   
-    const value = (this.totalMonthSavings(month, year, 'T') / i) || 0;
+    const value = (this.totalMonthSavings(month, year, 'T', false) / i) || 0;
 
     if (!formatted) return value;
     return Display.percentage(value * 100);
@@ -101,7 +102,7 @@ class Bank {
       return sum + _.get(month, ['income', h.id], 0);
     }, 0);
 
-    return Display.amount(value, true);
+    return Display.amount(value, true, this.showDecimals);
   };
 
   totalYearPreOrPost = (year, isPre) => {
@@ -118,24 +119,25 @@ class Bank {
     const value = this.totalYearPreOrPost(year, true);
 
     if (!formatted) return value;
-    return Display.amount(value, true);
+    return Display.amount(value, true, this.showDecimals);
   };
 
   totalYearPost = (year, formatted) => {
     const value = this.totalYearPreOrPost(year, false);
 
     if (!formatted) return value;
-    return Display.amount(value, true);
+    return Display.amount(value, true, this.showDecimals);
   };
 
-  savingRateYear = (year, month) => {
+  savingRateYear = (year, month, formatted) => {
     let i = _(_.range(1, month + 1)).reduce((sum, m) => {
       return sum + this.totalMonthIncome(year, m);
     }, 0);
 
-    let s = this.totalHolding(month, year) - this.startOfYearAmount(year, false);
+    let s = this.totalHolding(month, year, false) - this.startOfYearAmount(year, false);
 
-    return s / i;
+    if (!formatted) return s / i;
+    return Display.percentage(100 * s / i);
   };
 
   // Savings
@@ -145,17 +147,15 @@ class Bank {
 
     if (idx <= 0) return this.startingCapital;
     
-    const value = this.totalHolding('12', keys[idx - 1]);
+    const value = this.totalHolding('12', keys[idx - 1], false);
 
     if (!formatted) return value;
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   };
 
   totalHolding = (month, year, formatted) => {
     const keys = _.keys(this.savings), idxYear = keys.indexOf(year);
     if (idxYear < 0) return 0;
-
-    // const yearData = this.savings[year], idxMonth = _.keys(yearData).indexOf(month);
     if (month < 0 || month >= this.savings[year].length) return 0;
 
     const value = _.reduce(this.savings, (sum, data_y, y) => {
@@ -172,37 +172,47 @@ class Bank {
     }, this.startingCapital);
 
     if (!formatted) return value;
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   };
 
   totalMonthInstitution = (year, month, institution) => {
     const value = _.reduce(['P', 'I'], (v, i) => v + _.get(this.savings, [year, month, institution, i], 0), 0);
 
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   }
 
-  totalMonthSavings = (month, year, type) => {
+  totalMonthSavings = (month, year, type, formatted) => {
     const m = _.get(this.savings, [year, month]);
-    if (!m || !Object.keys(m).length) return 0;
+    let value = 0;
 
-    if (type === 'T') return _.reduce(['P', 'I'], (v, i) => v + this.totalMonthSavings(month, year, i), 0);
+    if (!m || !Object.keys(m).length) {
+      value = 0;
+    } else if (type === 'T') {
+      value = _.reduce(['P', 'I'], (v, i) => v + this.totalMonthSavings(month, year, i, false), 0);
+    } else {
+      value = _.reduce(m, (v, i) => v + _.get(i, [type], 0), 0);
+    }
 
-    return _.reduce(m, (v, i) => v + _.get(i, [type], 0), 0);
+    if (!formatted) return value;
+    return Display.amount(value, false, this.showDecimals);
   };
 
-  goalMonth = (month, year) => {
+  goalMonth = (month, year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
     const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
-    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
+    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
-    const achieved = this.totalMonthSavings(month, year, 'T');
+    const achieved = this.totalMonthSavings(month, year, 'T', false);
 
-    return Display.roundFloat(achieved - goal);
+    const value = Display.roundFloat(achieved - goal);
+
+    if (!formatted) return value;
+    return Display.amount(value, true, this.showDecimals);
   };
 
-  goalYearToDate = (month, year) => {
+  goalYearToDate = (month, year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
@@ -210,21 +220,30 @@ class Bank {
     if (month < 0 || month >= this.savings[year].length) return 0;
 
     const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
-    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString());
+    const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal_by_month = (goal_year - start_of_year) / _.keys(this.savings[year]).length;
     const goal = start_of_year + goal_by_month * (month + _.keys(this.savings[year]).length - 12);
     const achieved = this.totalHolding(month, year, false);
 
-    return Display.roundFloat(achieved - goal);
+    const value = Display.roundFloat(achieved - goal);
+
+    if (!formatted) return value;
+    return Display.amount(value, true, this.showDecimals);
   };
 
-  totalInstitution = (year, institution, type) => {
+  totalInstitution = (year, institution, type, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
-    if (idxYear < 0) return 0;
+    let value = 0;
+    if (idxYear < 0) {
+      value = 0;
+    } else if (type === 'T') {
+      value =  _.reduce(['P', 'I'], (v, i) => v + this.totalInstitution(year, institution, i, false), 0);
+    } else {
+      value = _.reduce(this.savings[year], (v, i) => v + _.get(i, [institution, type], 0), 0);
+    }
 
-    if (type === 'T') return _.reduce(['P', 'I'], (v, i) => v + this.totalInstitution(year, institution, i), 0);
-
-    return _.reduce(this.savings[year], (v, i) => v + _.get(i, [institution, type], 0), 0);
+    if (!formatted) return value
+    return Display.amount(value, true, this.showDecimals);
   };
 
   grandTotalInstitution = (institution, type, formatted) => {
@@ -232,14 +251,14 @@ class Bank {
       const value = _.reduce(['P', 'I'], (v, i) => v + this.grandTotalInstitution(institution, i), 0);
 
       if (!formatted) return value;
-      return Display.amount(value, true);
+      return Display.amount(value, true, this.showDecimals);
     }
 
     const sp = (type === 'P' && _.findIndex(this.savingsInputs, (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
-    const ti = _(this.savings).keys().reduce((acc, year) => acc + this.totalInstitution(year, institution, type), 0);
+    const ti = _(this.savings).keys().reduce((acc, year) => acc + this.totalInstitution(year, institution, type, false), 0);
 
     if (!formatted) return sp + ti;
-    return Display.amount(sp + ti, true);
+    return Display.amount(sp + ti, true, this.showDecimals);
   };
 
   grandTotalHolding = () => {
@@ -251,11 +270,15 @@ class Bank {
 
     const value = this.totalHolding(month, year);
 
-    return Display.amount(value);
+    return Display.amount(value, false, this.showDecimals);
   };
 
   updateValue = (index, indexes, value) => {
-    _.set(this[index], indexes, value);
+    if (indexes.length > 0) {
+      _.set(this[index], indexes, value);
+    } else {
+      _.set(this, [index], value);
+    }
   };
 
   saveIncome = () => {

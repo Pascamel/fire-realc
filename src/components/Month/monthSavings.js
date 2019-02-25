@@ -20,7 +20,7 @@ class MonthSavings extends Component {
   }
 
   render () {    
-    const { header, month, year, callback, data } = this.props;
+    const { header, month, year, callback, data, bank } = this.props;
 
     return (
       <React.Fragment>
@@ -30,6 +30,7 @@ class MonthSavings extends Component {
             <FireAmount amount={_.get(data, [header.id, header.type])} 
                         extraClassName="label-fake-input"
                         display-if-zero="true"
+                        display-decimals={bank.showDecimals}
                         callback-props={['savings', year, month, header.id, header.type]} 
                         callback={callback} />
           </div>

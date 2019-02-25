@@ -114,7 +114,7 @@ class MonthPage extends Component {
       return (
         <React.Fragment>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label={`${Display.labelMonth(month)} ${year}`} saveClick={this.saveData} prevMonth={this.prevMonth} nextMonth={this.nextMonth} {...this.state}  />}
+          {!loading && <SavePanel label={`${Display.labelMonth(month)} ${year}`} saveClick={this.saveData} prevMonth={this.prevMonth} nextMonth={this.nextMonth} {...this.state} />}
           {!loading && <Container>
             <Row>
               <MonthFinances {...this.state} callbackSavings={this.updateSavings} callbackIncome={this.updateIncome} />

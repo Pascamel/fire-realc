@@ -1,11 +1,13 @@
 import moment from 'moment';
 
-const amount = (number, display_if_zero) => {
+const amount = (number, display_if_zero, show_decimals) => {
   if ((!number || number === 0) && !display_if_zero) return '';
 
   return Number(number || 0).toLocaleString(
-    undefined, 
-    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    undefined, { 
+      minimumFractionDigits: show_decimals ? 2 : 0,
+      maximumFractionDigits: show_decimals ? 2 : 0
+    }
   );
 };  
 
