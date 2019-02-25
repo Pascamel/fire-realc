@@ -9,7 +9,7 @@ class MonthFinances extends Component {
 
     return (
       <React.Fragment>
-        <div className="col">
+        <div className="col-sm">
           <h3>Savings</h3>
           {bank.savingsInputs.filter(header => header.type!=='T').map((header, key) => (
             <MonthSavings key={key} 
@@ -20,7 +20,7 @@ class MonthFinances extends Component {
                         
           ))}
         </div>
-        <div className="col">
+        <div className="col-sm">
           <h3>Income</h3>
           {bank.incomeHeaders.map((header, key) => (
             <MonthIncome key={key} 

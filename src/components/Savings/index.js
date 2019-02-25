@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { compose } from 'recompose';
-import _ from 'lodash';
 
 import SavingsTable from './savingsTable';
 import LoadingPanel from '../UI/LoadingPanel';

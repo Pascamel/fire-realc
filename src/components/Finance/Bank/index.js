@@ -6,7 +6,6 @@ class Bank {
   constructor(firebase) {
     this.loaded = false;
     this.firebase = firebase;
-    this.showDecimals = true;
   }
 
   load = () => {
@@ -30,6 +29,8 @@ class Bank {
             this.startingCapital = headers.startingCapital;
             this.income_year_headers = _.get(snapshotIncome.data(), 'yearly_data', {collapsed:{}});
             this.savings_year_headers = _.get(snapshotSavings.data(), 'yearly_data', {collapsed: {}, goals: {}});
+
+            this.showDecimals = !snapshotSavings.data().hideDecimals;
 
             this.loaded = true;
 
@@ -304,7 +305,8 @@ class Bank {
       const payload = {
         last_update: (new Date()).getTime(),
         data: JSON.parse(JSON.stringify(FinanceHelpers.formatSavingstaToSave(this.savings))),
-        yearly_data: JSON.parse(JSON.stringify(this.savings_year_headers))
+        yearly_data: JSON.parse(JSON.stringify(this.savings_year_headers)),
+        hideDecimals: !this.showDecimals
       };
 
       this.firebase.setSavings(payload).then(() => {
