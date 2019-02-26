@@ -18,7 +18,7 @@ class ButtonDecimals extends Component {
   }
 
   clickDecimal(decimal) {
-    this.props.callback('showDecimals', [], decimal);
+    this.props.callback('showDecimals', [], decimal, false);
   }
 
   render () {

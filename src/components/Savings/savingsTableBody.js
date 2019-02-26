@@ -15,7 +15,7 @@ class SavingsTableBody extends Component {
   handleClickToggle() {
     const newValue = !this.state.collapsed;
     this.setState({collapsed: newValue});
-    this.props.callback('savings_year_headers', ['collapsed', this.props.year], newValue);
+    this.props.callback('savings_year_headers', ['collapsed', this.props.year], newValue, false);
   }
 
   render() {

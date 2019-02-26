@@ -27,10 +27,13 @@ class Bank {
             this.savingsInputs = FinanceHelpers.savingsInputs(this.savingsHeaders);
 
             this.startingCapital = headers.startingCapital;
-            this.income_year_headers = _.get(snapshotIncome.data(), 'yearly_data', {collapsed:{}});
+            this.income_year_headers = {collapsed: {}};
             this.savings_year_headers = _.get(snapshotSavings.data(), 'yearly_data', {collapsed: {}, goals: {}});
 
-            this.showDecimals = !snapshotSavings.data().hideDecimals;
+            if (!this.savings_year_headers.collapsed) this.savings_year_headers.collapsed = {};            
+
+            // this.showDecimals = !snapshotSavings.data().hideDecimals;
+            this.loadLocalStorage();
 
             this.loaded = true;
 
@@ -48,6 +51,22 @@ class Bank {
 
     return promise;
   }
+
+  loadLocalStorage = () => {
+    _.each(JSON.parse(localStorage.getItem('savings_collapsed', '{}')), (value, key) => {
+      this.savings_year_headers.collapsed[key] = value;
+    });
+    _.each(JSON.parse(localStorage.getItem('income_collapsed', '{}')), (value, key) => {
+      this.income_year_headers.collapsed[key] = value;
+    });
+    this.showDecimals = (parseInt(localStorage.getItem('show_decimals') || '1') > 0);
+  };
+
+  saveLocalStorage = () => {
+    localStorage.setItem('savings_collapsed', JSON.stringify(this.savings_year_headers.collapsed));
+    localStorage.setItem('income_collapsed', JSON.stringify(this.income_year_headers.collapsed));
+    localStorage.setItem('show_decimals', this.showDecimals ? '1' : '0');
+  };
 
   monthlyGoal = (year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);

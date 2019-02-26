@@ -39,7 +39,7 @@ class FireAmount extends Component {
     let indexes = this.props['callback-props'];
     let index = indexes.shift();
 
-    this.props.callback(index, indexes, parseFloat(this.state.inputValue) || 0);
+    this.props.callback(index, indexes, parseFloat(this.state.inputValue) || 0, true);
   }
 
   cancelEdit = () => {

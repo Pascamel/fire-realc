@@ -29,9 +29,14 @@ class SavingsPage extends Component {
     }).catch(function(error) {});
   }
 
-  updateSavings = (index, indexes, amount) => {
+  updateValue = (index, indexes, amount, updatedState) => {
     this.state.bank.updateValue(index, indexes, amount);
-    this.setState({bank: this.state.bank, updated: true});
+    if (updatedState) {
+      this.setState({bank: this.state.bank, updated: true});
+    } else {
+      this.setState({bank: this.state.bank});
+      this.state.bank.saveLocalStorage();
+    }
   }
 
   saveData = () => {
@@ -51,11 +56,11 @@ class SavingsPage extends Component {
       return (
         <React.Fragment>
           {loading && <LoadingPanel />}
-          {!loading && <SavePanel label="Savings" updated={updated} saveClick={this.saveData} callback={this.updateSavings} {...this.state} />}
+          {!loading && <SavePanel label="Savings" updated={updated} saveClick={this.saveData} callback={this.updateValue} {...this.state} />}
           {!loading && <Container>
             <Row>
               <Col>
-                <SavingsTable {...this.state} callback={this.updateSavings} />
+                <SavingsTable {...this.state} callback={this.updateValue} />
               </Col>
             </Row>
           </Container>}

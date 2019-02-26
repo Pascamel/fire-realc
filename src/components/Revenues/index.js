@@ -29,9 +29,14 @@ class RevenuePage extends Component {
     }).catch(function(error) {});
   }
 
-  updateValue = (index, indexes, amount) => {  
+  updateValue = (index, indexes, amount, updatedState) => {  
     this.state.bank.updateValue(index, indexes, amount);
-    this.setState({bank: this.state.bank, updated: true});
+    if (updatedState) {
+      this.setState({bank: this.state.bank, updated: true});
+    } else {
+      this.setState({bank: this.state.bank});
+      this.state.bank.saveLocalStorage();
+    }
   }
 
   saveData = () => {
