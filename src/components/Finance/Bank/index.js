@@ -27,12 +27,11 @@ class Bank {
             this.savingsInputs = FinanceHelpers.savingsInputs(this.savingsHeaders);
 
             this.startingCapital = headers.startingCapital;
-            this.income_year_headers = {collapsed: {}};
-            this.savings_year_headers = _.get(snapshotSavings.data(), 'yearly_data', {collapsed: {}, goals: {}});
+            this.incomeYearHeaders = {collapsed: {}};
+            this.savingsYearHeaders = _.get(snapshotSavings.data(), 'yearly_data', {collapsed: {}, goals: {}});
+            this.savingsHeadersHidden = {};
 
-            if (!this.savings_year_headers.collapsed) this.savings_year_headers.collapsed = {};            
-
-            // this.showDecimals = !snapshotSavings.data().hideDecimals;
+            if (!this.savingsYearHeaders.collapsed) this.savingsYearHeaders.collapsed = {};
             this.loadLocalStorage();
 
             this.loaded = true;
@@ -54,25 +53,32 @@ class Bank {
 
   loadLocalStorage = () => {
     _.each(JSON.parse(localStorage.getItem('savings_collapsed', '{}')), (value, key) => {
-      this.savings_year_headers.collapsed[key] = value;
+      this.savingsYearHeaders.collapsed[key] = value;
     });
     _.each(JSON.parse(localStorage.getItem('income_collapsed', '{}')), (value, key) => {
-      this.income_year_headers.collapsed[key] = value;
+      this.incomeYearHeaders.collapsed[key] = value;
+    });
+    _.each(JSON.parse(localStorage.getItem('savings_hidden', '{}')), (value, key) => {
+      if (!this.savingsHeadersHidden[key]) this.savingsHeadersHidden[key] = {};
+      _.each(value, (v, t) => {
+        this.savingsHeadersHidden[key][t] = v;
+      });
     });
     this.showDecimals = (parseInt(localStorage.getItem('show_decimals') || '1') > 0);
   };
 
   saveLocalStorage = () => {
-    localStorage.setItem('savings_collapsed', JSON.stringify(this.savings_year_headers.collapsed));
-    localStorage.setItem('income_collapsed', JSON.stringify(this.income_year_headers.collapsed));
+    localStorage.setItem('savings_collapsed', JSON.stringify(this.savingsYearHeaders.collapsed));
+    localStorage.setItem('income_collapsed', JSON.stringify(this.incomeYearHeaders.collapsed));
     localStorage.setItem('show_decimals', this.showDecimals ? '1' : '0');
+    localStorage.setItem('savings_hidden', JSON.stringify(this.savingsHeadersHidden));
   };
 
   monthlyGoal = (year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
-    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savingsYearHeaders, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
 
@@ -221,7 +227,7 @@ class Bank {
     const idxYear = _(this.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
 
-    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savingsYearHeaders, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal = (goal_year - start_of_year) /  _.keys(this.savings[year]).length;
     const achieved = this.totalMonthSavings(month, year, 'T', false);
@@ -239,7 +245,7 @@ class Bank {
     if (month.substring) month = parseInt(month) || 0;
     if (month < 0 || month >= this.savings[year].length) return 0;
 
-    const goal_year = _.get(this.savings_year_headers, ['goals', year], 0);
+    const goal_year = _.get(this.savingsYearHeaders, ['goals', year], 0);
     const start_of_year = (idxYear === 0) ? this.startingCapital : this.totalHolding('12', (parseInt(year) - 1).toString(), false);
     const goal_by_month = (goal_year - start_of_year) / _.keys(this.savings[year]).length;
     const goal = start_of_year + goal_by_month * (month + _.keys(this.savings[year]).length - 12);
@@ -306,7 +312,7 @@ class Bank {
       const payload = {
         last_update: (new Date()).getTime(),
         data: JSON.parse(JSON.stringify(FinanceHelpers.formatIncomeToSave(this.income))),
-        yearly_data: JSON.parse(JSON.stringify(this.income_year_headers))
+        yearly_data: JSON.parse(JSON.stringify(this.incomeYearHeaders))
       };
 
       this.firebase.setRevenues(payload).then(() => {
@@ -324,7 +330,7 @@ class Bank {
       const payload = {
         last_update: (new Date()).getTime(),
         data: JSON.parse(JSON.stringify(FinanceHelpers.formatSavingstaToSave(this.savings))),
-        yearly_data: JSON.parse(JSON.stringify(this.savings_year_headers)),
+        yearly_data: JSON.parse(JSON.stringify(this.savingsYearHeaders)),
         hideDecimals: !this.showDecimals
       };
 

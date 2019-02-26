@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Display from '../../UI/Display';
-import { Row, Col, Container, ButtonGroup } from 'reactstrap';
+import { Row, Col, Container, ButtonGroup, Button } from 'reactstrap';
 
 import ButtonColumnsFilter from './buttonColumnsFilter';
 import ButtonDecimals from './buttonDecimals';
@@ -28,12 +28,12 @@ class SavePanel extends Component {
 
                   {label !== 'Savings' && label !== 'Revenues' && label !== 'Settings' && 
                   <ButtonGroup className="pull-left">
-                    <button className={`btn ${updated ? 'btn-warning' : 'btn-light'}`} onClick={this.props.prevMonth}>
+                    <Button color={updated ? 'warning' : 'light'} onClick={this.props.prevMonth}>
                       <i className="fa fa-backward"></i>
-                    </button>
-                    <button className={`btn ${updated ? 'btn-warning' : 'btn-light'}`} onClick={this.props.nextMonth}>  
+                    </Button>
+                    <Button color={updated ? 'warning' : 'light'} onClick={this.props.nextMonth}>
                       <i className="fa fa-forward"></i>
-                    </button>
+                    </Button>
                   </ButtonGroup>}                
 
                   <span className={Display.showIf(updated)}>

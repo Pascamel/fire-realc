@@ -8,14 +8,14 @@ class SavingsTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: _.get(props.bank.savings_year_headers.collapsed, props.year, false)};
+    this.state = {collapsed: _.get(props.bank.savingsYearHeaders.collapsed, props.year, false)};
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
 
   handleClickToggle() {
     const newValue = !this.state.collapsed;
     this.setState({collapsed: newValue});
-    this.props.callback('savings_year_headers', ['collapsed', this.props.year], newValue, false);
+    this.props.callback('savingsYearHeaders', ['collapsed', this.props.year], newValue, false);
   }
 
   render() {
@@ -33,10 +33,10 @@ class SavingsTableBody extends Component {
             </span>
             <span>
               Begins at <b>{ bank.startOfYearAmount(year, true) }</b> - Goal is&nbsp;
-              <FireAmount amount={_.get(bank.savings_year_headers, ['goals', year])}
+              <FireAmount amount={_.get(bank, ['savingsYearHeaders', 'goals', year])}
                           extraClassName="bold"
                           display-decimals={bank.showDecimals}
-                          callback-props={['savings_year_headers', 'goals', year]}
+                          callback-props={['savingsYearHeaders', 'goals', year]}
                           callback={callback} />
               &nbsp;({ bank.monthlyGoal(year, true) }/mo)
             </span>

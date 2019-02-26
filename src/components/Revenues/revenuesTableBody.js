@@ -7,14 +7,14 @@ class RevenuesTableBody extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: _.get(props.bank.income_year_headers, ['collapsed', props.year], false)};
+    this.state = {collapsed: _.get(props.bank.incomeYearHeaders, ['collapsed', props.year], false)};
     this.handleClickToggle = this.handleClickToggle.bind(this);
   }
 
   handleClickToggle() {
     const newValue = !this.state.collapsed;
     this.setState({collapsed: newValue});
-    this.props.callback('income_year_headers', ['collapsed', this.props.year], newValue, false);
+    this.props.callback('incomeYearHeaders', ['collapsed', this.props.year], newValue, false);
   }
 
   render() {

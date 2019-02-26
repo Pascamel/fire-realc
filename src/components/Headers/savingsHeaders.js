@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col, Button } from 'reactstrap';
 import SavingsHeader from './savingsHeader';
 import Display from '../UI/Display';
 
@@ -13,26 +14,26 @@ class SavingsHeaders extends Component {
 
     return (
       <React.Fragment>
-        <div className="row">
-          <div className="col mt-4">
+        <Row>
+          <Col className="mt-4">
             <h3>Savings</h3>
-          </div>
-        </div>
-        <div className={`row ${Display.showIf(!headers.savings.length)}`}>
-          <div className="col">
+          </Col>
+        </Row>
+        <Row className={Display.showIf(!headers.savings.length)}>
+          <Col>
             No headers
-          </div>
-        </div>
+          </Col>
+        </Row>
         {headers.savings.map((header, key) => (
           <SavingsHeader key={key} header={header} index={key} {...this.props} />
         ))}
-        <div className="row">
-          <div className="col">
-            <button type="button" className="btn btn-light btn-block" onClick={this.newHeader}>
-              Add new
-            </button>
-          </div>
-        </div>
+        <Row>
+          <Col>
+            <Button color="light" block={true} onClick={this.newHeader}>
+              Add New
+            </Button>
+          </Col>
+        </Row>
       </React.Fragment>
     );
   }
