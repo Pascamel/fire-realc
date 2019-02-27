@@ -8,7 +8,7 @@ class SavingsTableFooter extends Component {
       <tfoot>
         <tr>
           <td><i className="fa fa-university"></i></td>
-          {bank.savingsInputs.map((amount, key) => (
+          {bank.savingsInputs(true).map((amount, key) => (
           <td className="table-warning" key={key}>
             { bank.grandTotalInstitution(amount.id, amount.type, true) }
           </td>

@@ -10,15 +10,27 @@ const labelSavings = (saving) => {
   return _.get(labels, saving, 'N/A');
 }
 
-const savingsHeadersLine1 = (savings) => {
+const hashHiddenColumns = (hidden) => {
+  return _(hidden)
+    .reduce((acc, value, key) => {
+      const c = _.reduce(value, (acc, v) => acc + v ? 1 : 0, 0);
+      if (c > 0) acc[key] = c;
+      return acc;
+    }, {});
+}
+
+const savingsHeadersLine1 = (savings, hidden) => {
+  const h = hashHiddenColumns(hidden);
+
   return _(savings)
     .map((header) => {
       return {
         label: header.label,
         icon: header.icon,
-        weight: header.interest ? 3 : 1
+        weight: (header.interest ? 3 : 1) - _.get(h, header.id, 0)
       };
     })
+    .filter((header) => header.weight > 0)
     .groupBy('label')
     .map((header, key) => {
       return {
@@ -30,11 +42,19 @@ const savingsHeadersLine1 = (savings) => {
     .value();
 }
 
-const savingsHeadersLine2 = (savings) => {
+const savingsHeadersLine2 = (savings, hidden) => {
   return _(savings)
     .map((header) => {
-      let headers = [header.sublabel || labelSavings('P')];
-      if (header.interest) _.each(['I', 'T'], (t) => headers.push(labelSavings(t))); 
+      let headers = [];
+
+      if (!_.get(hidden, [header.id, 'P'], false)) headers.push(header.sublabel || labelSavings('P'));
+
+      if (header.interest) {
+        _.each(['I', 'T'], (t) => {
+          if (!_.get(hidden, [header.id, t], false)) headers.push(labelSavings(t));
+        }); 
+      }
+
       headers = _.map(headers, (h, idx) => {
         return {
           label: h,
@@ -54,7 +74,7 @@ const incomeHeaders = (headers) => {
   });
 }
 
-const savingsInputs = (savings) => {
+const savingsInputs = (savings, hidden) => {
   return _(savings)
     .map((header) => {
       let headers = [{id: header.id, type: 'P'}];
@@ -63,6 +83,7 @@ const savingsInputs = (savings) => {
       return headers;
     })
     .flatMap()
+    .filter(header => !_.get(hidden, [header.id, header.type], false))
     .value();
 }
 

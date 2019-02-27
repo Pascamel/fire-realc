@@ -11,7 +11,7 @@ class MonthFinances extends Component {
       <React.Fragment>
         <div className="col-sm">
           <h3>Savings</h3>
-          {bank.savingsInputs.filter(header => header.type!=='T').map((header, key) => (
+          {bank.savingsInputs(false).filter(header => header.type!=='T').map((header, key) => (
             <MonthSavings key={key} 
                           header={header}
                           data={_.get(bank.savings, [year, month])}

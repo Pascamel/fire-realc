@@ -9,7 +9,7 @@ class SavingsTableHeader extends Component {
       <thead>
         <tr>
           <th></th>
-          {bank.savingsHeadersLine1.map((h1, idx) => (
+          {bank.savingsHeadersLine1().map((h1, idx) => (
           <th className="separator" colSpan={h1.weight} key={idx}>
             <span className={Display.hideIf(h1.icon)}>{h1.label}</span>
             <img src={h1.icon} alt="Institution" width="16" className={Display.showIf(h1.icon)} />
@@ -20,7 +20,7 @@ class SavingsTableHeader extends Component {
         </tr>
         <tr>
           <th></th>
-          {bank.savingsHeadersLine2.map((h2, idx) => (
+          {bank.savingsHeadersLine2().map((h2, idx) => (
           <th key={idx} className={h2.last ? 'separator' : ''}>{h2.label}</th>
           ))}
           <th>Monthly</th>

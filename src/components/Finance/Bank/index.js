@@ -22,9 +22,6 @@ class Bank {
             this.savings = FinanceHelpers.savings(savings_data, headers);
             this.incomeHeaders = FinanceHelpers.incomeHeaders(headers);
             this.savingsHeaders = headers.savings;
-            this.savingsHeadersLine1 = FinanceHelpers.savingsHeadersLine1(this.savingsHeaders);
-            this.savingsHeadersLine2 = FinanceHelpers.savingsHeadersLine2(this.savingsHeaders);
-            this.savingsInputs = FinanceHelpers.savingsInputs(this.savingsHeaders);
 
             this.startingCapital = headers.startingCapital;
             this.incomeYearHeaders = {collapsed: {}};
@@ -73,6 +70,18 @@ class Bank {
     localStorage.setItem('show_decimals', this.showDecimals ? '1' : '0');
     localStorage.setItem('savings_hidden', JSON.stringify(this.savingsHeadersHidden));
   };
+
+  savingsHeadersLine1 = () => {
+    return FinanceHelpers.savingsHeadersLine1(this.savingsHeaders, this.savingsHeadersHidden);
+  }
+
+  savingsHeadersLine2 = () => {
+    return FinanceHelpers.savingsHeadersLine2(this.savingsHeaders, this.savingsHeadersHidden);
+  } 
+
+  savingsInputs = (filter) => {
+    return FinanceHelpers.savingsInputs(this.savingsHeaders, filter ? this.savingsHeadersHidden : {});
+  }
 
   monthlyGoal = (year, formatted) => {
     const idxYear = _(this.savings).keys().indexOf(year);
@@ -280,7 +289,7 @@ class Bank {
       return Display.amount(value, true, this.showDecimals);
     }
 
-    const sp = (type === 'P' && _.findIndex(this.savingsInputs, (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
+    const sp = (type === 'P' && _.findIndex(this.savingsInputs(false), (o) => { return o.id === institution; }) === 0) ? this.startingCapital : 0;
     const ti = _(this.savings).keys().reduce((acc, year) => acc + this.totalInstitution(year, institution, type, false), 0);
 
     if (!formatted) return sp + ti;

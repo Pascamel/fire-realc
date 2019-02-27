@@ -28,11 +28,11 @@ class ButtonColumnsFilter extends Component {
           <i className="fa fa-columns"></i>
         </DropdownToggle>
         <DropdownMenu>
-          {bank.savingsInputs.filter(header => header.type!=='TTT').map((header, key) => (
+          {bank.savingsInputs(false).filter(header => header.type!=='TTT').map((header, key) => (
             <ClickableItem key={key} header={header} {...this.props} />
           ))}
-          <DropdownItem divider />
-          <ClickableItem header={{id: 'total', type:'T'}} bank={bank} />
+          {/* <DropdownItem divider />
+          <ClickableItem header={{id: 'total', type:'T'}} bank={bank} /> */}
         </DropdownMenu>
       </Dropdown>
     );
@@ -42,11 +42,10 @@ class ButtonColumnsFilter extends Component {
 class ClickableItem extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {hidden: _.get(props.bank, ['savingsHeadersHidden', this.props.header.id, this.props.header.type], false)};
-
+    
+    let hl = '';
     if (props.header.id === 'total') {
-      this.state.header_label = 'Totals';
+      hl = 'Totals';
     } else {
       const h = _(props.bank.savingsHeaders).keyBy('id').get([props.header.id], 'N/A');
 
@@ -54,20 +53,25 @@ class ClickableItem extends Component {
       if (h.sublabel) header_label += ' > ' + h.sublabel;
       if (h.interest) header_label += ' > ' + FinanceHelpers.labelSavings(props.header.type);
 
-      this.state.header_label = header_label;
+      hl = header_label;
     }
+
+    this.state = {
+      header_label: hl,
+      hidden: _.get(props.bank, ['savingsHeadersHidden', this.props.header.id, this.props.header.type], false)
+    };
+
+    this.clickColumn = this.clickColumn.bind(this);
   }
 
   clickColumn () {
+    this.props.callback('savingsHeadersHidden', [this.props.header.id, this.props.header.type], !this.state.hidden, false);
     this.setState({hidden: !this.state.hidden});
-    this.props.callback('savingsHeadersHidden', [this.props.header.id, this.props.header.type], true, false);
   }
 
   render() {
-    const {header} = this.props;
-
     return (
-      <DropdownItem onClick={this.clickColumn} className={this.state.hidden ? 'text-muted' : ''}>
+      <DropdownItem toggle={false} onClick={this.clickColumn} className={this.state.hidden ? 'text-muted' : ''}>
         <i className={`fa mr-2 ${this.state.hidden ? 'fa-eye-slash' : 'fa-eye'}`}></i>
         {this.state.header_label}
       </DropdownItem>
