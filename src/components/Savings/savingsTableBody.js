@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import Display from '../UI/Display';
 import FireAmount from '../Finance/FireAmount';
+import FireTD from '../UI/FireTD';
 
 class SavingsTableBody extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class SavingsTableBody extends Component {
           <td className="td-chevron">
             <i className={`fa ${this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} onClick={this.handleClickToggle}></i>
           </td>
-          <td colSpan={bank.savingsInputs(true).length + 4} className={Display.hideIf(this.state.collapsed)}>
+          <FireTD span={bank.savingsInputs(true).length + 4} hide={this.state.collapsed}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
@@ -40,24 +41,24 @@ class SavingsTableBody extends Component {
                           callback={callback} />
               &nbsp;({ bank.monthlyGoal(year, true) }/mo)
             </span>
-          </td>
+          </FireTD>
           {bank.savingsInputs(true).map((amount, idx) => (
-          <td className={Display.showIf(this.state.collapsed)} key={idx}>
+          <FireTD show={this.state.collapsed} key={idx}>
             { bank.totalInstitution(year, amount.id, amount.type, true) }
-          </td>
+          </FireTD>
           ))}
-          <td className={Display.showIf(this.state.collapsed)}>
+          <FireTD show={this.state.collapsed}>
             Total
-          </td>
-          <td className={Display.showIf(this.state.collapsed)}>
+          </FireTD>
+          <FireTD show={this.state.collapsed}>
             { bank.totalHolding('12', this.props.year, true) }
-          </td>
-          <td className={Display.showIf(this.state.collapsed)}>
+          </FireTD>
+          <FireTD show={this.state.collapsed}>
             Goal
-          </td>
-          <td className={`${Display.showIf(this.state.collapsed)} ${Display.goal(bank.goalYearToDate('12', this.props.year, false), 0)}`}>
+          </FireTD>
+          <FireTD show={this.state.collapsed} goal={bank.goalYearToDate('12', this.props.year, false)} threshold={0}>
             { bank.goalYearToDate('12', year, true) }
-          </td>
+          </FireTD>
         </tr>
         {Object.entries(bank.savings[year]).map((month, idx) => (
         <tr key={idx} className={Display.hideIf(this.state.collapsed)}>
@@ -73,16 +74,17 @@ class SavingsTableBody extends Component {
           </td>
           ))}
           <td>{ bank.totalMonthSavings(month[0], year, 'T', true) }</td>
-          <td className={Display.showIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} colSpan={3}></td>
-          <td className={Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)}>
+          <FireTD show={bank.totalMonthSavings(month[0], year, 'T', false) === 0} span={3} />
+
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
             { bank.totalHolding(month[0], year, true) }
-          </td>
-          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} ${Display.goal(bank.goalMonth(month[0], this.props.year, false), 0)}`} >
+          </FireTD>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
             { bank.goalMonth(month[0], year, true) }
-          </td>
-          <td className={`${Display.hideIf(bank.totalMonthSavings(month[0], year, 'T', false) === 0)} ${Display.goal(bank.goalYearToDate(month[0], this.props.year, false), 0)}`} >
+          </FireTD>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
             { bank.goalYearToDate(month[0], year, true) }
-          </td>
+          </FireTD>
         </tr>
         ))}
         <tr className={`tr-total ${Display.hideIf(this.state.collapsed)}`}>

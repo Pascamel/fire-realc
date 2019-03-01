@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import math from 'mathjs';
 
 import Display from '../../UI/Display';
 import keydown, { Keys, keydownScoped } from 'react-keydown';
@@ -31,15 +32,17 @@ class FireAmount extends Component {
   }
 
   confirmEdit = () => {
+    const val = math.eval(this.state.inputValue.replace(',','').replace('$','')).toString();
+
     this.setState({
-      edit: false, amount: 
-      this.state.inputValue
+      edit: false, 
+      amount: val
     });
 
-    let indexes = this.props['callback-props'];
-    let index = indexes.shift();
+    const indexes = this.props['callback-props'];
+    const index = indexes.shift();
 
-    this.props.callback(index, indexes, parseFloat(this.state.inputValue) || 0, true);
+    this.props.callback(index, indexes, parseFloat(val) || 0, true);
   }
 
   cancelEdit = () => {
