@@ -23,7 +23,7 @@ class SavingsTableHeader extends Component {
           {bank.savingsHeadersLine2().map((h2, idx) => (
           <th key={idx} className={h2.last ? 'separator' : ''}>{h2.label}</th>
           ))}
-          <th>Monthly</th>
+          <th>Month</th>
           <th className="separator">Total</th>
           <th>Month</th>
           <th>Total</th>
