@@ -13,7 +13,6 @@ class LoadingPanel extends Component {
           </Col>
         </Row>
       </Container>
-      
     )
   };
 }

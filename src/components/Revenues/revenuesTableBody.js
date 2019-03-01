@@ -42,7 +42,7 @@ class RevenuesTableBody extends Component {
           <td className={Display.showIf(this.state.collapsed)}>
             { bank.totalYearPre(year, true) }
           </td>
-          <td className={Display.showIf(this.state.collapsed)}>
+          <td className={`${Display.showIf(this.state.collapsed)} ${Display.goal(bank.savingRateYear(year, 12, true), 0.5)}`}>
             { bank.savingRateYear(year, 12, true) }
           </td> 
         </tr> 

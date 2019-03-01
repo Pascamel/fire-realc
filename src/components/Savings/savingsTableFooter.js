@@ -15,7 +15,7 @@ class SavingsTableFooter extends Component {
           ))}
           <td>Total</td>
           <td className="table-warning">{ bank && bank.grandTotalHolding() }</td>
-          <td colSpan={2}></td>
+          <td colSpan="3"></td>
         </tr>
       </tfoot>
     );

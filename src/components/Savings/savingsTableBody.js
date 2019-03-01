@@ -28,7 +28,7 @@ class SavingsTableBody extends Component {
           <td className="td-chevron">
             <i className={`fa ${this.state.collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} onClick={this.handleClickToggle}></i>
           </td>
-          <FireTD span={bank.savingsInputs(true).length + 4} hide={this.state.collapsed}>
+          <FireTD span={bank.savingsInputs(true).length + 5} hide={this.state.collapsed}>
             <span className="pull-left" style={{paddingLeft: '10px'}}>
               { year }
             </span>
@@ -59,6 +59,9 @@ class SavingsTableBody extends Component {
           <FireTD show={this.state.collapsed} goal={bank.goalYearToDate('12', this.props.year, false)} threshold={0}>
             { bank.goalYearToDate('12', year, true) }
           </FireTD>
+          <FireTD show={this.state.collapsed} goal={bank.savingRateYear(year, 12, false)} threshold={0.5}>
+            { bank.savingRateYear(year, 12, true) }
+          </FireTD>
         </tr>
         {Object.entries(bank.savings[year]).map((month, idx) => (
         <tr key={idx} className={Display.hideIf(this.state.collapsed)}>
@@ -74,16 +77,18 @@ class SavingsTableBody extends Component {
           </td>
           ))}
           <td>{ bank.totalMonthSavings(month[0], year, 'T', true) }</td>
-          <FireTD show={bank.totalMonthSavings(month[0], year, 'T', false) === 0} span={3} />
-
+          <FireTD show={bank.totalMonthSavings(month[0], year, 'T', false) === 0} span={4} />
           <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
             { bank.totalHolding(month[0], year, true) }
           </FireTD>
-          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.goalMonth(month[0], year, false)} threshold={0}>
             { bank.goalMonth(month[0], year, true) }
           </FireTD>
-          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0}>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.goalYearToDate(month[0], year, false)} threshold={0}>
             { bank.goalYearToDate(month[0], year, true) }
+          </FireTD>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.savingRateYear(year, month[0], false)} threshold={0.5}>
+            { bank.savingRateYear(year, month[0], true) }
           </FireTD>
         </tr>
         ))}
@@ -100,6 +105,9 @@ class SavingsTableBody extends Component {
           <td className={Display.goal(bank.goalYearToDate('12', year), 0)}>
             { bank.goalYearToDate('12', year, true) }
           </td>
+          <FireTD goal={bank.savingRateYear(year, 12, false)} threshold={0.5}>
+            { bank.savingRateYear(year, 12, true) }
+          </FireTD>
         </tr>
       </tbody>
     );

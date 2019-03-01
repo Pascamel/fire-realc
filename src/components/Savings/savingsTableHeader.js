@@ -16,7 +16,7 @@ class SavingsTableHeader extends Component {
           </th>
           ))}
           <th className="separator" colSpan={2}>Total</th>
-          <th colSpan={2}>Goal</th>
+          <th colSpan="3">Goal</th>
         </tr>
         <tr>
           <th></th>
@@ -27,6 +27,7 @@ class SavingsTableHeader extends Component {
           <th className="separator">Total</th>
           <th>Month</th>
           <th>Total</th>
+          <th>SR</th>
         </tr>
       </thead>
     );

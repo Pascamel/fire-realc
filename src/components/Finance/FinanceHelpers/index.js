@@ -13,7 +13,7 @@ const labelSavings = (saving) => {
 const hashHiddenColumns = (hidden) => {
   return _(hidden)
     .reduce((acc, value, key) => {
-      const c = _.reduce(value, (acc, v) => acc + v ? 1 : 0, 0);
+      const c = _.reduce(value, (acc, v) => acc + (v ? 1 : 0), 0);
       if (c > 0) acc[key] = c;
       return acc;
     }, {});
