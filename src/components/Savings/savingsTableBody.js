@@ -87,7 +87,7 @@ class SavingsTableBody extends Component {
           <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.goalYearToDate(month[0], year, false)} threshold={0}>
             { bank.goalYearToDate(month[0], year, true) }
           </FireTD>
-          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.savingRateYear(year, month[0], false)} threshold={0.5}>
+          <FireTD hide={bank.totalMonthSavings(month[0], year, 'T', false) === 0} goal={bank.savingRateMonth(year, month[0], false)} threshold={0.5}>
             { bank.savingRateMonth(year, month[0], true) }
           </FireTD>
         </tr>
