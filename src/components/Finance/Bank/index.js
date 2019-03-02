@@ -4,7 +4,6 @@ import Display from '../../UI/Display';
 
 class Bank {
   constructor(firebase) {
-    this.loaded = false;
     this.firebase = firebase;
   }
 
@@ -30,8 +29,6 @@ class Bank {
 
             if (!this.savingsYearHeaders.collapsed) this.savingsYearHeaders.collapsed = {};
             this.loadLocalStorage();
-
-            this.loaded = true;
 
             resolve(true);
           }).catch(function(error) {

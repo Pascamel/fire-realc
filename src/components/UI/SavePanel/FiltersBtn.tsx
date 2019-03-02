@@ -2,9 +2,20 @@ import React, { Component } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import _ from 'lodash';
 import FinanceHelpers from '../../Finance/FinanceHelpers';
+import Bank from '../../Finance/Bank';
 
-class ButtonColumnsFilter extends Component {
-  constructor(props) {
+interface IFiltersBtnProps {
+  updated: boolean,
+  bank: Bank,
+  callback: (index: string, indexes: string[], amount: any, updatedState: boolean) => void
+}
+
+interface IFiltersBtnState {
+  dropdownOpen: boolean
+}
+
+export default class FiltersBtn extends Component<IFiltersBtnProps, IFiltersBtnState> {
+  constructor(props: IFiltersBtnProps) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
@@ -39,8 +50,19 @@ class ButtonColumnsFilter extends Component {
   }
 }
 
-class ClickableItem extends Component {
-  constructor(props) {
+interface IClickableItemProps {
+  header: {id: string, type: string},
+  bank: Bank,
+  callback: (index: string, indexes: string[], amount: any, updatedState: boolean) => void
+}
+
+interface IClickableItemState {
+  header_label: string,
+  hidden: boolean
+}
+
+class ClickableItem extends Component<IClickableItemProps, IClickableItemState> {
+  constructor(props: IClickableItemProps) {
     super(props);
     
     let hl = '';
@@ -78,5 +100,3 @@ class ClickableItem extends Component {
     );
   }
 }
-
-export default ButtonColumnsFilter;

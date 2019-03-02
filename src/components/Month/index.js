@@ -21,6 +21,7 @@ class MonthPage extends Component {
     this.state = {
       updated: false,
       loading: true,
+      saveInProgress: false,
       year: (parseInt(props.match.params.year) || 0).toString(),
       month: parseInt(props.match.params.month) || 0,
       bank: {}
@@ -96,9 +97,13 @@ class MonthPage extends Component {
   }
 
   saveData = () => {
-    this.state.bank.saveSavings().then(saved => {
-      this.state.bank.saveIncome().then(saved => {
-        this.setState({updated: false});
+    this.setState({saveInProgress: true});
+    this.state.bank.saveSavings().then(() => {
+      this.state.bank.saveIncome().then((saved) => {
+        this.setState({
+          updated: !saved, 
+          saveInProgress: false
+        });
       }).catch((error) => {});
     }).catch((error) => {});
   }

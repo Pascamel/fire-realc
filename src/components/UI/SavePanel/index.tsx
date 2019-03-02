@@ -2,12 +2,28 @@ import React, { Component } from 'react';
 import Display from '../../UI/Display';
 import { Row, Col, Container, ButtonGroup, Button } from 'reactstrap';
 
-import ButtonColumnsFilter from './buttonColumnsFilter';
-import ButtonDecimals from './buttonDecimals';
+import FiltersBtn from './FiltersBtn';
+import ButtonDecimals from './DecimalsBtn';
+import Bank from '../../Finance/Bank';
 
-class SavePanel extends Component {
+interface ISavePanelProps {
+  updated: boolean, 
+  saveInProgress: boolean, 
+  label: string, 
+  bank: Bank
+  saveClick: () => void,
+  prevMonth: () => void,
+  nextMonth: () => void,
+  callback: (index: string, indexes: string[], amount: any, updatedState: boolean) => void
+}
+
+interface ISavePanelState {
+  
+}
+
+class SavePanel extends Component<ISavePanelProps, ISavePanelState> {
   render() {
-    const { label, updated, saveClick } = this.props;
+    const { updated, saveInProgress, label, saveClick } = this.props;
 
     return (
       <Container fluid className={`alert ${updated ? 'alert-warning' : 'alert-light'}`}>
@@ -18,7 +34,7 @@ class SavePanel extends Component {
                 <Col className="text-center">
                 
                   {label === 'Savings' && <ButtonGroup className="pull-left">
-                    <ButtonColumnsFilter {...this.props} />
+                    <FiltersBtn {...this.props} />
                     <ButtonDecimals {...this.props} />
                   </ButtonGroup>}
 
@@ -45,8 +61,9 @@ class SavePanel extends Component {
                   </span>
 
                   <button className={`btn btn-save pull-right ${updated ? 'btn-warning' : 'btn-light'}`} onClick={saveClick}>
-                    <i className="fa fa-floppy-o"></i>
-                    Save
+                    {!saveInProgress && <i className="fa fa-floppy-o"></i>}
+                    {saveInProgress && <i className="fa fa-spinner fa-spin"></i>}
+                    {saveInProgress ? 'Saving' : 'Save'}
                   </button>
                 </Col>
               </Row>

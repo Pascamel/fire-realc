@@ -18,6 +18,7 @@ class RevenuePage extends Component {
     this.state = {
       loading: true,
       updated: false,
+      saveInProgress: false,
       bank: {}
     };
   }
@@ -40,8 +41,13 @@ class RevenuePage extends Component {
   }
 
   saveData = () => {
-    this.state.bank.saveIncome().then(saved => {
-      this.setState({updated: false});
+    this.setState({saveInProgress: true});
+
+    this.state.bank.saveIncome().then((saved) => {
+      this.setState({
+        updated: !saved, 
+        saveInProgress: false
+      });
     }).catch((error) => {});
   }
 

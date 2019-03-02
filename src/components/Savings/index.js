@@ -18,6 +18,7 @@ class SavingsPage extends Component {
     this.state = {
       loading: true,
       updated: false,
+      saveInProgress: false,
       bank: {}
     }
   }
@@ -40,8 +41,13 @@ class SavingsPage extends Component {
   }
 
   saveData = () => {
-    this.state.bank.saveSavings().then(saved => {
-      this.setState({updated: false});
+    this.setState({saveInProgress: true});
+
+    this.state.bank.saveSavings().then((saved) => {
+      this.setState({
+        updated: !saved, 
+        saveInProgress: false
+      });
     }).catch((error) => {});
   }
 

@@ -32,7 +32,12 @@ class FireAmount extends Component {
   }
 
   confirmEdit = () => {
-    const val = math.eval(this.state.inputValue.replace(',','').replace('$','')).toString();
+    const s = (this.state.inputValue || '').replace(',','').replace('$','');
+    const validate = RegExp('^([0-9()*/.+-])+$');
+
+    if (!validate.test(s)) return;
+  
+    const val = (math.eval(s) || 0).toString();
 
     this.setState({
       edit: false, 

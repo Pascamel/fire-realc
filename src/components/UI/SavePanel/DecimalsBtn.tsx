@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import Bank from '../../Finance/Bank';
 
-class ButtonDecimals extends Component {
-  constructor(props) {
+interface IDecimalsBtnProps {
+  updated: boolean, 
+  bank: Bank,
+  callback: (index: string, indexes: string[], amount: any, updatedState: boolean) => void
+}
+
+interface IDecimalsBtnState {
+  dropdownOpen: boolean
+}
+
+export default class ButtonDecimals extends Component<IDecimalsBtnProps, IDecimalsBtnState> {
+  constructor(props: IDecimalsBtnProps) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
@@ -17,7 +28,7 @@ class ButtonDecimals extends Component {
     }))
   }
 
-  clickDecimal(decimal) {
+  clickDecimal(decimal: boolean) {
     this.props.callback('showDecimals', [], decimal, false);
   }
 
@@ -30,12 +41,10 @@ class ButtonDecimals extends Component {
           <i className="fa fa-university"></i>
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem disabled={bank.showDecimals} onClick={e => this.clickDecimal(true)}>Decimals</DropdownItem>
-          <DropdownItem disabled={!bank.showDecimals} onClick={e => this.clickDecimal(false)}>Rounded</DropdownItem>
+          <DropdownItem disabled={bank.showDecimals} onClick={() => this.clickDecimal(true)}>Decimals</DropdownItem>
+          <DropdownItem disabled={!bank.showDecimals} onClick={() => this.clickDecimal(false)}>Rounded</DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>
     );
   }
 }
-
-export default ButtonDecimals;

@@ -19,6 +19,7 @@ class HeadersPage extends Component {
     this.state = {
       loading: true,
       updated: false,
+      saveInProgress: false,
       headers: {
         headers: [],
         incomes: [],
@@ -38,16 +39,22 @@ class HeadersPage extends Component {
       let headers = snapshotHeaders.data() || this.default_headers;
       this.setState({
         loading: false, 
-        updated: false, 
         headers: headers,
       });
     });
   }
 
   saveHeaders = () => {
-    this.setState({last_update: (new Date()).getTime()});
-    this.props.firebase.setHeaders(this.state.headers).then(() => {
-      this.setState({updated: false});
+    this.setState({saveInProgress: true});
+
+    const data = JSON.parse(JSON.stringify(this.state.headers));
+    data.last_update = (new Date()).getTime();
+
+    this.props.firebase.setHeaders(data).then(() => {
+      this.setState({
+        updated: false, 
+        saveInProgress: false
+      });
     });
   }
 
